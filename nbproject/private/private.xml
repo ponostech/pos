@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/model/User.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/main_screen.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/PonosPos.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/MainController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/util/PasswordGenerator.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/LoginController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/login_fxml.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/META-INF/persistence.xml</file>
+        </group>
+    </open-files>
+</project-private>
