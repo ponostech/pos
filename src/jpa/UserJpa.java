@@ -18,16 +18,17 @@ import ponospos.entities.User;
 public class UserJpa {
     
     public static User createUser(User user){
-        EntityManager em=JpaSingleton.getInstance().getEntityManager();
+        EntityManager em=JpaSingleton.getInstance().createNewEntityManager();
+        
         em.getTransaction().begin();
         em.persist(user);
         em.getTransaction().commit();
-        em.flush();
         em.close();
+        System.out.println(user);
         return user;
     }
     public static User updateUser(User user){
-        EntityManager em=JpaSingleton.getInstance().getEntityManager();
+        EntityManager em=JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.merge(user);
         em.getTransaction().commit();
@@ -36,7 +37,7 @@ public class UserJpa {
         return user;
     }
     public static User deleteUser(User user){
-        EntityManager em=JpaSingleton.getInstance().getEntityManager();
+       EntityManager em=JpaSingleton.getInstance().createNewEntityManager(); 
         em.getTransaction().begin();
         em.remove(user);
         em.getTransaction().commit();
@@ -45,7 +46,7 @@ public class UserJpa {
         return user;
     }
     public static List<User> getAllUsers(){
-        EntityManager em=JpaSingleton.getInstance().getEntityManager();
+        EntityManager em=JpaSingleton.getInstance().createNewEntityManager();
         List<User> resultList = em.createQuery("SELECT u FROM User u",User.class).getResultList();
         em.close();
         return resultList;

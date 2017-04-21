@@ -36,4 +36,7 @@ public class JpaSingleton {
     public EntityManager getEntityManager(){
         return entityManager;
     }
+    public EntityManager createNewEntityManager(){
+        return entityManagerFactory.createEntityManager();
+    }
 }

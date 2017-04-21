@@ -8,21 +8,16 @@ package ponospos;
 import controllers.LoginController;
 import controllers.MainController;
 import controllers.MainDrawer;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-import model.Auth;
-import ponospos.entities.User;
+import singletons.PonosExecutor;
 
 
 
@@ -42,7 +37,7 @@ public class PonosPos extends Application {
     public void init() {
         try { 
             super.init();
-            executors= Executors.newCachedThreadPool();
+            executors= PonosExecutor.getInstance().getExecutor();
             factory=Persistence.createEntityManagerFactory("PonosPosPU");
         } catch (Exception ex) {
             Logger.getLogger(PonosPos.class.getName()).log(Level.SEVERE, null, ex);

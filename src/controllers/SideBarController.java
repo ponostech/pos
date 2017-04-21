@@ -7,6 +7,7 @@ package controllers;
 
 import Messages.SideBarMessage;
 import controllers.subcontrollers.UserMenuController;
+import controllers.users.UsersController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,8 @@ public class SideBarController extends Pane {
     private BorderPane container;
     private PopOver userSubMenuPopOver;
     private UserMenuController userMenuController;
+    private UsersController userController;
+    
     public SideBarController(){
         try {
             FXMLLoader loader=new FXMLLoader();
@@ -52,7 +55,7 @@ public class SideBarController extends Pane {
     }
     @FXML
     public void onUserMenuClick(ActionEvent e){
-        userSubMenuPopOver.show(userMenu);
+        switchScreen(userController);
     }
     @FXML
     private void onDashBoardMenuClick(ActionEvent event) {
@@ -70,7 +73,8 @@ public class SideBarController extends Pane {
     }
     private void init(){
         userMenuController=new UserMenuController();
-         userSubMenuPopOver=new PopOver();
+        userController=new UsersController();
+        userSubMenuPopOver=new PopOver();
         userSubMenuPopOver.setContentNode(userMenuController);
     }
     
