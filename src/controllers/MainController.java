@@ -10,11 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import ponospos.entities.User;
+import singletons.Auth;
 
 /**
  * FXML Controller class
@@ -24,8 +25,9 @@ import javafx.scene.layout.StackPane;
 public class MainController extends StackPane {
     @FXML
     ImageView imageView;
+    
     @FXML
-    Label topLabel;
+    Label label;
     
     BorderPane layoutContainer;
     
@@ -38,8 +40,8 @@ public class MainController extends StackPane {
         try {
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/main_screen.fxml"));
-            layoutContainer= (BorderPane)loader.load();
             loader.setController(this);
+            layoutContainer= (BorderPane)loader.load();
             this.getChildren().add(layoutContainer);
             init();
 //            topLabel.setText(Auth.getInstance().getUser().getUsername());
@@ -56,9 +58,13 @@ public class MainController extends StackPane {
         //pass the container to sidebar
         this.sideBar.setContainer(layoutContainer);
         this.sideBar.setDashboard(dashboard);
-    
         
+        this.label.setText("welcome "+Auth.getInstance().getUser().getUsername());
     }
+
+    public void setUser(User user) {
+    }
+   
 
        
     

@@ -22,6 +22,8 @@ import javafx.scene.layout.StackPane;
 import jpa.UserJpa;
 import ponospos.PonosPos;
 import ponospos.entities.User;
+import singletons.Auth;
+import util.PasswordGenerator;
 
 /**
  * FXML Controller class
@@ -64,11 +66,13 @@ public class LoginController extends StackPane {
             if (isValidInput(username,password)) {
                 LoginTask task=new LoginTask();
                 task.setUsername(username);
-                task.setPassword(password);
-                task.setOnCancelled(value->errorLabel.setText(LoginMessages.WRONG_CREDENTIAL));
+                task.setPassword(PasswordGenerator.generateToMD5(password));
+                task.setOnFailed(value->errorLabel.setText(LoginMessages.WRONG_CREDENTIAL));
                 task.setOnSucceeded(event->{
                     if (task.getValue()!=null) {
                         errorLabel.setText("");
+                        Auth.getInstance().setUser(task.getValue());
+                        Auth.getInstance().setIsLogged(true);
                         app.displayMainScreen();
                     }else{
                         errorLabel.setText(LoginMessages.WRONG_CREDENTIAL);

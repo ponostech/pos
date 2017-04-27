@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import Messages.SideBarMessage;
+import controllers.customers.CustomersController;
 import controllers.subcontrollers.UserMenuController;
 import controllers.users.UsersController;
 import java.io.IOException;
@@ -15,12 +15,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
 
 /**
@@ -29,7 +27,9 @@ import org.controlsfx.control.PopOver;
  */
 public class SideBarController extends Pane {
     @FXML
-    ToggleButton userMenu;    
+    ToggleButton userMenu;   
+    @FXML
+    ToggleButton customerMenu;
     @FXML
     private ToggleButton dashboardMenu;
     @FXML
@@ -39,6 +39,7 @@ public class SideBarController extends Pane {
     private PopOver userSubMenuPopOver;
     private UserMenuController userMenuController;
     private UsersController userController;
+    private CustomersController customerController;
     
     public SideBarController(){
         try {
@@ -61,6 +62,10 @@ public class SideBarController extends Pane {
     private void onDashBoardMenuClick(ActionEvent event) {
         switchScreen(dashboard);
     }
+    @FXML
+    public void onClickCustomerMenu(ActionEvent event){
+        switchScreen(customerController);
+    }
     public void setContainer(BorderPane container){
         this.container=container;
     }
@@ -73,6 +78,7 @@ public class SideBarController extends Pane {
     }
     private void init(){
         userMenuController=new UserMenuController();
+        customerController=new CustomersController();
         userController=new UsersController();
         userSubMenuPopOver=new PopOver();
         userSubMenuPopOver.setContentNode(userMenuController);

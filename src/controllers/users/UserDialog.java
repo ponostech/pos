@@ -7,14 +7,14 @@ package controllers.users;
 
 import Messages.UserMessage;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import com.jfoenix.validation.ValidationFacade;
-import com.jfoenix.validation.base.ValidatorBase;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,11 +23,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
-import org.controlsfx.validation.ValidationSupport;
 import ponospos.entities.User;
 import util.PasswordGenerator;
 import util.Role;
@@ -37,7 +36,13 @@ import util.Role;
  *
  * @author Sawmtea
  */
-public class CreateUserController extends VBox {
+public class UserDialog extends JFXDialog {
+
+    
+    public interface UserDialogListener{
+        public void onClickCreateButton(User user);
+        public void onClickUpdateButton(User user);
+    }
 
     @FXML
     private Label topLabel;
@@ -58,41 +63,41 @@ public class CreateUserController extends VBox {
     @FXML
     private JFXComboBox<Role> roleBox;
     @FXML
-    private Button saveBtn;
+    private Button positiveBtn;
     
+    private UserDialogListener listener;
+    private boolean isEditPurpose;
+    private User model;
+    private SimpleBooleanProperty isValid;
    
     private RequiredFieldValidator requiredValidator;
-    private UsersController userController;
-    private ValidationSupport validationSupport;
-
     private ObservableList userRoles=FXCollections.observableArrayList();
     /**
      * Initializes the controller class.
      */
     
-    public CreateUserController() {
+    public UserDialog() {
         try {
             FXMLLoader loader=new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/views/users/create_user.fxml"));
+            loader.setLocation(this.getClass().getResource("/views/users/user_dialog.fxml"));
             loader.setController(this);
             Parent parent = loader.load();
-            this.getChildren().add(parent);
+            this.setContent((Region) parent);
             userRoles.addAll(Role.ADMIN,Role.EMPLOYEE);
             roleBox.setItems(userRoles);
+            positiveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             roleBox.getSelectionModel().selectFirst();
-            saveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             doValidation();
         } catch (IOException ex) {
-            Logger.getLogger(CreateUserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void setUserController(UsersController userController) {
-        this.userController = userController;
-    }
-    
-
     private void doValidation(){
+        positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty()
+                .or(passwordField.textProperty().isEmpty())
+                .or(confirmPasswordField.textProperty().isEmpty()));
+        
         requiredValidator=new RequiredFieldValidator();
         requiredValidator.setMessage(UserMessage.REQUIRED_MESSAGE);        
         requiredValidator.setIcon(new Glyph("FontAwesome", FontAwesome.Glyph.WARNING).color(Color.RED));
@@ -101,33 +106,90 @@ public class CreateUserController extends VBox {
             if (!newVal) {
                 usernameField.validate();
             }
+            
         });
         passwordField.getValidators().add(requiredValidator);
         passwordField.focusedProperty().addListener((o,oldval,newVal)->{
             if (!newVal) {
                 passwordField.validate();
             }
+            
         });
         confirmPasswordField.getValidators().add(requiredValidator);
         confirmPasswordField.focusedProperty().addListener((o,oldval,newVal)->{
             if (!newVal) {
                 confirmPasswordField.validate();
             }
+            
         });
-       
+  
         
     }
+    public void setTitle(String title) {
+        topLabel.setText(title);
+    }
+    public void setModel(User user){
+        this.model=user;
+        applyModel();
+    }
+    public User getModel(){
+        return model;
+    }
+    public void isEditPurpose(boolean value){
+        this.isEditPurpose=value;
+        if (value) {
+            positiveBtn.setText("Update");
+        }else{
+            positiveBtn.setText("Create");
+        }
+    }
+    public void setListener(UserDialogListener listener){
+        this.listener=listener;
+    }
     @FXML
-    private void onSaveButtonClick(ActionEvent event) {
-        User user=new User();
-        user.setUsername(usernameField.getText().trim());
-        user.setPassword(PasswordGenerator.generateToMD5(passwordField.getText().trim()));
-        user.setEmail(emailField.getText().trim());
-        user.setFirstName(firstnameField.getText().trim());
-        user.setLastName(lastnameField.getText().trim());
-        user.setContact(contactField.getText().trim());
-        user.setRole((short) roleBox.getSelectionModel().getSelectedItem().ordinal());
-        userController.createUser(user);
+    private void onPositiveButtonClick(ActionEvent event) {
+        
+        if (isEditPurpose){
+            model.setUsername(usernameField.getText().trim());
+            model.setFirstName(firstnameField.getText().trim());
+            model.setLastName(lastnameField.getText().trim());
+            model.setEmail(emailField.getText().trim());
+            model.setContact(contactField.getText().trim());
+            model.setRole((short) roleBox.getSelectionModel().getSelectedItem().ordinal());            
+            listener.onClickUpdateButton(model);
+            clearAll();
+        }else{
+            User user=new User();
+            user.setUsername(usernameField.getText().trim());
+            user.setPassword(PasswordGenerator.generateToMD5(passwordField.getText().trim()));
+            user.setFirstName(firstnameField.getText().trim());
+            user.setEmail(emailField.getText().trim());
+            user.setLastName(lastnameField.getText().trim());
+            user.setContact(contactField.getText().trim());
+            user.setRole((short) roleBox.getSelectionModel().getSelectedItem().ordinal());
+            listener.onClickCreateButton(user);
+            clearAll();
+            
+        }this.close();
+    }
+    public void clearAll(){
+        usernameField.clear();
+        passwordField.clear();
+        confirmPasswordField.clear();
+        emailField.clear();
+        firstnameField.clear();
+        lastnameField.clear();
+
     }
     
+    public void applyModel(){
+        usernameField.setText(model.getUsername());
+        emailField.setText(model.getEmail());
+        firstnameField.setText(model.getFirstName());
+        lastnameField.setText(model.getLastName());
+        contactField.setText(model.getContact());
+        roleBox.getSelectionModel().select(model.getRole());
+                
+    }
+
 }

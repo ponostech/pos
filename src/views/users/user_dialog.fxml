@@ -35,19 +35,19 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
-      <JFXTextField fx:id="usernameField" alignment="CENTER" labelFloat="true" promptText="Username">
+      <JFXTextField fx:id="usernameField" alignment="TOP_LEFT" labelFloat="true" promptText="Username">
          <VBox.margin>
             <Insets top="10.0" />
          </VBox.margin>
       </JFXTextField>
-      <JFXPasswordField fx:id="passwordField" alignment="CENTER" labelFloat="true" promptText="Password" />
-      <JFXPasswordField fx:id="confirmPasswordField" alignment="CENTER" labelFloat="true" promptText="Confirm Password" />
-      <JFXTextField fx:id="firstnameField" alignment="CENTER" labelFloat="true" promptText="First Name" />
-      <JFXTextField fx:id="lastnameField" alignment="CENTER" labelFloat="true" promptText="Last Name" />
-      <JFXTextField fx:id="emailField" alignment="CENTER" labelFloat="true" promptText="Email" />
-      <JFXTextField fx:id="contactField" alignment="CENTER" labelFloat="true" promptText="Contact" />
+      <JFXPasswordField fx:id="passwordField" alignment="TOP_LEFT" labelFloat="true" promptText="Password" />
+      <JFXPasswordField fx:id="confirmPasswordField" alignment="TOP_LEFT" labelFloat="true" promptText="Confirm Password" />
+      <JFXTextField fx:id="firstnameField" alignment="TOP_LEFT" labelFloat="true" promptText="First Name" />
+      <JFXTextField fx:id="lastnameField" alignment="TOP_LEFT" labelFloat="true" promptText="Last Name" />
+      <JFXTextField fx:id="emailField" alignment="TOP_LEFT" labelFloat="true" promptText="Email" />
+      <JFXTextField fx:id="contactField" alignment="TOP_LEFT" labelFloat="true" promptText="Contact" />
       <JFXComboBox fx:id="roleBox" labelFloat="true" prefHeight="25.0" prefWidth="504.0" promptText="Select Role" visibleRowCount="3" />
-      <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#onSaveButtonClick" text="Button" />
+      <Button fx:id="positiveBtn" defaultButton="true" mnemonicParsing="false" onAction="#onPositiveButtonClick" prefHeight="25.0" prefWidth="102.0" text="Save" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

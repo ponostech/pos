@@ -94,7 +94,7 @@ public class User implements Serializable {
     }
 
     public String getUsername() {
-        return username;
+        return username==null?"":username;
     }
 
     public void setUsername(String username) {
@@ -102,7 +102,7 @@ public class User implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return password==null?"":password;
     }
 
     public void setPassword(String password) {
@@ -118,7 +118,7 @@ public class User implements Serializable {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName==null?"":firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -126,7 +126,7 @@ public class User implements Serializable {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName==null?"":lastName;
     }
 
     public void setLastName(String lastName) {
@@ -134,7 +134,7 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return email==null?"":email;
     }
 
     public void setEmail(String email) {
@@ -142,7 +142,7 @@ public class User implements Serializable {
     }
 
     public String getContact() {
-        return contact;
+        return contact==null?"":contact;
     }
 
     public void setContact(String contact) {
@@ -179,7 +179,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return username;
+        return username +"[ id =]"+id;
     }
     
 }

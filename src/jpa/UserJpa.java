@@ -32,18 +32,17 @@ public class UserJpa {
         em.getTransaction().begin();
         em.merge(user);
         em.getTransaction().commit();
-        em.flush();
         em.close();
         return user;
     }
     public static User deleteUser(User user){
-       EntityManager em=JpaSingleton.getInstance().createNewEntityManager(); 
+        EntityManager em=JpaSingleton.getInstance().createNewEntityManager(); 
         em.getTransaction().begin();
-        em.remove(user);
+        User u = em.merge(user);
+        em.remove(u);
         em.getTransaction().commit();
-        em.flush();
         em.close();
-        return user;
+        return u;
     }
     public static List<User> getAllUsers(){
         EntityManager em=JpaSingleton.getInstance().createNewEntityManager();

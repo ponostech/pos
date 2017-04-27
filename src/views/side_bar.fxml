@@ -7,9 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
-      prefHeight="600.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-      >
+<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToggleButton fx:id="dashboardMenu" mnemonicParsing="false" onAction="#onDashBoardMenuClick" prefHeight="60.0" prefWidth="60.0" text="DB">
          <toggleGroup>
@@ -17,7 +15,7 @@
          </toggleGroup>
       </ToggleButton>
       <ToggleButton fx:id="userMenu" mnemonicParsing="false" onAction="#onUserMenuClick" prefHeight="60.0" prefWidth="60.0" text="user" toggleGroup="$menuGroup" />
-      <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="3" toggleGroup="$menuGroup" />
+      <ToggleButton fx:id="customerMenu" mnemonicParsing="false" onAction="#onClickCustomerMenu" prefHeight="60.0" prefWidth="60.0" text="Customer" toggleGroup="$menuGroup" />
       <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="4" toggleGroup="$menuGroup" />
       <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="5" toggleGroup="$menuGroup" />
       <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="6" toggleGroup="$menuGroup" />

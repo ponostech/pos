@@ -17,6 +17,7 @@ public class Auth {
     private User user;
     private boolean isLogged;
     private Auth() {
+        user=new User();
     }
     
     public static Auth getInstance() {
@@ -36,7 +37,7 @@ public class Auth {
         this.user = user;
     }
 
-    public boolean isIsLogged() {
+    public boolean isLogged() {
         return isLogged;
     }
 

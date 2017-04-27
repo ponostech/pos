@@ -6,11 +6,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.BreadCrumbBar?>
-<?import org.controlsfx.glyphfont.*?>
+<?import org.controlsfx.glyphfont.Glyph?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="newUserBtn" mnemonicParsing="false" onAction="#onClickNewUserBtn" prefHeight="82.0" prefWidth="120.0" text="New User" >
+      <Button fx:id="newUserBtn" mnemonicParsing="false" onAction="#onClickNewUserBtn" prefHeight="82.0" prefWidth="120.0" text="New User">
           <graphic>
                 <Glyph fontFamily="FontAwesome" icon="PLUS" />
             </graphic>

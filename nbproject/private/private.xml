@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/users/UsersController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/subcontrollers/ActionTableColumn.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/users/CreateUserController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/singletons/PonosExecutor.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/views/users/create_user.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/jpa/CustomerJpa.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/customers/Customerdialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/modals/ConfirmDialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/customers/CustomersController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/customers/customer_dialog.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/customers/customers.fxml</file>
         </group>
     </open-files>
 </project-private>

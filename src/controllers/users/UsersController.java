@@ -7,14 +7,13 @@ package controllers.users;
 
 import Messages.UserMessage;
 import com.jfoenix.controls.JFXDialog;
+import controllers.modals.ConfirmDialog;
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -26,18 +25,25 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import jpa.UserJpa;
 import org.controlsfx.control.BreadCrumbBar;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import ponospos.entities.User;
 import singletons.PonosExecutor;
+import util.Role;
+import static util.Role.ADMIN;
 
 /**
  *
  * @author Sawmtea
  */
-public class UsersController extends StackPane{
+public class UsersController extends StackPane implements 
+        ConfirmDialog.ConfirmDialogListener,
+        UserDialog.UserDialogListener{
     @FXML
     TableView<User> usersTable;
     @FXML
@@ -51,18 +57,16 @@ public class UsersController extends StackPane{
     @FXML
     TableColumn <User,String>emailCol;
     @FXML
-    TableColumn <User,String>roleCol;
+    TableColumn <User,Role>roleCol;
     @FXML
-    TableColumn <User,User>actionCol;
+    TableColumn <Void,User>actionCol;
     @FXML
     Button newUserBtn;
     @FXML
     BreadCrumbBar crumbBar;
     
-    JFXDialog newUserDialog;
-    
     private ObservableList<User>users=FXCollections.observableArrayList();
-    private CreateUserController createUserController;
+    private UserDialog userDialog;
 
     public UsersController() {
         try {
@@ -80,18 +84,51 @@ public class UsersController extends StackPane{
     private void init(){
         usersTable.setItems(users);
         idCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getId())));
-        usernameCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getUsername())));
-        firstnameCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getFirstName())));
-        lastnameCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getLastName())));
-        emailCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getEmail())));
-        roleCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getRole())));
-        
+        usernameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getUsername()));
+        firstnameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getFirstName()));
+        lastnameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getLastName()));
+        emailCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getEmail()));
+        roleCol.setCellValueFactory(e->{
+            User user = e.getValue();
+            Role role;
+            if (user.getRole()==0) {
+                role=ADMIN;
+            }else{
+                role=Role.EMPLOYEE;
+            }
+           return new SimpleObjectProperty(role);
+        });
+        actionCol.setCellFactory((TableColumn<Void, User> param) -> new TableCell<Void,User>(){
+            Button editBtn=new Button("Edit",new Glyph("FontAwesome",FontAwesome.Glyph.EDIT));
+            Button delBtn=new Button("Delete",new Glyph("FontAwesome",FontAwesome.Glyph.TRASH));
+            
+            @Override
+            protected void updateItem(User item, boolean empty) {
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                }else{
+                    editBtn.setOnAction(e->{
+                        UserDialog dialog = new UserDialog();
+                        dialog.isEditPurpose(true);
+                        dialog.setTitle("Update user");
+                        dialog.setModel(users.get(getIndex()));
+                        dialog.setListener(UsersController.this);
+                        dialog.show(UsersController.this);
+                    });
+                    delBtn.setOnAction(e->{
+                        ConfirmDialog dialog=new ConfirmDialog();
+                        dialog.setListener(UsersController.this);
+                        dialog.setModel(users.get(getIndex()));
+                        dialog.show(UsersController.this);
+                    });
+                    setGraphic(new HBox(editBtn,delBtn));
+                }
+            } 
+        });
         //initialise the content for new user dialog
-        createUserController=new CreateUserController();
-        createUserController.setUserController(this);
         
         //initialise dialog for new user entry
-        newUserDialog=new JFXDialog(this, createUserController, JFXDialog.DialogTransition.CENTER);
         //populate usertable by tasks;
         FetchAllUserTask task=new FetchAllUserTask();
         task.setOnSucceeded(e->{
@@ -107,8 +144,6 @@ public class UsersController extends StackPane{
     }
     
     public void createUser(User user){
-        //TODO::save user into database
-       
         CreateUserTask task=new CreateUserTask();
         task.setUser(user);
         task.setOnSucceeded(e->{
@@ -122,7 +157,7 @@ public class UsersController extends StackPane{
         });
         task.setOnCancelled(e->System.out.println("user creation cancel"));
         PonosExecutor.getInstance().getExecutor().submit(task);
-         newUserDialog.close();
+       
     }
     public void updateUser(User user){
         UpdateUserTask task=new UpdateUserTask();
@@ -145,13 +180,32 @@ public class UsersController extends StackPane{
             Notifications.create().title(UserMessage.DELETE_SUCCESS_TITLE).text(UserMessage.DELETE_SUCCESS_MESSAGE).showInformation();
         });
         task.setOnFailed(e->{
+            //TODO:: handle later
             task.getException().printStackTrace();
         });
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
     @FXML
     public void onClickNewUserBtn(ActionEvent e){
-        newUserDialog.show();
+        UserDialog d=new UserDialog();
+        d.setListener(this);
+        d.isEditPurpose(false);
+        d.show(this);
+    }
+
+    @Override
+    public void onClickYes(Object obj) {
+        deleteUser((User) obj);
+    }
+
+    @Override
+    public void onClickCreateButton(User user) {
+        createUser(user);
+    }
+
+    @Override
+    public void onClickUpdateButton(User user) {
+        updateUser(user);
     }
     public class UpdateUserTask extends Task<User>{
         private User user;

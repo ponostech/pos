@@ -17,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import ponospos.entities.User;
+import singletons.Auth;
 import singletons.PonosExecutor;
 
 
@@ -32,7 +34,6 @@ public class PonosPos extends Application {
     private Scene primaryScene;
     private LoginController loginController;
     private MainController mainController;
-    private MainDrawer mainScreen;
     @Override
     public void init() {
         try { 
@@ -47,12 +48,12 @@ public class PonosPos extends Application {
     
     @Override
     public void start(Stage stage){
-        loginController =new LoginController();
-        mainScreen=new MainDrawer();
+        
         mainController=new MainController();
+        loginController =new LoginController();
         loginController.setApp(this);
         this.primaryStage=stage;
-        this.primaryScene=new Scene(mainController,600,400);
+        this.primaryScene=new Scene(mainController,800,600);
         this.primaryStage.setScene(primaryScene); 
         this.primaryStage.setOnCloseRequest(e->{
             executors.shutdown();
@@ -74,8 +75,14 @@ public class PonosPos extends Application {
         return executors;
     }
     public void displayMainScreen() {
-        primaryScene.setRoot(mainController);
+        MainController root=new MainController();
+        primaryScene.setRoot(root);
     }
+    public void setUser(User user){
+        mainController.setUser(user);
+    }
+
+    
     
  
     
