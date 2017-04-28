@@ -88,6 +88,7 @@ public class UserDialog extends JFXDialog {
             positiveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             roleBox.getSelectionModel().selectFirst();
             doValidation();
+            bindControls();
         } catch (IOException ex) {
             Logger.getLogger(UserDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -190,6 +191,18 @@ public class UserDialog extends JFXDialog {
         contactField.setText(model.getContact());
         roleBox.getSelectionModel().select(model.getRole());
                 
+    }
+    private void bindControls(){
+        if (isEditPurpose) {
+            positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty());
+        }else{
+            positiveBtn.disableProperty().bind(
+                usernameField.textProperty().isEmpty()
+                .or(passwordField.textProperty().isEmpty())
+                .or(confirmPasswordField.textProperty().isNotEqualTo(passwordField.textProperty()))
+            );
+        }
+        
     }
 
 }

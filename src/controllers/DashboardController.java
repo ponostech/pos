@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import org.controlsfx.control.MaskerPane;
 
 /**
  *
@@ -19,8 +20,10 @@ import javafx.scene.layout.Pane;
 class DashboardController extends Pane{
     
 
-    public DashboardController() {
+    private MaskerPane mask;
+    public DashboardController(MaskerPane mask) {
         try {
+            this.mask=mask;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/dashboard.fxml"));
             loader.setController(this);

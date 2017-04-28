@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Customer.findByLastName", query = "SELECT c FROM Customer c WHERE c.lastName = :lastName")
     , @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email")
     , @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address")
-    , @NamedQuery(name = "Customer.findByContact", query = "SELECT c FROM Customer c WHERE c.contact = :contact")})
+    , @NamedQuery(name = "Customer.findByContact", query = "SELECT c FROM Customer c WHERE c.contact = :contact")
+    , @NamedQuery(name = "Customer.findByNames", query = "SELECT c FROM Customer c WHERE c.firstName like :fname OR c.lastName lIKE :lname")})
 public class Customer implements Serializable {
 
 
@@ -57,27 +58,19 @@ public class Customer implements Serializable {
     @Column(name = "contact")
     private String contact;
     @Column(name = "created_at")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Column(name = "updated_at")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    public Customer() {this.id = id;
-        this.firstName="";
-        this.lastName="";
-        this.email="";
-        this.contact="";
-        this.address="";
+    public Customer() {
+       
     }
 
     public Customer(Integer id) {
         this.id = id;
-        this.firstName="";
-        this.lastName="";
-        this.email="";
-        this.contact="";
-        this.address="";
+        
     }
 
     public Customer(Integer id, String firstName, String lastName) {
@@ -119,7 +112,7 @@ public class Customer implements Serializable {
     }
 
     public String getAddress() {
-        return address==null?"":address;
+        return address;
     }
 
     public void setAddress(String address) {

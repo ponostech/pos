@@ -5,81 +5,41 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<VBox disable="true" prefHeight="463.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane prefHeight="512.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="57.0" prefWidth="469.0" style="-fx-background-color: cyan;">
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-         <children>
-            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/ktp.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="topLabel" text="Customer" />
-         </children>
-         <effect>
-            <DropShadow />
-         </effect>
-      </HBox>
-      <JFXTextField fx:id="firstNameField" labelFloat="true" promptText="Firstname">
+      <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="137.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resource/icons/ktp.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="topLabel" layoutX="141.0" layoutY="71.0" text="Customer" />
+      <JFXTextField fx:id="firstNameField" labelFloat="true" layoutX="36.0" layoutY="108.0" prefHeight="25.0" prefWidth="299.0" promptText="Firstname" />
+      <JFXTextField fx:id="lastNameField" labelFloat="true" layoutX="35.0" layoutY="158.0" prefHeight="25.0" prefWidth="299.0" promptText="Lastname">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
       </JFXTextField>
-      <JFXTextField fx:id="lastNameField" labelFloat="true" promptText="Lastname">
+      <JFXTextField fx:id="emailField" labelFloat="true" layoutX="33.0" layoutY="211.0" prefHeight="25.0" prefWidth="299.0" promptText="Email">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
       </JFXTextField>
-      <JFXTextField fx:id="emailField" labelFloat="true" promptText="Email">
+      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="31.0" layoutY="264.0" prefHeight="101.0" prefWidth="299.0" promptText="Address">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </JFXTextField>
-      <JFXTextArea fx:id="addressField" labelFloat="true" prefHeight="101.0" prefWidth="489.0" promptText="Address">
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
       </JFXTextArea>
-      <JFXTextField fx:id="contactField" labelFloat="true" promptText="Contact">
+      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="35.0" layoutY="380.0" prefHeight="25.0" prefWidth="299.0" promptText="Contact">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
       </JFXTextField>
-      <HBox alignment="CENTER_RIGHT" spacing="20.0">
-         <children>
-            <JFXButton fx:id="saveButton" buttonType="RAISED" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save" />
-            <JFXButton fx:id="cancelButton" buttonType="RAISED" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" text="Cancel" />
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </HBox>
+      <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="36.0" layoutY="457.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save" />
+      <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="240.0" layoutY="457.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: cyan;" text="Cancel" />
    </children>
-   <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-   </padding>
-</VBox>
+</AnchorPane>

@@ -47,4 +47,13 @@ public class CustomerJpa {
                 .getResultList();
         return all;
     }
+    public static List findCustomerByName(String fname,String lname){
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Customer> founds = em.createNamedQuery("Customer.findByNames", Customer.class)
+                .setParameter("fname", fname+"%")
+                .setParameter("lname", lname+"%")
+                .getResultList();
+
+        return founds;
+    }
 }

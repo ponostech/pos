@@ -26,6 +26,11 @@ import org.controlsfx.control.PopOver;
  * @author Sawmtea
  */
 public class SideBarController extends Pane {
+    public interface SideBarListener{
+        public void onUserMenuClick();
+        public void onCustomerMenuClick();
+        public void onDashboardMenuClick();
+    }
     @FXML
     ToggleButton userMenu;   
     @FXML
@@ -36,11 +41,10 @@ public class SideBarController extends Pane {
     private ToggleGroup menuGroup;
     private DashboardController dashboard;
     private BorderPane container;
-    private PopOver userSubMenuPopOver;
     private UserMenuController userMenuController;
     private UsersController userController;
     private CustomersController customerController;
-    
+    private SideBarListener listener;
     public SideBarController(){
         try {
             FXMLLoader loader=new FXMLLoader();
@@ -48,7 +52,6 @@ public class SideBarController extends Pane {
             loader.setController(this);
             Parent parent = loader.load();
             this.getChildren().add(parent);
-            init();
         } catch (IOException ex) {
             Logger.getLogger(SideBarController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,32 +59,23 @@ public class SideBarController extends Pane {
     }
     @FXML
     public void onUserMenuClick(ActionEvent e){
-        switchScreen(userController);
+        listener.onUserMenuClick();
     }
     @FXML
     private void onDashBoardMenuClick(ActionEvent event) {
-        switchScreen(dashboard);
+       listener.onDashboardMenuClick();
     }
     @FXML
     public void onClickCustomerMenu(ActionEvent event){
-        switchScreen(customerController);
+        listener.onCustomerMenuClick();
     }
-    public void setContainer(BorderPane container){
-        this.container=container;
-    }
-    public void switchScreen(Parent view){
-        this.container.setCenter(view);
-    }
-
+   
     void setDashboard(DashboardController dashboard) {
         this.dashboard=dashboard;
     }
-    private void init(){
-        userMenuController=new UserMenuController();
-        customerController=new CustomersController();
-        userController=new UsersController();
-        userSubMenuPopOver=new PopOver();
-        userSubMenuPopOver.setContentNode(userMenuController);
+    
+    public void setListener(SideBarListener listener){
+        this.listener=listener;
     }
     
 

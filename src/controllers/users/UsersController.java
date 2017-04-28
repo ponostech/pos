@@ -6,7 +6,6 @@
 package controllers.users;
 
 import Messages.UserMessage;
-import com.jfoenix.controls.JFXDialog;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import jpa.UserJpa;
 import org.controlsfx.control.BreadCrumbBar;
+import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -68,20 +68,22 @@ public class UsersController extends StackPane implements
     private ObservableList<User>users=FXCollections.observableArrayList();
     private UserDialog userDialog;
 
-    public UsersController() {
+    private MaskerPane mask;
+    public UsersController(MaskerPane mask) {
         try {
+            this.mask=mask;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/users/users.fxml"));
             loader.setController(this);
             Parent root = loader.load();
             this.getChildren().add(root);
-            init();
+            initTable();
         } catch (IOException ex) {
             Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void init(){
+    private void initTable(){
         usersTable.setItems(users);
         idCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getId())));
         usernameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getUsername()));
@@ -155,6 +157,7 @@ public class UsersController extends StackPane implements
             
             System.out.println(task.getException().getCause().getMessage());
         });
+        mask.visibleProperty().bind(task.runningProperty());
         task.setOnCancelled(e->System.out.println("user creation cancel"));
         PonosExecutor.getInstance().getExecutor().submit(task);
        
@@ -162,6 +165,7 @@ public class UsersController extends StackPane implements
     public void updateUser(User user){
         UpdateUserTask task=new UpdateUserTask();
         task.setUser(user);
+        mask.visibleProperty().bind(task.runningProperty());
         task.setOnSucceeded(e->{
             users.add(task.getValue());
             Notifications.create().title(UserMessage.UPDATE_SUCCESS_TITLE).text(UserMessage.UPDATE_SUCCESS_MESSAGE).showInformation();
@@ -179,6 +183,7 @@ public class UsersController extends StackPane implements
             users.remove(task.getValue());
             Notifications.create().title(UserMessage.DELETE_SUCCESS_TITLE).text(UserMessage.DELETE_SUCCESS_MESSAGE).showInformation();
         });
+        mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(e->{
             //TODO:: handle later
             task.getException().printStackTrace();

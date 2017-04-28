@@ -78,12 +78,7 @@ public class PonosPos extends Application {
         MainController root=new MainController();
         primaryScene.setRoot(root);
     }
-    public void setUser(User user){
-        mainController.setUser(user);
-    }
-
-    
-    
+   
  
     
 }

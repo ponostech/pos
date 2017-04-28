@@ -6,9 +6,9 @@
 package controllers.customers;
 
 import Messages.CustomerMessage;
-import com.jfoenix.controls.JFXButton;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,9 +29,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import jpa.CustomerJpa;
+import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -44,7 +47,7 @@ import singletons.PonosExecutor;
  * @author Sawmtea
  */
 public class CustomersController extends StackPane implements
-        Customerdialog.CustomerDialogListener,ConfirmDialog.ConfirmDialogListener {
+        CustomerDialog.CustomerDialogListener,ConfirmDialog.ConfirmDialogListener {
 
     @FXML
     private TableView<Customer> customerTable;
@@ -69,42 +72,37 @@ public class CustomersController extends StackPane implements
     @FXML
     private Button newButton;
     @FXML
+    private TextField searchField;
+    @FXML
+    private Button searchButton;
+    @FXML
     private Label noOfCustomerlabel;
-
-    Customerdialog dialog;
+    private MaskerPane mask;
     
     private ObservableList<Customer> customers=FXCollections.observableArrayList();
     /**
      * Initializes the controller class.
      */
       
-    public CustomersController(){
+    public CustomersController(MaskerPane mask){
         try {
+            this.mask=mask;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/customers/customers.fxml"));
             loader.setController(this);
             Parent root = loader.load();
             this.getChildren().add(root);
-            initTable();
+            initControls();
             addListenersToControls();
+            newButton.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.PLUS).color(Color.GREEN).size(48));
         } catch (IOException ex) {
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void initTable() {
+    private void initControls() {
         customerTable.setItems(customers);
         //geta all customer and assign the return value to customers list
-        FetchAllCustomerTask task=new FetchAllCustomerTask();
-        task.setOnSucceeded(c->{
-            List<Customer> all = task.getValue();
-            customers.clear();
-            customers.addAll(all);
-        });
-        task.setOnFailed(e->task.getException().printStackTrace());
-        
-        PonosExecutor.getInstance().getExecutor().submit(task);
-        
         idCol.setCellValueFactory(c->new SimpleObjectProperty<Integer>(c.getValue().getId()));
         fnameCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getFirstName()));
         lnameCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getLastName()));
@@ -113,14 +111,16 @@ public class CustomersController extends StackPane implements
         contactCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getContact()));
         createdCol.setCellValueFactory(c->{
             Date date = c.getValue().getCreatedAt();
-            
-            return null;
+            SimpleDateFormat fm=new SimpleDateFormat("dd/MM/yy");          
+            return new SimpleStringProperty(fm.format(date));
         });
         updateCol.setCellValueFactory(c->{
-            return null;
+            Date date = c.getValue().getUpdatedAt();
+            SimpleDateFormat fm=new SimpleDateFormat("dd/MM/yy");          
+            return new SimpleStringProperty(fm.format(date));
         });
          actionCol.setCellFactory((TableColumn<Void, Customer> param) -> new TableCell<Void,Customer>(){
-            Button editBtn=new Button("Edit",new Glyph("FontAwesome",FontAwesome.Glyph.EDIT));
+            Button editBtn=new Button("Edit",new Glyph("FontAwesome",FontAwesome.Glyph.EDIT).color(Color.BLUE));
             Button delBtn=new Button("Delete",new Glyph("FontAwesome",FontAwesome.Glyph.TRASH));
             
             @Override
@@ -130,6 +130,10 @@ public class CustomersController extends StackPane implements
                     setGraphic(null);
                 }else{
                     editBtn.setOnAction(e->{
+                        CustomerDialog d=new CustomerDialog(CustomersController.this);
+                        d.setCustomer(customers.get(getIndex()));
+                        d.isEditPurpose(true);
+                        d.show(CustomersController.this);
                         
                     });
                     delBtn.setOnAction(e->{
@@ -143,7 +147,18 @@ public class CustomersController extends StackPane implements
             } 
         });
     }
-    public void addListenersToControls(){
+    public void fetchAllCustomer(){
+        FetchAllCustomerTask task=new FetchAllCustomerTask();
+        task.setOnSucceeded(c->{
+            List<Customer> all = task.getValue();
+            customers.clear();
+            customers.addAll(all);
+        });
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnFailed(e->task.getException().printStackTrace());       
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+    private void addListenersToControls(){
         customers.addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
@@ -152,19 +167,31 @@ public class CustomersController extends StackPane implements
         });
     }
     @FXML
+    private void doSearch(){
+        FindCustomerTask task=new FindCustomerTask();
+        task.setFname(searchField.getText().trim());
+        task.setFname(searchField.getText().trim());
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnFailed(c->{task.getException().printStackTrace();});
+        task.setOnSucceeded(c->{
+            customers.clear();
+            customers.addAll(task.getValue());
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+    @FXML
     public void onNewButtonClick(ActionEvent e){
-//        dialog=new Customerdialog();
-//        dialog.setListener(this);
-//        dialog.show(CustomersController.this);
-        Customerdialog d=new Customerdialog();
-        d.setListener(this);
-        d.show(CustomersController.this);
+        CustomerDialog dialog=new CustomerDialog(CustomersController.this);
+        dialog.show(CustomersController.this);    
     }
 
     @Override
     public void onCreate(Customer customer) {
         CreateTask task=new CreateTask();
+        System.out.println(customer.getAddress());
+        System.out.println(customer.getFirstName());
         task.setCustomer(customer);
+        mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(c->task.getException().printStackTrace());
         task.setOnSucceeded(c->{
             customers.add(task.getValue());
@@ -180,8 +207,10 @@ public class CustomersController extends StackPane implements
     public void onEdit(Customer customer) {
         UpdateTask task=new UpdateTask();
         task.setCustomer(customer);
+         mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(c->task.getException().printStackTrace());
         task.setOnSucceeded(c->{
+            customers.remove(task.getValue());
             customers.add(task.getValue());
             Notifications.create()
                     .title(CustomerMessage.UPDATE_SUCCESS_TITLE)
@@ -196,6 +225,7 @@ public class CustomersController extends StackPane implements
         DeleteTask task=new DeleteTask();
         task.setCustomer((Customer) obj);
         task.setOnFailed(c->task.getException().printStackTrace());
+        mask.visibleProperty().bind(task.runningProperty());
         task.setOnSucceeded(c->{
             customers.remove(task.getValue());
             Notifications.create()
@@ -240,11 +270,28 @@ public class CustomersController extends StackPane implements
         }
     
     }
-      public class FetchAllCustomerTask extends Task<List<Customer>>{
+    public class FetchAllCustomerTask extends Task<List<Customer>>{
         @Override
         protected List<Customer> call() throws Exception {
             return CustomerJpa.getAllCustomers();
+        } 
+    }
+    public class FindCustomerTask extends Task<List<Customer>>{
+        private String fname;
+        private String lname;
+        @Override
+        protected List<Customer> call() throws Exception {
+            return CustomerJpa.findCustomerByName(fname, lname);
+        } 
+
+        public void setFname(String fname) {
+            this.fname = fname;
+        }
+
+        public void setLname(String lname) {
+            this.lname = lname;
         }
         
     }
+      
 }
