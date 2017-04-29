@@ -6,6 +6,7 @@
 package controllers.customers;
 
 import Messages.CustomerMessage;
+import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,13 +24,13 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -46,8 +47,9 @@ import singletons.PonosExecutor;
  *
  * @author Sawmtea
  */
-public class CustomersController extends StackPane implements
-        CustomerDialog.CustomerDialogListener,ConfirmDialog.ConfirmDialogListener {
+public class CustomersController extends AnchorPane implements
+        CustomerDialog.CustomerDialogListener,ConfirmDialog.ConfirmDialogListener,
+        PonosControllerInterface{
 
     @FXML
     private TableView<Customer> customerTable;
@@ -78,29 +80,30 @@ public class CustomersController extends StackPane implements
     @FXML
     private Label noOfCustomerlabel;
     private MaskerPane mask;
+    private StackPane root;
     
     private ObservableList<Customer> customers=FXCollections.observableArrayList();
     /**
      * Initializes the controller class.
      */
       
-    public CustomersController(MaskerPane mask){
+    public CustomersController(MaskerPane mask,StackPane root){
         try {
             this.mask=mask;
+            this.root=root;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/customers/customers.fxml"));
             loader.setController(this);
-            Parent root = loader.load();
-            this.getChildren().add(root);
-            initControls();
-            addListenersToControls();
+            loader.setRoot(this);
+            loader.load();
             newButton.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.PLUS).color(Color.GREEN).size(48));
         } catch (IOException ex) {
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void initControls() {
+ 
+    @Override
+    public void initControls() {
         customerTable.setItems(customers);
         //geta all customer and assign the return value to customers list
         idCol.setCellValueFactory(c->new SimpleObjectProperty<Integer>(c.getValue().getId()));
@@ -133,14 +136,14 @@ public class CustomersController extends StackPane implements
                         CustomerDialog d=new CustomerDialog(CustomersController.this);
                         d.setCustomer(customers.get(getIndex()));
                         d.isEditPurpose(true);
-                        d.show(CustomersController.this);
+                        d.show(root);
                         
                     });
                     delBtn.setOnAction(e->{
                         ConfirmDialog dialog=new ConfirmDialog();
                         dialog.setListener(CustomersController.this);
                         dialog.setModel(customers.get(getIndex()));
-                        dialog.show(CustomersController.this);
+                        dialog.show(root);
                     });
                     setGraphic(new HBox(editBtn,delBtn));
                 }
@@ -158,14 +161,7 @@ public class CustomersController extends StackPane implements
         task.setOnFailed(e->task.getException().printStackTrace());       
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
-    private void addListenersToControls(){
-        customers.addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                noOfCustomerlabel.setText(Integer.toString(customers.size()));
-            }
-        });
-    }
+  
     @FXML
     private void doSearch(){
         FindCustomerTask task=new FindCustomerTask();
@@ -182,7 +178,8 @@ public class CustomersController extends StackPane implements
     @FXML
     public void onNewButtonClick(ActionEvent e){
         CustomerDialog dialog=new CustomerDialog(CustomersController.this);
-        dialog.show(CustomersController.this);    
+        dialog.show(root); 
+        dialog.requestFocus();
     }
 
     @Override
@@ -210,8 +207,7 @@ public class CustomersController extends StackPane implements
          mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(c->task.getException().printStackTrace());
         task.setOnSucceeded(c->{
-            customers.remove(task.getValue());
-            customers.add(task.getValue());
+            customerTable.refresh();
             Notifications.create()
                     .title(CustomerMessage.UPDATE_SUCCESS_TITLE)
                     .text(CustomerMessage.UPDATE_SUCCESS_MESSAGE)
@@ -235,6 +231,27 @@ public class CustomersController extends StackPane implements
         });
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
+
+    @Override
+    public void initDependencies() {
+        
+    }
+
+    @Override
+    public void bindControls() {
+         customers.addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                noOfCustomerlabel.setText(Integer.toString(customers.size()));
+            }
+        });
+    }
+    @Override
+    public void hookupEvent() {
+        
+    }
+
+    
     
     public class CreateTask extends Task<Customer>{
         private Customer customer;
@@ -259,7 +276,7 @@ public class CustomersController extends StackPane implements
         }
     
     }
-      public class DeleteTask extends Task<Customer>{
+    public class DeleteTask extends Task<Customer>{
           private Customer customer;
         @Override
         protected Customer call() throws Exception {
@@ -281,6 +298,7 @@ public class CustomersController extends StackPane implements
         private String lname;
         @Override
         protected List<Customer> call() throws Exception {
+            Thread.sleep(5000);
             return CustomerJpa.findCustomerByName(fname, lname);
         } 
 

@@ -39,7 +39,7 @@ public class PonosPos extends Application {
         try { 
             super.init();
             executors= PonosExecutor.getInstance().getExecutor();
-            factory=Persistence.createEntityManagerFactory("PonosPosPU");
+            PonosExecutor.getInstance();
         } catch (Exception ex) {
             Logger.getLogger(PonosPos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,11 +49,18 @@ public class PonosPos extends Application {
     @Override
     public void start(Stage stage){
         
-        mainController=new MainController();
+        mainController=new MainController(this);
+        mainController.initDependencies();
+        mainController.initControls();
+        mainController.hookupEvent();
+        mainController.bindControls();
+        
         loginController =new LoginController();
         loginController.setApp(this);
+        
         this.primaryStage=stage;
-        this.primaryScene=new Scene(mainController,800,600);
+        
+        this.primaryScene=new Scene(loginController,900,600);
         this.primaryStage.setScene(primaryScene); 
         this.primaryStage.setOnCloseRequest(e->{
             executors.shutdown();
@@ -69,15 +76,15 @@ public class PonosPos extends Application {
         launch(args);
     }
     
-    
-
-    public ExecutorService getExecutors() {
-        return executors;
-    }
     public void displayMainScreen() {
-        MainController root=new MainController();
-        primaryScene.setRoot(root);
+        primaryScene.setRoot(mainController);
     }
+
+    public void displayLoginScreen() {
+        primaryScene.setRoot(loginController);
+    }
+    
+    
    
  
     

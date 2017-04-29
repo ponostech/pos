@@ -170,7 +170,6 @@ public class UserDialog extends JFXDialog {
             user.setRole((short) roleBox.getSelectionModel().getSelectedItem().ordinal());
             listener.onClickCreateButton(user);
             clearAll();
-            
         }this.close();
     }
     public void clearAll(){

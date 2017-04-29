@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="AnchorPane" prefHeight="623.0" prefWidth="806.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="customerTable" accessibleHelp="list of users" editable="true" layoutX="6.0" layoutY="135.0" prefHeight="476.0" prefWidth="786.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="135.0">
         <columns>
@@ -25,9 +25,9 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="noOfCustomerlabel" layoutX="190.0" layoutY="35.0" text="Label" />
+      <Label fx:id="noOfCustomerlabel" alignment="CENTER" layoutX="157.0" layoutY="4.0" prefHeight="77.0" prefWidth="61.0" style="-fx-background-color: cyan;" text="Label" />
       <Button fx:id="newButton" layoutX="15.0" layoutY="9.0" mnemonicParsing="false" onAction="#onNewButtonClick" prefHeight="77.0" prefWidth="70.0" AnchorPane.bottomAnchor="537.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="9.0" />
       <TextField fx:id="searchField" layoutX="10.0" layoutY="94.0" onAction="#doSearch" prefHeight="25.0" prefWidth="689.0" AnchorPane.bottomAnchor="504.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="94.0" />
       <Button fx:id="searchButton" layoutX="699.0" layoutY="94.0" mnemonicParsing="false" onAction="#doSearch" prefHeight="25.0" prefWidth="94.0" text="Search" />
    </children>
-</AnchorPane>
+</fx:root>

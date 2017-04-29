@@ -65,7 +65,11 @@ public class Customer implements Serializable {
     private Date updatedAt;
 
     public Customer() {
-       
+       this.firstName="";
+       this.lastName="";
+       this.email="";
+       this.contact="";
+       this.address="";
     }
 
     public Customer(Integer id) {

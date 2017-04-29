@@ -23,6 +23,7 @@ import jpa.UserJpa;
 import ponospos.PonosPos;
 import ponospos.entities.User;
 import singletons.Auth;
+import singletons.PonosExecutor;
 import util.PasswordGenerator;
 
 /**
@@ -71,14 +72,17 @@ public class LoginController extends StackPane {
                 task.setOnSucceeded(event->{
                     if (task.getValue()!=null) {
                         errorLabel.setText("");
+                        usernameField.clear();
+                        passwordField.clear();
                         Auth.getInstance().setUser(task.getValue());
                         Auth.getInstance().setIsLogged(true);
+                        System.out.println("logged user"+Auth.getInstance().getUser());
                         app.displayMainScreen();
                     }else{
                         errorLabel.setText(LoginMessages.WRONG_CREDENTIAL);
                     }
                 });
-                app.getExecutors().submit(task);
+                PonosExecutor.getInstance().getExecutor().submit(task);
             }else{
                 errorLabel.setText(LoginMessages.INVALID_INPUT);
             }

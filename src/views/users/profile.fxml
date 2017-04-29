@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="589.0" prefWidth="343.0" style="-fx-background-color: #fff;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <Circle fx:id="avatarCircle" fill="DODGERBLUE" layoutX="167.0" layoutY="56.0" radius="47.0" stroke="BLACK" strokeType="INSIDE" />
+      <JFXTextField fx:id="usernameField" layoutX="24.0" layoutY="178.0" prefWidth="300.0" promptText="Username" />
+      <JFXTextField fx:id="firstNameField" layoutX="24.0" layoutY="222.0" prefWidth="300.0" promptText="First name" />
+      <JFXTextField fx:id="lastNameField" layoutX="24.0" layoutY="268.0" prefWidth="300.0" promptText="Last name" />
+      <JFXPasswordField fx:id="oldPasswordField" layoutX="24.0" layoutY="319.0" prefWidth="300.0" promptText="Old password" />
+      <JFXPasswordField fx:id="newPasswordField" layoutX="24.0" layoutY="366.0" prefWidth="300.0" promptText="New Password" />
+      <JFXTextField fx:id="emailField" layoutX="24.0" layoutY="410.0" prefHeight="25.0" prefWidth="300.0" promptText="Email" />
+      <JFXTextField fx:id="contactField" layoutX="24.0" layoutY="458.0" prefHeight="25.0" prefWidth="300.0" promptText="Contact" />
+      <JFXButton fx:id="positivebutton" buttonType="RAISED" layoutX="24.0" layoutY="517.0" onAction="#onPosistivebuttonClick" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: yellow;" text="Change" />
+      <JFXButton fx:id="negativeButton" buttonType="RAISED" layoutX="182.0" layoutY="517.0" onAction="#onNegativeButtonClick" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: green;" text="Cancel" />
+      <Label fx:id="profileLabel" layoutX="153.0" layoutY="115.0" text="Profile" />
+      <Label fx:id="errorLabel" layoutX="150.0" layoutY="152.0" textFill="#d70e0e" />
+   </children>
+</AnchorPane>

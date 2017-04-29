@@ -6,34 +6,37 @@
 package controllers.users;
 
 import Messages.UserMessage;
+import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import jpa.UserJpa;
-import org.controlsfx.control.BreadCrumbBar;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import ponospos.entities.User;
 import singletons.PonosExecutor;
+import tasks.users.CreateTask;
+import tasks.users.DeleteTask;
+import tasks.users.FetchAllTask;
+import tasks.users.UpdateTask;
 import util.Role;
 import static util.Role.ADMIN;
 
@@ -41,9 +44,10 @@ import static util.Role.ADMIN;
  *
  * @author Sawmtea
  */
-public class UsersController extends StackPane implements 
+public class UsersController extends AnchorPane implements 
         ConfirmDialog.ConfirmDialogListener,
-        UserDialog.UserDialogListener{
+        UserDialog.UserDialogListener,
+        PonosControllerInterface{
     @FXML
     TableView<User> usersTable;
     @FXML
@@ -63,27 +67,116 @@ public class UsersController extends StackPane implements
     @FXML
     Button newUserBtn;
     @FXML
-    BreadCrumbBar crumbBar;
+    Label noOfUserLabel;
     
     private ObservableList<User>users=FXCollections.observableArrayList();
     private UserDialog userDialog;
 
     private MaskerPane mask;
-    public UsersController(MaskerPane mask) {
+    private StackPane root;
+    public UsersController(MaskerPane mask,StackPane root) {
         try {
             this.mask=mask;
+            this.root=root;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/users/users.fxml"));
             loader.setController(this);
-            Parent root = loader.load();
-            this.getChildren().add(root);
-            initTable();
+            loader.setRoot(this);
+            loader.load();
         } catch (IOException ex) {
             Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void initTable(){
+    public void fetchAllUser(){
+        FetchAllTask task=new FetchAllTask();
+        task.setOnSucceeded(e->{
+            users.clear();
+            users.addAll(task.getValue());
+            System.out.println(users);
+        });
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnCancelled(e->{
+            System.out.println(e);
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+    
+    public void createUser(User user){
+        CreateTask task=new CreateTask();
+        task.setUser(user);
+        task.setOnSucceeded(e->{
+            users.add(task.getValue());
+            Notifications.create().title(UserMessage.CREATE_SUCCESS_TITLE).text(UserMessage.CREATE_SUCCESS_MESSAGE).showInformation();
+
+        });
+        task.setOnFailed(e->{
+            
+            System.out.println(task.getException().getCause().getMessage());
+        });
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnCancelled(e->System.out.println("user creation cancel"));
+        PonosExecutor.getInstance().getExecutor().submit(task);
+       
+    }
+    public void updateUser(User user){
+        UpdateTask task=new UpdateTask();
+        task.setUser(user);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnSucceeded(e->{
+            usersTable.refresh();
+            Notifications.create().title(UserMessage.UPDATE_SUCCESS_TITLE).text(UserMessage.UPDATE_SUCCESS_MESSAGE).showInformation();
+        });
+        task.setOnFailed(e->{
+            task.getException().printStackTrace();
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+        
+    }
+    public void deleteUser(User user){
+        DeleteTask task=new DeleteTask();
+        task.setUser(user);
+        task.setOnSucceeded(e->{
+            users.remove(task.getValue());
+            Notifications.create().title(UserMessage.DELETE_SUCCESS_TITLE).text(UserMessage.DELETE_SUCCESS_MESSAGE).showInformation();
+        });
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnFailed(e->{
+            //TODO:: handle later
+            task.getException().printStackTrace();
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+    @FXML
+    public void onClickNewUserBtn(ActionEvent e){
+        UserDialog d=new UserDialog();
+        d.setListener(this);
+        d.isEditPurpose(false);
+        d.show(root);
+    }
+
+    @Override
+    public void onClickYes(Object obj) {
+        deleteUser((User) obj);
+    }
+
+    @Override
+    public void onClickCreateButton(User user) {
+        createUser(user);
+    }
+
+    @Override
+    public void onClickUpdateButton(User user) {
+        updateUser(user);
+    }
+
+    @Override
+    public void initDependencies() {
+        
+    }
+
+    @Override
+    public void initControls() {
         usersTable.setItems(users);
         idCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getId())));
         usernameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getUsername()));
@@ -116,147 +209,30 @@ public class UsersController extends StackPane implements
                         dialog.setTitle("Update user");
                         dialog.setModel(users.get(getIndex()));
                         dialog.setListener(UsersController.this);
-                        dialog.show(UsersController.this);
+                        dialog.show(root);
                     });
                     delBtn.setOnAction(e->{
                         ConfirmDialog dialog=new ConfirmDialog();
                         dialog.setListener(UsersController.this);
                         dialog.setModel(users.get(getIndex()));
-                        dialog.show(UsersController.this);
+                        dialog.show(root);
                     });
                     setGraphic(new HBox(editBtn,delBtn));
                 }
             } 
         });
-        //initialise the content for new user dialog
-        
-        //initialise dialog for new user entry
-        //populate usertable by tasks;
-        FetchAllUserTask task=new FetchAllUserTask();
-        task.setOnSucceeded(e->{
-            users.clear();
-            users.addAll(task.getValue());
-            System.out.println(users);
-        });
-        task.setOnCancelled(e->{
-            System.out.println(e);
-        });
-        PonosExecutor.getInstance().getExecutor().submit(task);
-  
-    }
-    
-    public void createUser(User user){
-        CreateUserTask task=new CreateUserTask();
-        task.setUser(user);
-        task.setOnSucceeded(e->{
-            users.add(task.getValue());
-            Notifications.create().title(UserMessage.CREATE_SUCCESS_TITLE).text(UserMessage.CREATE_SUCCESS_MESSAGE).showInformation();
-
-        });
-        task.setOnFailed(e->{
-            
-            System.out.println(task.getException().getCause().getMessage());
-        });
-        mask.visibleProperty().bind(task.runningProperty());
-        task.setOnCancelled(e->System.out.println("user creation cancel"));
-        PonosExecutor.getInstance().getExecutor().submit(task);
-       
-    }
-    public void updateUser(User user){
-        UpdateUserTask task=new UpdateUserTask();
-        task.setUser(user);
-        mask.visibleProperty().bind(task.runningProperty());
-        task.setOnSucceeded(e->{
-            users.add(task.getValue());
-            Notifications.create().title(UserMessage.UPDATE_SUCCESS_TITLE).text(UserMessage.UPDATE_SUCCESS_MESSAGE).showInformation();
-        });
-        task.setOnFailed(e->{
-            task.getException().printStackTrace();
-        });
-        PonosExecutor.getInstance().getExecutor().submit(task);
-        
-    }
-    public void deleteUser(User user){
-        DeleteUserTask task=new DeleteUserTask();
-        task.setUser(user);
-        task.setOnSucceeded(e->{
-            users.remove(task.getValue());
-            Notifications.create().title(UserMessage.DELETE_SUCCESS_TITLE).text(UserMessage.DELETE_SUCCESS_MESSAGE).showInformation();
-        });
-        mask.visibleProperty().bind(task.runningProperty());
-        task.setOnFailed(e->{
-            //TODO:: handle later
-            task.getException().printStackTrace();
-        });
-        PonosExecutor.getInstance().getExecutor().submit(task);
-    }
-    @FXML
-    public void onClickNewUserBtn(ActionEvent e){
-        UserDialog d=new UserDialog();
-        d.setListener(this);
-        d.isEditPurpose(false);
-        d.show(this);
     }
 
     @Override
-    public void onClickYes(Object obj) {
-        deleteUser((User) obj);
+    public void bindControls() {
+        users.addListener((Observable observable) -> {
+            noOfUserLabel.setText(Integer.toString(users.size()));
+        });
     }
 
     @Override
-    public void onClickCreateButton(User user) {
-        createUser(user);
-    }
-
-    @Override
-    public void onClickUpdateButton(User user) {
-        updateUser(user);
-    }
-    public class UpdateUserTask extends Task<User>{
-        private User user;
-        @Override
-        protected User call() throws Exception {
-            return UserJpa.updateUser(user);
-        }
-        public void setUser(User user){
-            this.user=user;
-        }
+    public void hookupEvent() {
         
     }
-    public class DeleteUserTask extends Task<User>{
-        private User user;
-        @Override
-        protected User call() throws Exception {
-            return UserJpa.deleteUser(user);
-        }
-        public void setUser(User user){
-            this.user=user;
-        }
-        
-    }
-    public class FetchAllUserTask extends Task<List<User>>{
 
-        @Override
-        protected List<User> call() throws Exception {
-            List<User> all = UserJpa.getAllUsers();
-            return all;
-        }
-        
-    }
-    
-    public class  CreateUserTask extends Task<User>{
-
-        private User user;
-        @Override
-        protected User call() {
-            
-            return UserJpa.createUser(user);
-            
-        }
-        public void setUser(User user){
-            this.user=user;
-        }
-    
-    }
-    
 }

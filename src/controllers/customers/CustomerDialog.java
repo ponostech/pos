@@ -63,6 +63,7 @@ public class CustomerDialog extends JFXDialog{
 
     /**
      * Initializes the controller class.
+     * @param listener
      */
     
     public CustomerDialog(CustomerDialogListener listener){
@@ -86,7 +87,6 @@ public class CustomerDialog extends JFXDialog{
     private void onSaveClick(ActionEvent event) {        
         
         if (isEditPurpose) {
-            saveButton.setText("Update Customer");
             customer.setFirstName(firstNameField.getText().trim());
             customer.setLastName(lastNameField.getText().trim());
             customer.setEmail(emailField.getText().trim());
@@ -95,8 +95,6 @@ public class CustomerDialog extends JFXDialog{
             customer.setUpdatedAt(new Date(System.currentTimeMillis()));
             listener.onEdit(customer);
         }else{
-            saveButton.setText("Create Customer");
-           
             Customer c=new Customer();
             c.setFirstName(firstNameField.getText().trim());
             c.setLastName(lastNameField.getText().trim());
@@ -166,24 +164,26 @@ public class CustomerDialog extends JFXDialog{
         }else{
             clearAll();
         }
-        firstNameField.requestFocus();
         super.show();
     }
 
     @Override
     public void show(StackPane dialogContainer) {
         if (isEditPurpose) {
+            saveButton.setText("Update");
             firstNameField.setText(customer.getFirstName());
             lastNameField.setText(customer.getLastName());
             emailField.setText(customer.getEmail());
             addressField.setText(customer.getAddress());
             contactField.setText(customer.getContact());
         }else{
+            saveButton.setText("Create");
             clearAll();
         }
-        firstNameField.requestFocus();
         super.show(dialogContainer); 
-
+    }
+    public void delegateFocus(){
+        firstNameField.requestFocus();
     }
     
     

@@ -9,8 +9,9 @@ package controllers;
  *
  * @author Sawmtea
  */
-public abstract class BaseController {
-    public abstract void initDependencies();
-    public abstract void bindControls();
-    public abstract void listenControls();
+public interface PonosControllerInterface {
+    public void initDependencies();
+    public void initControls();
+    public void bindControls();
+    public void hookupEvent();
 }

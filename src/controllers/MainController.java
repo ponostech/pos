@@ -5,33 +5,51 @@
  */
 package controllers;
 
+import Messages.ProfileMessage;
+import Messages.RoleMessage;
 import controllers.customers.CustomersController;
+import controllers.users.ProfileDialog;
 import controllers.users.UsersController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import org.controlsfx.control.MaskerPane;
+import org.controlsfx.control.Notifications;
+import ponospos.PonosPos;
 import ponospos.entities.User;
 import singletons.Auth;
+import singletons.PonosExecutor;
+import tasks.users.UpdateTask;
+import util.Role;
+
 
 /**
  * FXML Controller class
  *
  * @author Sawmtea
  */
-public class MainController extends StackPane implements SideBarController.SideBarListener{
+public class MainController extends StackPane 
+        implements SideBarController.SideBarListener,
+        ProfileDialog.ProfileDialogListener,
+        PonosControllerInterface{
     @FXML
     ImageView imageView;
     
     @FXML
     Label label;
+    @FXML
+    MenuItem profileMenu;
+    @FXML
+    MenuItem logoutMenu;
     
     BorderPane layoutContainer;
     MaskerPane mask;
@@ -40,9 +58,12 @@ public class MainController extends StackPane implements SideBarController.SideB
     private SideBarController sideBar;
     private UsersController userController;
     private CustomersController customerController;
+    private ProfileDialog profileDialog;
+    private PonosPos app;
 
-    public MainController() {
+    public MainController(PonosPos app) {
         super();
+        this.app=app;
         try {
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/main_screen.fxml"));
@@ -50,11 +71,10 @@ public class MainController extends StackPane implements SideBarController.SideB
             layoutContainer= (BorderPane)loader.load();
             
             mask=new MaskerPane();
-            mask.setText("Please Wait ... ");
+            mask.setText("Please Wait... ");
             mask.setVisible(false);
-            this.getChildren().addAll(mask,layoutContainer);
-            
-            initDependencies();
+            this.getChildren().addAll(layoutContainer,mask);
+
 //            topLabel.setText(Auth.getInstance().getUser().getUsername());
 //            imageView.setImage(new Image(this.getClass().getResourceAsStream("icons/ktp.png")));
         } catch (IOException ex) {
@@ -62,22 +82,47 @@ public class MainController extends StackPane implements SideBarController.SideB
         }
         
     }
-    private void initDependencies(){
+    @Override
+    public void initDependencies(){
         this.sideBar=new SideBarController();
         this.sideBar.setListener(this);        
         this.dashboard=new DashboardController(mask);
-        this.userController=new UsersController(mask);
-        this.customerController=new CustomersController(mask);
+        this.userController=new UsersController(mask,this);
+        this.customerController=new CustomersController(mask,this);
         this.layoutContainer.setLeft(sideBar);
+        
+        this.userController.initDependencies();
+        this.customerController.initDependencies();
+    }
+    @Override
+    public void initControls(){
+        this.userController.initControls();
+        this.customerController.initControls();
     }
 
-    public void hookUpEvent(User user) {
-        this.label.setText("welcome "+Auth.getInstance().getUser().getUsername());
+    @Override
+    public void hookupEvent() {
+        this.label.textProperty().bind(new SimpleStringProperty(Auth.getInstance().getUser().getUsername()));
+        
+        userController.hookupEvent();
+        this.customerController.hookupEvent();
+    }
+    @Override
+    public void bindControls(){
+        this.userController.bindControls();
+        this.customerController.bindControls();
+    
     }
 
     @Override
     public void onUserMenuClick() {
+        User user = Auth.getInstance().getUser();
+        if (user.getRole()==Role.EMPLOYEE.ordinal()) {
+            Notifications.create().title(RoleMessage.PERMISSION_DENIED_TITLE).text(RoleMessage.PERMISSION_DENIED_MESSAGE).showWarning();
+            return;
+        }
         switchScreen(userController);
+        userController.fetchAllUser();
     }
 
     @Override
@@ -94,7 +139,35 @@ public class MainController extends StackPane implements SideBarController.SideB
         //TODO::animation goes here
         this.layoutContainer.setCenter(parent);
     }
+
+    @Override
+    public void onProfileChange(User user) {
+    
+        UpdateTask task=new UpdateTask();
+        task.setUser(user);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnFailed(e->task.getException().printStackTrace());
+        task.setOnSucceeded(e->{
+             Notifications.create()
+                    .title(ProfileMessage.UPDATE_SUCCESS_TITLE)
+                    .text(ProfileMessage.UPDATE_SUCCESS_MESSAGE)
+                    .showInformation();
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+        
+    }
+    @FXML
+    public void onProfileMenuClick(){
+        ProfileDialog d=new ProfileDialog(this);
+        
+        d.show(this);
+    }
    
+    @FXML
+    public void onLogoutMenuClick(){
+        Auth.getInstance().setIsLogged(false);
+        app.displayLoginScreen();
+    }
 
        
     
