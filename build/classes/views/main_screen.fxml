@@ -20,18 +20,11 @@
                </image>
             </ImageView>
             <Label fx:id="label" alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="50.0" text="label" HBox.hgrow="ALWAYS" />
-            <SplitMenuButton mnemonicParsing="false" prefHeight="50.0" prefWidth="82.0">
+            <SplitMenuButton fx:id="profileMenuButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="82.0">
               <items>
                 <MenuItem fx:id="profileMenu" mnemonicParsing="false" onAction="#onProfileMenuClick" text="Profile" />
                 <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#onLogoutMenuClick" text="logout" />
               </items>
-               <graphic>
-                  <ImageView fx:id="imageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resource/icons/ktp.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
             </SplitMenuButton>
          </children>
          <padding>

@@ -12,7 +12,6 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -76,7 +75,7 @@ public class LoginController extends StackPane {
                         passwordField.clear();
                         Auth.getInstance().setUser(task.getValue());
                         Auth.getInstance().setIsLogged(true);
-                        System.out.println("logged user"+Auth.getInstance().getUser());
+                        System.out.println("logged user password "+Auth.getInstance().getUser().getPassword());
                         app.displayMainScreen();
                     }else{
                         errorLabel.setText(LoginMessages.WRONG_CREDENTIAL);
@@ -89,7 +88,11 @@ public class LoginController extends StackPane {
             
         });
         exitButton.setOnAction(e->{
-            Platform.exit();
+            try {
+                System.exit(0);
+            } catch (Exception ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
     }

@@ -87,45 +87,13 @@ public class UserDialog extends JFXDialog {
             roleBox.setItems(userRoles);
             positiveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             roleBox.getSelectionModel().selectFirst();
-            doValidation();
-            bindControls();
+            
         } catch (IOException ex) {
             Logger.getLogger(UserDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void doValidation(){
-        positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty()
-                .or(passwordField.textProperty().isEmpty())
-                .or(confirmPasswordField.textProperty().isEmpty()));
-        
-        requiredValidator=new RequiredFieldValidator();
-        requiredValidator.setMessage(UserMessage.REQUIRED_MESSAGE);        
-        requiredValidator.setIcon(new Glyph("FontAwesome", FontAwesome.Glyph.WARNING).color(Color.RED));
-        usernameField.getValidators().add(requiredValidator);
-        usernameField.focusedProperty().addListener((o, oldVal, newVal) -> {
-            if (!newVal) {
-                usernameField.validate();
-            }
-            
-        });
-        passwordField.getValidators().add(requiredValidator);
-        passwordField.focusedProperty().addListener((o,oldval,newVal)->{
-            if (!newVal) {
-                passwordField.validate();
-            }
-            
-        });
-        confirmPasswordField.getValidators().add(requiredValidator);
-        confirmPasswordField.focusedProperty().addListener((o,oldval,newVal)->{
-            if (!newVal) {
-                confirmPasswordField.validate();
-            }
-            
-        });
   
-        
-    }
     public void setTitle(String title) {
         topLabel.setText(title);
     }
@@ -140,8 +108,16 @@ public class UserDialog extends JFXDialog {
         this.isEditPurpose=value;
         if (value) {
             positiveBtn.setText("Update");
+            positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty());
+            passwordField.setDisable(true);
+            confirmPasswordField.setDisable(true);
         }else{
             positiveBtn.setText("Create");
+            positiveBtn.disableProperty().bind(
+                usernameField.textProperty().isEmpty()
+                .or(passwordField.textProperty().isEmpty())
+                .or(confirmPasswordField.textProperty().isNotEqualTo(passwordField.textProperty()))
+            );
         }
     }
     public void setListener(UserDialogListener listener){
@@ -191,17 +167,6 @@ public class UserDialog extends JFXDialog {
         roleBox.getSelectionModel().select(model.getRole());
                 
     }
-    private void bindControls(){
-        if (isEditPurpose) {
-            positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty());
-        }else{
-            positiveBtn.disableProperty().bind(
-                usernameField.textProperty().isEmpty()
-                .or(passwordField.textProperty().isEmpty())
-                .or(confirmPasswordField.textProperty().isNotEqualTo(passwordField.textProperty()))
-            );
-        }
-        
-    }
+   
 
 }

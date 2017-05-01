@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="589.0" prefWidth="343.0" style="-fx-background-color: #fff;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane id="AnchorPane" prefHeight="589.0" prefWidth="343.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Circle fx:id="avatarCircle" fill="DODGERBLUE" layoutX="167.0" layoutY="56.0" radius="47.0" stroke="BLACK" strokeType="INSIDE" />
       <JFXTextField fx:id="usernameField" layoutX="24.0" layoutY="178.0" prefWidth="300.0" promptText="Username" />
@@ -18,8 +17,8 @@
       <JFXPasswordField fx:id="newPasswordField" layoutX="24.0" layoutY="366.0" prefWidth="300.0" promptText="New Password" />
       <JFXTextField fx:id="emailField" layoutX="24.0" layoutY="410.0" prefHeight="25.0" prefWidth="300.0" promptText="Email" />
       <JFXTextField fx:id="contactField" layoutX="24.0" layoutY="458.0" prefHeight="25.0" prefWidth="300.0" promptText="Contact" />
-      <JFXButton fx:id="positivebutton" buttonType="RAISED" layoutX="24.0" layoutY="517.0" onAction="#onPosistivebuttonClick" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: yellow;" text="Change" />
-      <JFXButton fx:id="negativeButton" buttonType="RAISED" layoutX="182.0" layoutY="517.0" onAction="#onNegativeButtonClick" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: green;" text="Cancel" />
+      <JFXButton fx:id="positivebutton" buttonType="RAISED" defaultButton="true" layoutX="24.0" layoutY="517.0" onAction="#onPosistivebuttonClick" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: yellow;" text="Change" />
+      <JFXButton fx:id="negativeButton" buttonType="RAISED" cancelButton="true" layoutX="182.0" layoutY="517.0" onAction="#onNegativeButtonClick" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: green;" text="Cancel" />
       <Label fx:id="profileLabel" layoutX="153.0" layoutY="115.0" text="Profile" />
       <Label fx:id="errorLabel" layoutX="150.0" layoutY="152.0" textFill="#d70e0e" />
    </children>

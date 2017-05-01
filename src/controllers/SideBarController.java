@@ -62,7 +62,7 @@ public class SideBarController extends Pane {
         listener.onUserMenuClick();
     }
     @FXML
-    private void onDashBoardMenuClick(ActionEvent event) {
+    public void onDashBoardMenuClick(ActionEvent event) {
        listener.onDashboardMenuClick();
     }
     @FXML
@@ -76,6 +76,10 @@ public class SideBarController extends Pane {
     
     public void setListener(SideBarListener listener){
         this.listener=listener;
+    }
+    
+    public void displayDashBoard(){
+        dashboardMenu.fire();
     }
     
 

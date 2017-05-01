@@ -22,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import ponospos.entities.User;
 import singletons.Auth;
-import sun.security.util.Password;
 import util.PasswordGenerator;
 
 /**
@@ -31,6 +30,9 @@ import util.PasswordGenerator;
  * @author Sawmtea
  */
 public class ProfileDialog extends JFXDialog {
+
+    
+
 
     public interface ProfileDialogListener{
         public void onProfileChange(User user);
@@ -75,7 +77,8 @@ public class ProfileDialog extends JFXDialog {
             Region content = loader.load();
             this.setContent(content);
             doBindControls();
-            
+            this.setFocusTraversable(true);
+            usernameField.requestFocus();
         } catch (IOException ex) {
             Logger.getLogger(ProfileDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,12 +91,18 @@ public class ProfileDialog extends JFXDialog {
         user.setUsername(usernameField.getText().trim());
         user.setFirstName(firstNameField.getText().trim());
         user.setLastName(lastNameField.getText().trim());
+        
+        String userOldPassword = user.getPassword();
+        String enteredOldPassword=PasswordGenerator.generateToMD5(oldPasswordField.getText().trim());
+        
         user.setPassword(PasswordGenerator.generateToMD5(newPasswordField.getText().trim()));
         user.setEmail(emailField.getText().trim());
         user.setContact(contactField.getText().trim());
-        if (! PasswordGenerator.generateToMD5(oldPasswordField.getText())
-                .equals(Auth.getInstance().getUser().getPassword())) {
+      
+        if (! userOldPassword.equals(enteredOldPassword)) {
             errorLabel.setText(RoleMessage.INVALID_OLD_PASSWORD_MESSAGE);
+            System.out.println("Old password "+userOldPassword);
+            System.out.println("Old password enterred "+enteredOldPassword);
             return;
         }
         errorLabel.setText("");    
@@ -131,6 +140,9 @@ public class ProfileDialog extends JFXDialog {
         newPasswordField.setText("");
         emailField.setText(user.getEmail());
         contactField.setText(user.getContact());
+    }
+    public void requestFocusToUsername() {
+        usernameField.requestFocus();
     }
     
     

@@ -21,4 +21,6 @@ public class UserMessage {
     public static final String DELETE_SUCCESS_MESSAGE="User Deleted success";
     public static final String CREATE_SUCCESS_TITLE="Task Progress";
     public static final String CREATE_SUCCESS_MESSAGE="User created success";
+    public static final String DUPLICATE_USERNAME_TITLE="Duplicate username";
+    public static final String DUPLICATE_USER_MESSAGE="Username must be unique";
 }

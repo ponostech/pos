@@ -13,15 +13,20 @@ import controllers.users.UsersController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.PonosPos;
@@ -41,11 +46,11 @@ public class MainController extends StackPane
         implements SideBarController.SideBarListener,
         ProfileDialog.ProfileDialogListener,
         PonosControllerInterface{
-    @FXML
-    ImageView imageView;
     
     @FXML
     Label label;
+    @FXML
+    SplitMenuButton profileMenuButton;
     @FXML
     MenuItem profileMenu;
     @FXML
@@ -60,21 +65,23 @@ public class MainController extends StackPane
     private CustomersController customerController;
     private ProfileDialog profileDialog;
     private PonosPos app;
-
     public MainController(PonosPos app) {
         super();
         this.app=app;
         try {
+
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/main_screen.fxml"));
             loader.setController(this);
             layoutContainer= (BorderPane)loader.load();
+            profileMenuButton.setGraphic(new Circle(20, new ImagePattern(
+                    new Image(this.getClass().getResource("/resource/icons/ktp.png").toExternalForm()))));
             
             mask=new MaskerPane();
             mask.setText("Please Wait... ");
             mask.setVisible(false);
             this.getChildren().addAll(layoutContainer,mask);
-
+            
 //            topLabel.setText(Auth.getInstance().getUser().getUsername());
 //            imageView.setImage(new Image(this.getClass().getResourceAsStream("icons/ktp.png")));
         } catch (IOException ex) {
@@ -102,7 +109,6 @@ public class MainController extends StackPane
 
     @Override
     public void hookupEvent() {
-        this.label.textProperty().bind(new SimpleStringProperty(Auth.getInstance().getUser().getUsername()));
         
         userController.hookupEvent();
         this.customerController.hookupEvent();
@@ -148,6 +154,7 @@ public class MainController extends StackPane
         mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(e->task.getException().printStackTrace());
         task.setOnSucceeded(e->{
+            label.setText("hello "+Auth.getInstance().getUser().getUsername());
              Notifications.create()
                     .title(ProfileMessage.UPDATE_SUCCESS_TITLE)
                     .text(ProfileMessage.UPDATE_SUCCESS_MESSAGE)
@@ -161,12 +168,21 @@ public class MainController extends StackPane
         ProfileDialog d=new ProfileDialog(this);
         
         d.show(this);
+        
+        Platform.runLater(()->d.requestFocusToUsername());
+      
     }
    
     @FXML
     public void onLogoutMenuClick(){
         Auth.getInstance().setIsLogged(false);
+        sideBar.displayDashBoard();
+        greetUser();
         app.displayLoginScreen();
+    }
+    
+    public void greetUser(){
+        label.setText(Auth.getInstance().getUser().getUsername());
     }
 
        

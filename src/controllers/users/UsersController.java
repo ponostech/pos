@@ -9,6 +9,7 @@ import Messages.UserMessage;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
@@ -102,7 +103,7 @@ public class UsersController extends AnchorPane implements
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
     
-    public void createUser(User user){
+    private void createUser(User user){
         CreateTask task=new CreateTask();
         task.setUser(user);
         task.setOnSucceeded(e->{
@@ -111,8 +112,14 @@ public class UsersController extends AnchorPane implements
 
         });
         task.setOnFailed(e->{
-            
-            System.out.println(task.getException().getCause().getMessage());
+            if (task.getException() instanceof SQLException) {
+                int errorCode=((SQLException) task.getException()).getErrorCode();
+                if (errorCode==1062) {
+                    Notifications.create().title(UserMessage.DUPLICATE_USERNAME_TITLE).text(UserMessage.DUPLICATE_USER_MESSAGE).showError();
+                }
+            }else{
+                task.getException().printStackTrace(System.err);
+            }
         });
         mask.visibleProperty().bind(task.runningProperty());
         task.setOnCancelled(e->System.out.println("user creation cancel"));

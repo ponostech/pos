@@ -5,20 +5,17 @@
  */
 package ponospos;
 
+import com.jfoenix.controls.JFXDecorator;
 import controllers.LoginController;
 import controllers.MainController;
-import controllers.MainDrawer;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import ponospos.entities.User;
-import singletons.Auth;
 import singletons.PonosExecutor;
 
 
@@ -34,6 +31,7 @@ public class PonosPos extends Application {
     private Scene primaryScene;
     private LoginController loginController;
     private MainController mainController;
+    private JFXDecorator decorator;
     @Override
     public void init() {
         try { 
@@ -60,12 +58,23 @@ public class PonosPos extends Application {
         
         this.primaryStage=stage;
         
-        this.primaryScene=new Scene(loginController,900,600);
+        decorator = new JFXDecorator(stage, mainController);
+        decorator.setCustomMaximize(true);        
+        
+        this.primaryScene=new Scene(decorator,900,600);
         this.primaryStage.setScene(primaryScene); 
         this.primaryStage.setOnCloseRequest(e->{
             executors.shutdown();
             System.out.println("executors shutdown");
                 });
+        decorator.setOnCloseButtonAction(new Runnable() {
+            @Override
+            public void run() {
+                executors.shutdown();
+                Platform.exit();
+                System.out.println("executor shutdown");
+            }
+        });
         this.primaryStage.show();
     }
 
@@ -77,11 +86,12 @@ public class PonosPos extends Application {
     }
     
     public void displayMainScreen() {
-        primaryScene.setRoot(mainController);
+        decorator.setContent(mainController);
+        mainController.greetUser();
     }
 
     public void displayLoginScreen() {
-        primaryScene.setRoot(loginController);
+        decorator.setContent(loginController);
     }
     
     
