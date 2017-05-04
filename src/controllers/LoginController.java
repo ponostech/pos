@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javax.persistence.NoResultException;
 import jpa.UserJpa;
 import ponospos.PonosPos;
 import ponospos.entities.User;
@@ -50,6 +51,7 @@ public class LoginController extends StackPane {
             loader.setController(this);
             Parent parent=loader.load();  
             this.getChildren().add(parent);
+            this.getStyleClass().add("login-root-container");
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +69,12 @@ public class LoginController extends StackPane {
                 LoginTask task=new LoginTask();
                 task.setUsername(username);
                 task.setPassword(PasswordGenerator.generateToMD5(password));
-                task.setOnFailed(value->errorLabel.setText(LoginMessages.WRONG_CREDENTIAL));
+                task.setOnFailed(value->{
+                    if (task.getException() instanceof NoResultException) {
+                        errorLabel.setText(LoginMessages.WRONG_CREDENTIAL);
+                    }
+                    task.getException().printStackTrace(System.err);
+                    });
                 task.setOnSucceeded(event->{
                     if (task.getValue()!=null) {
                         errorLabel.setText("");

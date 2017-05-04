@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -55,8 +56,11 @@ public class CustomerDialog extends JFXDialog{
     private JFXButton saveButton;
     @FXML
     private JFXButton cancelButton;
+    @FXML
+    private ImageView close;
     
     private boolean isEditPurpose;
+    private boolean isViewPurpose;
     private Customer customer;
     
     private CustomerDialogListener listener;
@@ -77,8 +81,9 @@ public class CustomerDialog extends JFXDialog{
             saveButton.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE).color(Color.CORAL).size(20));
             doValidation();
             this.setTransitionType(DialogTransition.TOP);
+            close.setOnMouseClicked(e->this.close());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
@@ -118,6 +123,15 @@ public class CustomerDialog extends JFXDialog{
                         .or(lastNameField.textProperty().isEmpty())
         );
     }
+    
+    public void setIsViewPurpose(boolean tobeTrue){
+        this.isViewPurpose=tobeTrue;
+        if (isViewPurpose) {
+            topLabel.setText("User info");
+            saveButton.setVisible(false);
+            
+        }
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -155,7 +169,7 @@ public class CustomerDialog extends JFXDialog{
 
     @Override
     public void show() {
-        if (isEditPurpose) {
+        if (isEditPurpose && isViewPurpose) {
             firstNameField.setText(customer.getFirstName());
             lastNameField.setText(customer.getLastName());
             emailField.setText(customer.getEmail());
@@ -176,7 +190,15 @@ public class CustomerDialog extends JFXDialog{
             emailField.setText(customer.getEmail());
             addressField.setText(customer.getAddress());
             contactField.setText(customer.getContact());
-        }else{
+        }else if(isViewPurpose){
+            saveButton.setVisible(false);
+            firstNameField.setText(customer.getFirstName());
+            lastNameField.setText(customer.getLastName());
+            emailField.setText(customer.getEmail());
+            addressField.setText(customer.getAddress());
+            contactField.setText(customer.getContact());
+        }
+        else{
             saveButton.setText("Create");
             clearAll();
         }

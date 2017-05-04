@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 3, 2017, 9:50:37 AM
+    Author     : Thangtea
+*/
+.login-panel{
+    -fx-background-color:rgba(0,0,0,0.5);
+    -fx-border-color:#120780 transparent #120780 transparent;
+    -fx-border-width:5px;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.4) , 1, 0.0 , 0 , 1);
+}
+
+.h2{
+    -fx-font-size:28px;
+    -fx-text-fill:#fff;
+    -fx-font-family:"lucida" "Serif" "Arial";
+}
+.exit-btn{
+     -fx-text-fill:#fff;
+    -fx-background-color:#333333;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.4) , 1, 0.0 , 0 , 1);
+}
+.log-box{
+    -fx-background-color:#ffcc00;
+}
+.login-root-container{
+    -fx-background-image:url("../icons/background.jpg");
+    -fx-background-repeat:repeat;
+}
+#login-btn {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+}
+#dark-blue Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+}

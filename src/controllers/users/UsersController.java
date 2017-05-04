@@ -5,11 +5,12 @@
  */
 package controllers.users;
 
+import Messages.ConfirmationMessage;
 import Messages.UserMessage;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
@@ -21,13 +22,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Window;
+import javax.persistence.RollbackException;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -109,15 +118,13 @@ public class UsersController extends AnchorPane implements
         task.setOnSucceeded(e->{
             users.add(task.getValue());
             Notifications.create().title(UserMessage.CREATE_SUCCESS_TITLE).text(UserMessage.CREATE_SUCCESS_MESSAGE).showInformation();
-
         });
         task.setOnFailed(e->{
-            if (task.getException() instanceof SQLException) {
-                int errorCode=((SQLException) task.getException()).getErrorCode();
-                if (errorCode==1062) {
-                    Notifications.create().title(UserMessage.DUPLICATE_USERNAME_TITLE).text(UserMessage.DUPLICATE_USER_MESSAGE).showError();
-                }
+            if (task.getException() instanceof RollbackException){
+                  Notifications.create().title(UserMessage.DUPLICATE_USERNAME_TITLE).text(UserMessage.DUPLICATE_USER_MESSAGE).showError();
             }else{
+                System.out.println("Exception in handle in here");
+                 Notifications.create().title(UserMessage.DUPLICATE_USERNAME_TITLE).text(UserMessage.DUPLICATE_USER_MESSAGE).showError();
                 task.getException().printStackTrace(System.err);
             }
         });
@@ -179,7 +186,7 @@ public class UsersController extends AnchorPane implements
 
     @Override
     public void initDependencies() {
-        
+        this.usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @Override
@@ -219,7 +226,7 @@ public class UsersController extends AnchorPane implements
                         dialog.show(root);
                     });
                     delBtn.setOnAction(e->{
-                        ConfirmDialog dialog=new ConfirmDialog();
+                        ConfirmDialog dialog=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
                         dialog.setListener(UsersController.this);
                         dialog.setModel(users.get(getIndex()));
                         dialog.show(root);
@@ -239,7 +246,55 @@ public class UsersController extends AnchorPane implements
 
     @Override
     public void hookupEvent() {
-        
+        usersTable.setRowFactory(p->{
+            TableRow<User> row=new TableRow();
+            
+            row.setOnMouseClicked(e->{
+                User selectedItem=usersTable.getSelectionModel().getSelectedItem();
+                if ( e.getButton()==MouseButton.SECONDARY) {
+                    displayPopOver(e.getScreenX(),e.getScreenY(),selectedItem);
+                }else if(e.getClickCount()==2){
+                    User user = users.get(row.getIndex());
+                    viewUser(user);
+                }else{
+                    //do nothing
+                }
+            });
+            return row;
+        });
     }
 
+    private void displayPopOver(double x,double y,User selectedItem){
+        MenuItem edit=new MenuItem("Edit",new Glyph("FontAwesome", FontAwesome.Glyph.EDIT).color(Color.CORAL).size(22));
+        MenuItem del=new MenuItem("Delete");
+        del.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.TRASH).color(Color.CORAL).size(22));
+        del.setOnAction(e->{
+           ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
+           d.setModel(selectedItem);
+           d.show(root);
+        });
+        edit.setOnAction(e->{
+            UserDialog d=new UserDialog();
+            d.setModel(selectedItem);
+            d.isEditPurpose(true);
+            d.setListener(UsersController.this);
+            d.show(root);
+        });
+        ContextMenu menu=new ContextMenu();
+        menu.getItems().addAll(edit,del);
+        Window window = this.getScene().getWindow();
+        menu.show(window,x,y);
+    }
+
+    private void viewUser(User selectedItem) {
+        UserDialog d=new UserDialog();
+        d.setModel(selectedItem);
+        d.applyModel();
+        d.isViewPurpose(true);
+        d.show(root);
+    }
+
+    private void bulkDeleteUser(List<User> selectedItem) {
+        //TODO::delete users
+    }
 }

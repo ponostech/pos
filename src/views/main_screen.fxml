@@ -2,37 +2,41 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 
-<BorderPane fx:id="layoutContainer" prefHeight="532.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="layoutContainer" prefHeight="532.0" prefWidth="759.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox alignment="CENTER">
+      <HBox alignment="CENTER" styleClass="top-bar">
          <children>
-            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="fav-icon">
                <image>
                   <Image url="@../resource/icons/ktp.png" />
                </image>
             </ImageView>
-            <Label fx:id="label" alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="50.0" text="label" HBox.hgrow="ALWAYS" />
-            <SplitMenuButton fx:id="profileMenuButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="82.0">
+            <Label fx:id="label" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="358.0" styleClass="h1" text="label" HBox.hgrow="ALWAYS" />
+            <MenuButton fx:id="profileMenuButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="69.0">
               <items>
                 <MenuItem fx:id="profileMenu" mnemonicParsing="false" onAction="#onProfileMenuClick" text="Profile" />
-                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#onLogoutMenuClick" text="logout" />
+                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#onLogoutMenuClick" text="Logout" />
               </items>
-            </SplitMenuButton>
+               <graphic>
+                  <Circle fx:id="avatarCircle" fill="DODGERBLUE" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+               </graphic>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </MenuButton>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
    </top>
-   <bottom>
-      <Pane prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>

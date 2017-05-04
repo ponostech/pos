@@ -50,6 +50,7 @@ public class SideBarController extends Pane {
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/side_bar.fxml"));
             loader.setController(this);
+            this.getStyleClass().add("side-bar");
             Parent parent = loader.load();
             this.getChildren().add(parent);
         } catch (IOException ex) {

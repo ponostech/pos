@@ -1,0 +1,156 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 3, 2017, 5:50:54 AM
+    Author     : Sawmtea
+*/
+
+.bar{
+    -fx-background-color:#fff;
+}
+.bar{
+    -fx-background-color:#660000;
+}
+.vbox{
+    -fx-background-color:#660000;
+}
+.side-bar {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+}
+.top-bar{
+    -fx-background-color: #000000 ;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+}
+.side-bar{
+    -fx-background-color:#000000;
+}
+
+
+/* root container stylyng begin*/
+.root-container{
+  -fx-background-color:rgba(255,255,255,0.5);
+}
+/*root container stylying ends here*/
+
+.fav-icon{
+    -fx-background-color: blue;
+}
+.h1{
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size:38px;
+    -fx-font-family: "Arial";
+}
+
+.container{
+    -fx-background-color:lightgray;
+}
+/*profile menu styling*/
+.menu-button{
+    -fx-background-color:red;
+}
+.menu-button.label {
+    -fx-background-color: #fff;
+    }
+
+.menu-button .arrow {
+    -fx-background-color: red;
+    }
+ /*profile menu styling ends here */
+ 
+ /* menu styling*/
+.side-menu{
+    -fx-background-color:#000000;
+    -fx-text-fill:#fff;
+}
+.side-menu:hover{
+    -fx-border-color:transparent transparent transparent #660000;
+    -fx-border-width:4px;
+}
+.side-menu:selected{
+    -fx-border-color:transparent transparent transparent #660000;
+    -fx-border-width:4px;
+}
+/*end menu styling*/
+
+ /* dashboad menu user menu  customer menu styling*/
+ .dashboard-menu{
+     /*-fx-background-image:url("../icons/dashboard.png");*/
+     -fx-background-repeat:no-repeat;
+     -fx-padding:5 5 5 10;
+ }
+ .user-menu{
+     /*-fx-background-image:url("../icons/user.png");*/
+     -fx-background-repeat:no-repeat;
+     -fx-padding:5 5 5 10;
+
+ }
+ .customer-menu{
+     /*-fx-background-image:url("../icons/customer.png");*/
+     -fx-background-repeat:no-repeat;
+     -fx-padding:5 5 5 10;
+
+ }
+ /*menu styling end*/
+ .btn-large{
+         -fx-background-color: 
+        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
+        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
+        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
+    -fx-background-insets: 0,1,4,5,6;
+    -fx-padding: 15 30 15 30;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+ }
+ 
+ .panel{
+     -fx-width:100px;
+     -fx-height:100px;
+     -fx-background-color:#fff;
+     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+ }
+ 
+ .h3{
+     -fx-text-fill:black;
+     -fx-font-family:"Helvetica";
+     -fx-font-size:18;
+ }
+ .h4{
+     -fx-text-fill:darkgray;
+     -fx-font-family:"Helvetica";
+     -fx-font-size:14;
+     -fx-font-weight:bold;
+ }
+ /* dialog interface styling*/
+ .top-pane{
+     -fx-background-color:#3333ff;
+ }
+ .top-pane .h2{
+     -fx-font-size:26px;
+     -fx-font-family:"Arial" "Serif";
+     -fx-font-weight:700;
+ }
+ 
+
+ /*dialog interface styling end*/
+ 

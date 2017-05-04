@@ -49,12 +49,18 @@ public class MainController extends StackPane
     
     @FXML
     Label label;
+    
     @FXML
-    SplitMenuButton profileMenuButton;
+    MenuButton profileMenuButton;
+    
     @FXML
     MenuItem profileMenu;
+    
     @FXML
     MenuItem logoutMenu;
+    
+    @FXML
+    Circle avatarCircle;
     
     BorderPane layoutContainer;
     MaskerPane mask;
@@ -69,19 +75,23 @@ public class MainController extends StackPane
         super();
         this.app=app;
         try {
-
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/main_screen.fxml"));
             loader.setController(this);
             layoutContainer= (BorderPane)loader.load();
-            profileMenuButton.setGraphic(new Circle(20, new ImagePattern(
-                    new Image(this.getClass().getResource("/resource/icons/ktp.png").toExternalForm()))));
-            
+           
             mask=new MaskerPane();
             mask.setText("Please Wait... ");
             mask.setVisible(false);
             this.getChildren().addAll(layoutContainer,mask);
             
+            this.avatarCircle.setFill(
+                    new ImagePattern(
+                            new Image(this.getClass().getResourceAsStream("/resource/icons/avatar.png"))
+                    )
+            );
+            
+            this.getStyleClass().add("root-container");
 //            topLabel.setText(Auth.getInstance().getUser().getUsername());
 //            imageView.setImage(new Image(this.getClass().getResourceAsStream("icons/ktp.png")));
         } catch (IOException ex) {

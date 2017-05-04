@@ -17,7 +17,7 @@ import ponospos.entities.User;
  */
 public class UserJpa {
     
-    public static User createUser(User user){
+    public static User createUser(User user)throws Exception{
         EntityManager em=JpaSingleton.getInstance().createNewEntityManager();
         
         em.getTransaction().begin();
@@ -50,13 +50,13 @@ public class UserJpa {
         em.close();
         return resultList;
     }
-    public static User checkCredential(String username,String password){
+    public static User checkCredential(String username,String password)throws Exception{
         EntityManager em=JpaSingleton.getInstance().getEntityManager();
-        List res = em.createNamedQuery("User.findByCredential")
+        User user = em.createNamedQuery("User.findByCredential",User.class)
                 .setParameter("username",username)
                 .setParameter("password", password)
-                .getResultList();
-        return (User) res.get(0);
+                .getSingleResult();
+        return user;
     }
     
 }

@@ -5,7 +5,7 @@
  */
 package controllers.users;
 
-import Messages.UserMessage;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
@@ -21,10 +21,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import ponospos.entities.User;
@@ -63,10 +62,15 @@ public class UserDialog extends JFXDialog {
     @FXML
     private JFXComboBox<Role> roleBox;
     @FXML
-    private Button positiveBtn;
+    private JFXButton positiveBtn;
+    @FXML
+    private JFXButton negativeBtn;
+    @FXML
+    private ImageView close;
     
     private UserDialogListener listener;
     private boolean isEditPurpose;
+    private boolean isViewPurpose;
     private User model;
     private SimpleBooleanProperty isValid;
    
@@ -87,7 +91,8 @@ public class UserDialog extends JFXDialog {
             roleBox.setItems(userRoles);
             positiveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             roleBox.getSelectionModel().selectFirst();
-            
+            negativeBtn.setOnAction(e->this.close());
+            close.setOnMouseClicked(e->this.close());
         } catch (IOException ex) {
             Logger.getLogger(UserDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,6 +108,14 @@ public class UserDialog extends JFXDialog {
     }
     public User getModel(){
         return model;
+    }
+    public void isViewPurpose(boolean val){
+        this.isViewPurpose=true;
+        if (isViewPurpose) {
+            disableForViewPurpose();
+        }else{
+            
+        }
     }
     public void isEditPurpose(boolean value){
         this.isEditPurpose=value;
@@ -124,7 +137,7 @@ public class UserDialog extends JFXDialog {
         this.listener=listener;
     }
     @FXML
-    private void onPositiveButtonClick(ActionEvent event) {
+    private void onPositiveBtnClick(ActionEvent event) {
         
         if (isEditPurpose){
             model.setUsername(usernameField.getText().trim());
@@ -167,6 +180,15 @@ public class UserDialog extends JFXDialog {
         roleBox.getSelectionModel().select(model.getRole());
                 
     }
+    private void disableForViewPurpose() {
+        usernameField.setEditable(true);
+        firstnameField.setEditable(true);
+        lastnameField.setEditable(true);
+        emailField.setEditable(true);
+        contactField.setEditable(true);
+        roleBox.setEditable(true);       
+        positiveBtn.setDisable(true);
+    }  
    
 
 }

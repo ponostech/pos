@@ -17,7 +17,7 @@ public class  CreateTask extends Task<User>{
 
         private User user;
         @Override
-        protected User call() {
+        protected User call() throws Exception {
             
             return UserJpa.createUser(user);
             

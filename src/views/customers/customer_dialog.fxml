@@ -3,43 +3,59 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane prefHeight="512.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="520.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="137.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../resource/icons/ktp.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="topLabel" layoutX="141.0" layoutY="71.0" text="Customer" />
-      <JFXTextField fx:id="firstNameField" labelFloat="true" layoutX="36.0" layoutY="108.0" prefHeight="25.0" prefWidth="299.0" promptText="Firstname" />
-      <JFXTextField fx:id="lastNameField" labelFloat="true" layoutX="35.0" layoutY="158.0" prefHeight="25.0" prefWidth="299.0" promptText="Lastname">
+      <JFXTextField fx:id="firstNameField" labelFloat="true" layoutX="21.0" layoutY="130.0" prefHeight="25.0" prefWidth="299.0" promptText="Firstname" />
+      <JFXTextField fx:id="lastNameField" labelFloat="true" layoutX="20.0" layoutY="180.0" prefHeight="25.0" prefWidth="299.0" promptText="Lastname">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXTextField fx:id="emailField" labelFloat="true" layoutX="33.0" layoutY="211.0" prefHeight="25.0" prefWidth="299.0" promptText="Email">
+      <JFXTextField fx:id="emailField" labelFloat="true" layoutX="18.0" layoutY="233.0" prefHeight="25.0" prefWidth="299.0" promptText="Email">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="31.0" layoutY="264.0" prefHeight="101.0" prefWidth="299.0" promptText="Address">
+      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="16.0" layoutY="286.0" prefHeight="96.0" prefWidth="306.0" promptText="Address">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextArea>
-      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="35.0" layoutY="380.0" prefHeight="25.0" prefWidth="299.0" promptText="Contact">
+      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="20.0" layoutY="402.0" prefHeight="25.0" prefWidth="299.0" promptText="Contact">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="36.0" layoutY="457.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save" />
-      <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="240.0" layoutY="457.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: cyan;" text="Cancel" />
+      <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="36.0" layoutY="457.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save">
+         <graphic>
+            <FontAwesomeIconView fill="#2409ae" glyphName="SAVE" size="18" />
+         </graphic></JFXButton>
+      <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="225.0" layoutY="457.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: cyan;" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView fill="#3608ab" glyphName="CLOSE" size="18" />
+         </graphic></JFXButton>
+      <Pane layoutY="-9.0" prefHeight="117.0" prefWidth="337.0" styleClass="top-pane">
+         <children>
+            <ImageView fx:id="close" fitHeight="25.0" fitWidth="32.0" layoutX="293.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/close-red.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="130.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/customer.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="topLabel" alignment="CENTER" layoutY="86.0" prefHeight="17.0" prefWidth="337.0" styleClass="h2" text="Customer" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

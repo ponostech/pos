@@ -5,6 +5,7 @@
  */
 package controllers.customers;
 
+import Messages.ConfirmationMessage;
 import Messages.CustomerMessage;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
@@ -24,12 +25,17 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -140,7 +146,7 @@ public class CustomersController extends AnchorPane implements
                         
                     });
                     delBtn.setOnAction(e->{
-                        ConfirmDialog dialog=new ConfirmDialog();
+                        ConfirmDialog dialog=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
                         dialog.setListener(CustomersController.this);
                         dialog.setModel(customers.get(getIndex()));
                         dialog.show(root);
@@ -179,7 +185,6 @@ public class CustomersController extends AnchorPane implements
     public void onNewButtonClick(ActionEvent e){
         CustomerDialog dialog=new CustomerDialog(CustomersController.this);
         dialog.show(root); 
-        dialog.requestFocus();
     }
 
     @Override
@@ -189,7 +194,7 @@ public class CustomersController extends AnchorPane implements
         System.out.println(customer.getFirstName());
         task.setCustomer(customer);
         mask.visibleProperty().bind(task.runningProperty());
-        task.setOnFailed(c->task.getException().printStackTrace());
+        task.setOnFailed(c->task.getException().printStackTrace(System.err));
         task.setOnSucceeded(c->{
             customers.add(task.getValue());
             Notifications.create()
@@ -248,6 +253,59 @@ public class CustomersController extends AnchorPane implements
     }
     @Override
     public void hookupEvent() {
+        customerTable.setRowFactory(c->{
+            TableRow<Customer> row=new TableRow<>();
+            row.setOnMouseClicked(e->{
+            Customer customer = customers.get(row.getIndex());
+                if (e.getClickCount()==2) {
+                    displayCustomer(customer);
+                }else if(e.getButton()==MouseButton.SECONDARY){
+                    displayContextMenu(row,e.getScreenX(),e.getScreenY(),customer);
+                }else{
+                    //do nothing
+                }
+            });
+            return row;
+        });
+    }
+
+    private void displayCustomer(Customer customer) {
+        CustomerDialog d=new CustomerDialog(this);
+        d.setCustomer(customer);
+        d.setIsViewPurpose(true);
+        d.show(root);
+    }
+
+    private void displayContextMenu(Node node,double x, double y, Customer customer) {
+        ContextMenu menu=new ContextMenu();
+        
+        Glyph icon=new Glyph("FontAwesome", FontAwesome.Glyph.TRASH).color(Color.CORAL).size(22);
+        Glyph editIcon=new Glyph("FontAwesome", FontAwesome.Glyph.EDIT).color(Color.CORAL).size(22);
+       
+        MenuItem del=new MenuItem("Delete",icon);
+        MenuItem edit=new MenuItem("Edit",editIcon);
+        
+        del.setOnAction(e->{
+            ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
+            d.setModel(customer);
+            d.show(root);
+        });
+        edit.setOnAction(e->{
+            CustomerDialog d=new CustomerDialog(CustomersController.this);
+            d.setCustomer(customer);
+            d.isEditPurpose(true);
+            d.show(root);
+            
+        });
+        menu.getItems().addAll(edit,del);
+        menu.show(this.getScene().getWindow(), x, y);
+        
+//        PopOver pop=new PopOver();
+//        
+//        MenuItem editItem=new MenuItem("Edit");
+//        MenuItem delItem=new MenuItem("delete");
+//        pop.setContentNode(new Label("dfasd"));      
+//        pop.show(node, x, y, Duration.ONE);
         
     }
 

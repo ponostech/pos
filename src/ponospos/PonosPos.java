@@ -60,8 +60,14 @@ public class PonosPos extends Application {
         
         decorator = new JFXDecorator(stage, mainController);
         decorator.setCustomMaximize(true);        
+        decorator.getStyleClass().add("bar");
         
         this.primaryScene=new Scene(decorator,900,600);
+        this.primaryScene.setFill(null);
+        this.primaryScene.getStylesheets().addAll(
+                this.getClass().getResource("/resource/css/login.css").toExternalForm(),
+                this.getClass().getResource("/resource/css/ponos_table.css").toExternalForm(),
+                this.getClass().getResource("/resource/css/ponos_style.css").toExternalForm());
         this.primaryStage.setScene(primaryScene); 
         this.primaryStage.setOnCloseRequest(e->{
             executors.shutdown();
@@ -72,6 +78,7 @@ public class PonosPos extends Application {
             public void run() {
                 executors.shutdown();
                 Platform.exit();
+                System.exit(1);
                 System.out.println("executor shutdown");
             }
         });

@@ -7,11 +7,14 @@ package controllers.modals;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXSnackbar;
-import javafx.geometry.Insets;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 
 /**
  *
@@ -21,41 +24,39 @@ public class ConfirmDialog extends JFXDialog {
     public interface ConfirmDialogListener{
         public void onClickYes(Object obj);
     }
-    private final Circle iconContainer;
-    private final GridPane layout;
-    private final Label title;
-    private final Label message;
-    private final JFXButton yesBtn;
-    private final JFXButton noBtn;
+   
+    @FXML
+    ImageView close;
+    @FXML
+    private  Label title;
+    @FXML
+    private  Label message;
+    @FXML
+    private  JFXButton yesBtn;
+    @FXML
+    private  JFXButton noBtn;
     private ConfirmDialogListener listener;
     private Object model;
-    public ConfirmDialog() {
-        super();
-        
-        iconContainer=new Circle(10);
-        title=new Label("Confirmation");
-        message=new Label("Are you sure you want to delete?");
-        
-        yesBtn=new JFXButton("Yes");
-        noBtn=new JFXButton("No");
-        
-        
-        layout=new GridPane();
-        layout.setHgap(10);
-        layout.setVgap(10);
-        layout.setPadding(new Insets(10));
-        layout.add(iconContainer, 0, 0);
-        layout.add(title, 1, 0);
-        layout.add(message,0,1,1,3);
-        layout.add(yesBtn,2,2);
-        layout.add(noBtn,3,2);
-        
-        this.setContent(layout);
-        yesBtn.setOnAction(e->{
-            this.close(); 
-            listener.onClickYes(model);
-        });
-        noBtn.setOnAction(e->this.close());
+    public ConfirmDialog(String title,String message) {
+            super();
+        try {
+            FXMLLoader loader=new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/views/modals/confirmation.fxml"));
+            loader.setController(this);
+            Region content = loader.load();
+            this.title.setText(title);
+            this.message.setText(message);
+                    
+            this.setContent(content);
+            yesBtn.setOnAction(e->{
+                        this.close();
+                        listener.onClickYes(model);
+                    });
+            noBtn.setOnAction(e->this.close());
+            close.setOnMouseClicked(e->this.close());
+        } catch (IOException ex) {
+            Logger.getLogger(ConfirmDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
