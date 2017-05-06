@@ -7,6 +7,7 @@ package controllers.modals;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class ConfirmDialog extends JFXDialog {
     }
    
     @FXML
-    ImageView close;
+    FontAwesomeIconView close;
     @FXML
     private  Label title;
     @FXML

@@ -36,25 +36,21 @@
       </JFXTextField>
       <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="36.0" layoutY="457.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save">
          <graphic>
-            <FontAwesomeIconView fill="#2409ae" glyphName="SAVE" size="18" />
+            <FontAwesomeIconView fill="#2409ae" glyphName="SAVE" size="14" />
          </graphic></JFXButton>
       <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="225.0" layoutY="457.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: cyan;" text="Cancel">
          <graphic>
-            <FontAwesomeIconView fill="#3608ab" glyphName="CLOSE" size="18" />
+            <FontAwesomeIconView fill="#3608ab" glyphName="CLOSE" size="14" />
          </graphic></JFXButton>
       <Pane layoutY="-9.0" prefHeight="117.0" prefWidth="337.0" styleClass="top-pane">
          <children>
-            <ImageView fx:id="close" fitHeight="25.0" fitWidth="32.0" layoutX="293.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/close-red.png" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="130.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../resource/icons/customer.png" />
                </image>
             </ImageView>
             <Label fx:id="topLabel" alignment="CENTER" layoutY="86.0" prefHeight="17.0" prefWidth="337.0" styleClass="h2" text="Customer" />
+            <FontAwesomeIconView fx:id="close" fill="#eb0000" glyphName="CLOSE" layoutX="295.0" layoutY="38.0" size="28" />
          </children>
       </Pane>
    </children>

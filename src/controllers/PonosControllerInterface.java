@@ -14,4 +14,5 @@ public interface PonosControllerInterface {
     public void initControls();
     public void bindControls();
     public void hookupEvent();
+    public void controlFocus();
 }

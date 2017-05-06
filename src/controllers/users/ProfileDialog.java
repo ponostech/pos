@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +63,9 @@ public class ProfileDialog extends JFXDialog {
     @FXML
     private Label errorLabel;
     
+    @FXML
+    private FontAwesomeIconView close;
+    
     private ProfileDialogListener listener;
 
     /**
@@ -79,6 +83,8 @@ public class ProfileDialog extends JFXDialog {
             doBindControls();
             this.setFocusTraversable(true);
             usernameField.requestFocus();
+            close.setOnMouseClicked(e->this.close());
+            this.setOnDialogOpened(e->usernameField.requestFocus());
         } catch (IOException ex) {
             Logger.getLogger(ProfileDialog.class.getName()).log(Level.SEVERE, null, ex);
         }

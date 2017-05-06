@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -57,7 +58,7 @@ public class CustomerDialog extends JFXDialog{
     @FXML
     private JFXButton cancelButton;
     @FXML
-    private ImageView close;
+    private FontAwesomeIconView close;
     
     private boolean isEditPurpose;
     private boolean isViewPurpose;
@@ -78,10 +79,10 @@ public class CustomerDialog extends JFXDialog{
             loader.setController(this);
             Region parent = loader.load();
             this.setContent(parent);
-            saveButton.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE).color(Color.CORAL).size(20));
             doValidation();
             this.setTransitionType(DialogTransition.TOP);
             close.setOnMouseClicked(e->this.close());
+            this.setOnDialogOpened(e->firstNameField.requestFocus());
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);

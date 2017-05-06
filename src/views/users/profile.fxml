@@ -3,13 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
 <AnchorPane id="AnchorPane" prefHeight="589.0" prefWidth="343.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Circle fx:id="avatarCircle" fill="DODGERBLUE" layoutX="167.0" layoutY="56.0" radius="47.0" stroke="BLACK" strokeType="INSIDE" />
       <JFXTextField fx:id="usernameField" layoutX="24.0" layoutY="178.0" prefWidth="300.0" promptText="Username" />
       <JFXTextField fx:id="firstNameField" layoutX="24.0" layoutY="222.0" prefWidth="300.0" promptText="First name" />
       <JFXTextField fx:id="lastNameField" layoutX="24.0" layoutY="268.0" prefWidth="300.0" promptText="Last name" />
@@ -17,9 +18,21 @@
       <JFXPasswordField fx:id="newPasswordField" layoutX="24.0" layoutY="366.0" prefWidth="300.0" promptText="New Password" />
       <JFXTextField fx:id="emailField" layoutX="24.0" layoutY="410.0" prefHeight="25.0" prefWidth="300.0" promptText="Email" />
       <JFXTextField fx:id="contactField" layoutX="24.0" layoutY="458.0" prefHeight="25.0" prefWidth="300.0" promptText="Contact" />
-      <JFXButton fx:id="positivebutton" buttonType="RAISED" defaultButton="true" layoutX="24.0" layoutY="517.0" onAction="#onPosistivebuttonClick" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: yellow;" text="Change" />
-      <JFXButton fx:id="negativeButton" buttonType="RAISED" cancelButton="true" layoutX="182.0" layoutY="517.0" onAction="#onNegativeButtonClick" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: green;" text="Cancel" />
-      <Label fx:id="profileLabel" layoutX="153.0" layoutY="115.0" text="Profile" />
+      <JFXButton fx:id="positivebutton" buttonType="RAISED" defaultButton="true" layoutX="24.0" layoutY="517.0" onAction="#onPosistivebuttonClick" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: yellow;" text="Change">
+         <graphic>
+            <FontAwesomeIconView fill="#0a07eb" glyphName="CHECK" size="14" />
+         </graphic></JFXButton>
+      <JFXButton fx:id="negativeButton" buttonType="RAISED" cancelButton="true" layoutX="182.0" layoutY="517.0" onAction="#onNegativeButtonClick" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: green;" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView fill="#0707f2" glyphName="CLOSE" size="14" />
+         </graphic></JFXButton>
       <Label fx:id="errorLabel" layoutX="150.0" layoutY="152.0" textFill="#d70e0e" />
+      <Pane layoutY="-8.0" prefHeight="163.0" prefWidth="343.0" styleClass="top-pane">
+         <children>
+            <Label fx:id="profileLabel" alignment="CENTER" layoutX="20.0" layoutY="132.0" prefHeight="17.0" prefWidth="308.0" text="Profile" />
+            <FontAwesomeIconView fx:id="close" fill="#f20606" glyphName="CLOSE" layoutX="310.0" layoutY="32.0" size="28" />
+            <Circle fx:id="avatarCircle" fill="DODGERBLUE" layoutX="172.0" layoutY="69.0" radius="47.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

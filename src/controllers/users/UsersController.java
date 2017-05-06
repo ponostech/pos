@@ -9,10 +9,13 @@ import Messages.ConfirmationMessage;
 import Messages.UserMessage;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +33,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -39,8 +43,6 @@ import javafx.stage.Window;
 import javax.persistence.RollbackException;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
 import ponospos.entities.User;
 import singletons.PonosExecutor;
 import tasks.users.CreateTask;
@@ -66,8 +68,6 @@ public class UsersController extends AnchorPane implements
     TableColumn <User,String>usernameCol;
     @FXML
     TableColumn <User,String>firstnameCol;
-    @FXML
-    TableColumn <User,String>lastnameCol;
     @FXML
     TableColumn <User,String>emailCol;
     @FXML
@@ -148,6 +148,7 @@ public class UsersController extends AnchorPane implements
         
     }
     public void deleteUser(User user){
+        
         DeleteTask task=new DeleteTask();
         task.setUser(user);
         task.setOnSucceeded(e->{
@@ -167,6 +168,8 @@ public class UsersController extends AnchorPane implements
         d.setListener(this);
         d.isEditPurpose(false);
         d.show(root);
+        e.consume();
+        
     }
 
     @Override
@@ -194,8 +197,9 @@ public class UsersController extends AnchorPane implements
         usersTable.setItems(users);
         idCol.setCellValueFactory(e->new SimpleStringProperty(String.valueOf(e.getValue().getId())));
         usernameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getUsername()));
-        firstnameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getFirstName()));
-        lastnameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getLastName()));
+        firstnameCol.setCellValueFactory(e->{
+            return new SimpleStringProperty(e.getValue().getFirstName() +" "+e.getValue().getLastName());
+                });
         emailCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getEmail()));
         roleCol.setCellValueFactory(e->{
             User user = e.getValue();
@@ -208,8 +212,11 @@ public class UsersController extends AnchorPane implements
            return new SimpleObjectProperty(role);
         });
         actionCol.setCellFactory((TableColumn<Void, User> param) -> new TableCell<Void,User>(){
-            Button editBtn=new Button("Edit",new Glyph("FontAwesome",FontAwesome.Glyph.EDIT));
-            Button delBtn=new Button("Delete",new Glyph("FontAwesome",FontAwesome.Glyph.TRASH));
+            FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+            FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+            
+            Button editBtn=new Button("Edit",editIcon);
+            Button delBtn=new Button("Delete",delIcon);
             
             @Override
             protected void updateItem(User item, boolean empty) {
@@ -217,6 +224,9 @@ public class UsersController extends AnchorPane implements
                     setText(null);
                     setGraphic(null);
                 }else{
+                    editIcon.setFill(Color.BLUE);
+                    delIcon.setFill(Color.BLUE);
+                    editBtn.getStyleClass().add("btn-small");
                     editBtn.setOnAction(e->{
                         UserDialog dialog = new UserDialog();
                         dialog.isEditPurpose(true);
@@ -224,14 +234,24 @@ public class UsersController extends AnchorPane implements
                         dialog.setModel(users.get(getIndex()));
                         dialog.setListener(UsersController.this);
                         dialog.show(root);
+                        e.consume();
+                        dialog.requestFocus();
+                        
                     });
+                    User user = users.get(getIndex());
+                    if (user.getRole()==Role.ADMIN.ordinal()) {
+                        delBtn.setDisable(true);
+                    }
+                    delBtn.getStyleClass().add("btn-small");
                     delBtn.setOnAction(e->{
                         ConfirmDialog dialog=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
                         dialog.setListener(UsersController.this);
                         dialog.setModel(users.get(getIndex()));
                         dialog.show(root);
+                        e.consume();
+                        dialog.requestFocus();
                     });
-                    setGraphic(new HBox(editBtn,delBtn));
+                    setGraphic(new HBox(5,editBtn,delBtn));
                 }
             } 
         });
@@ -250,9 +270,10 @@ public class UsersController extends AnchorPane implements
             TableRow<User> row=new TableRow();
             
             row.setOnMouseClicked(e->{
-                User selectedItem=usersTable.getSelectionModel().getSelectedItem();
+                List<User> selectedItems=usersTable.getSelectionModel().getSelectedItems();
+                
                 if ( e.getButton()==MouseButton.SECONDARY) {
-                    displayPopOver(e.getScreenX(),e.getScreenY(),selectedItem);
+                    displayPopOver(e.getScreenX(),e.getScreenY(),selectedItems);
                 }else if(e.getClickCount()==2){
                     User user = users.get(row.getIndex());
                     viewUser(user);
@@ -262,26 +283,56 @@ public class UsersController extends AnchorPane implements
             });
             return row;
         });
+//        newUserBtn.setOnKeyPressed(e->{
+//            if (e.getCode()==KeyCode.TAB) {
+//                
+//            }
+//            e.consume();
+//        });
+       
+        
     }
 
-    private void displayPopOver(double x,double y,User selectedItem){
-        MenuItem edit=new MenuItem("Edit",new Glyph("FontAwesome", FontAwesome.Glyph.EDIT).color(Color.CORAL).size(22));
-        MenuItem del=new MenuItem("Delete");
-        del.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.TRASH).color(Color.CORAL).size(22));
+    private void displayPopOver(double x,double y,List<User> selectedItems){
+        FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+        FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+        FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
+        
+        viewIcon.setFill(Color.CORAL);
+        editIcon.setFill(Color.CORAL);
+        delIcon.setFill(Color.CORAL);
+                
+        MenuItem view=new MenuItem("View",viewIcon);
+        MenuItem edit=new MenuItem("Edit",editIcon);
+        MenuItem del=new MenuItem("Delete",delIcon);
+        
+        ContextMenu menu=new ContextMenu();
+        
+        if (selectedItems.size()>1) {
+            menu.getItems().add(del);
+        }else{
+            menu.getItems().addAll(view,edit,del);
+        }
+        
+        view.setOnAction(e->viewUser(selectedItems.get(0)));
         del.setOnAction(e->{
-           ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
-           d.setModel(selectedItem);
-           d.show(root);
+            for (User selectedItem : selectedItems) {
+                if (selectedItem.getRole()!=Role.ADMIN.ordinal()) {
+                    ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE+" "
+                        + "" +selectedItem.getUsername());
+                    d.setModel(selectedItem);
+                    d.setListener(UsersController.this);
+                    d.show(root);
+                }
+            }
         });
         edit.setOnAction(e->{
             UserDialog d=new UserDialog();
-            d.setModel(selectedItem);
+            d.setModel(selectedItems.get(0));
             d.isEditPurpose(true);
             d.setListener(UsersController.this);
             d.show(root);
         });
-        ContextMenu menu=new ContextMenu();
-        menu.getItems().addAll(edit,del);
         Window window = this.getScene().getWindow();
         menu.show(window,x,y);
     }
@@ -296,5 +347,11 @@ public class UsersController extends AnchorPane implements
 
     private void bulkDeleteUser(List<User> selectedItem) {
         //TODO::delete users
+    }
+
+    
+    @Override
+    public void controlFocus() {
+        newUserBtn.requestFocus();
     }
 }

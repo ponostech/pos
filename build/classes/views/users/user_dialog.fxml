@@ -26,11 +26,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="close" fitHeight="25.0" fitWidth="22.0" layoutX="287.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/close-red.png" />
-               </image>
-            </ImageView>
+            <FontAwesomeIconView fx:id="close" fill="#d70505" glyphName="CLOSE" layoutX="303.0" layoutY="30.0" size="28" />
          </children>
       </Pane>
       <JFXTextField fx:id="usernameField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="161.0" prefHeight="25.0" prefWidth="290.0" promptText="Username" />
@@ -43,11 +39,11 @@
       <JFXComboBox fx:id="roleBox" labelFloat="true" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="290.0" promptText="Select Role" visibleRowCount="3" />
       <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="20.0" layoutY="549.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="136.0" ripplerFill="#341ada" text="Create">
          <graphic>
-            <FontAwesomeIconView fill="#1543da" glyphName="SAVE" size="18" />
+            <FontAwesomeIconView fill="#1543da" glyphName="SAVE" size="14" />
          </graphic></JFXButton>
       <JFXButton fx:id="negativeBtn" buttonType="RAISED" cancelButton="true" layoutX="186.0" layoutY="551.0" prefHeight="25.0" prefWidth="126.0" ripplerFill="#341ab5" text="Close">
          <graphic>
-            <FontAwesomeIconView fill="#0d0dd3" glyphName="CLOSE" size="18" />
+            <FontAwesomeIconView fill="#0d0dd3" glyphName="CLOSE" size="14" />
          </graphic></JFXButton>
    </children>
 </AnchorPane>

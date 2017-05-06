@@ -69,6 +69,8 @@ public class PonosPos extends Application {
                 this.getClass().getResource("/resource/css/ponos_table.css").toExternalForm(),
                 this.getClass().getResource("/resource/css/ponos_style.css").toExternalForm());
         this.primaryStage.setScene(primaryScene); 
+        
+        this.mainController.controlFocus();
         this.primaryStage.setOnCloseRequest(e->{
             executors.shutdown();
             System.out.println("executors shutdown");

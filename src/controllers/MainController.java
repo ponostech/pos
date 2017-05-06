@@ -20,9 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitMenuButton;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
@@ -139,6 +137,7 @@ public class MainController extends StackPane
         }
         switchScreen(userController);
         userController.fetchAllUser();
+        userController.controlFocus();
     }
 
     @Override
@@ -193,6 +192,12 @@ public class MainController extends StackPane
     
     public void greetUser(){
         label.setText(Auth.getInstance().getUser().getUsername());
+    }
+
+    @Override
+    public void controlFocus() {
+        userController.controlFocus();
+        customerController.controlFocus();
     }
 
        

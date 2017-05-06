@@ -11,9 +11,11 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +48,7 @@ public class UserDialog extends JFXDialog {
     @FXML
     private Label topLabel;
     @FXML
-    private JFXTextField usernameField;
+     JFXTextField usernameField;
     @FXML
     private JFXPasswordField passwordField;
     @FXML
@@ -66,7 +68,7 @@ public class UserDialog extends JFXDialog {
     @FXML
     private JFXButton negativeBtn;
     @FXML
-    private ImageView close;
+    private FontAwesomeIconView close;
     
     private UserDialogListener listener;
     private boolean isEditPurpose;
@@ -89,10 +91,12 @@ public class UserDialog extends JFXDialog {
             this.setContent((Region) parent);
             userRoles.addAll(Role.ADMIN,Role.EMPLOYEE);
             roleBox.setItems(userRoles);
-            positiveBtn.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
             roleBox.getSelectionModel().selectFirst();
             negativeBtn.setOnAction(e->this.close());
             close.setOnMouseClicked(e->this.close());
+            this.setTransitionType(DialogTransition.TOP);
+            this.setOnDialogOpened(e->usernameField.requestFocus());
+            
         } catch (IOException ex) {
             Logger.getLogger(UserDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,6 +193,8 @@ public class UserDialog extends JFXDialog {
         roleBox.setEditable(true);       
         positiveBtn.setDisable(true);
     }  
+    
+    
    
 
 }

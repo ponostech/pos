@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Circle?>
@@ -15,16 +15,18 @@
    <top>
       <HBox alignment="CENTER" styleClass="top-bar">
          <children>
-            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="fav-icon">
-               <image>
-                  <Image url="@../resource/icons/ktp.png" />
-               </image>
-            </ImageView>
+            <MaterialIconView fill="#3d0be4" size="48" />
             <Label fx:id="label" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="358.0" styleClass="h1" text="label" HBox.hgrow="ALWAYS" />
             <MenuButton fx:id="profileMenuButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="69.0">
               <items>
-                <MenuItem fx:id="profileMenu" mnemonicParsing="false" onAction="#onProfileMenuClick" text="Profile" />
-                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#onLogoutMenuClick" text="Logout" />
+                <MenuItem fx:id="profileMenu" mnemonicParsing="false" onAction="#onProfileMenuClick" text="Profile">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="USER" />
+                     </graphic></MenuItem>
+                <MenuItem fx:id="logoutMenu" mnemonicParsing="false" onAction="#onLogoutMenuClick" text="Logout">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="POWER_OFF" />
+                     </graphic></MenuItem>
               </items>
                <graphic>
                   <Circle fx:id="avatarCircle" fill="DODGERBLUE" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
