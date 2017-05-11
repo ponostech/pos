@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="90.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ToggleButton fx:id="dashboardMenu" mnemonicParsing="false" onAction="#onDashBoardMenuClick" prefHeight="60.0" prefWidth="60.0">
-         <toggleGroup>
-            <ToggleGroup fx:id="menuGroup" />
-         </toggleGroup>
-         <styleClass>
-            <String fx:value="side-menu" />
-            <String fx:value="dashboard-menu" />
-         </styleClass>
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="102.0" text="Customer">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#onCustomerMenuClick" text="Customers">
+               <graphic>
+                  <FontAwesomeIconView glyphName="USER_CIRCLE" />
+               </graphic></MenuItem>
+        </items>
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="DASHBOARD" size="30" />
+            <FontAwesomeIconView glyphName="USERS" />
          </graphic>
-      </ToggleButton>
-      <ToggleButton fx:id="userMenu" mnemonicParsing="false" onAction="#onUserMenuClick" prefHeight="60.0" prefWidth="60.0" toggleGroup="$menuGroup">
-         <styleClass>
-            <String fx:value="side-menu" />
-            <String fx:value="user-menu" />
-         </styleClass>
+      </MenuButton>
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="101.0" text="Product">
+        <items>
+            <MenuItem mnemonicParsing="false" onAction="#onCategoryMenuClick" text="Category">
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic></MenuItem>
+          <MenuItem mnemonicParsing="false" onAction="#onSupplierMenuClick" text="Suppliers">
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic></MenuItem>
+        </items>
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="USER" size="30" />
-         </graphic></ToggleButton>
-      <ToggleButton fx:id="customerMenu" mnemonicParsing="false" onAction="#onClickCustomerMenu" prefHeight="60.0" prefWidth="60.0" toggleGroup="$menuGroup">
-         <styleClass>
-            <String fx:value="side-menu" />
-            <String fx:value="customer-menu" />
-         </styleClass>
+            <FontAwesomeIconView glyphName="TAGS" text="" />
+         </graphic>
+      </MenuButton>
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="102.0" text="Store">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#onStoreMenuClick" text="Stores" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="GROUP" size="30" />
-         </graphic></ToggleButton>
-      <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="side-menu" text="4" toggleGroup="$menuGroup" />
-      <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="side-menu" text="5" toggleGroup="$menuGroup" />
-      <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="side-menu" text="6" toggleGroup="$menuGroup" />
-      <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="side-menu" text="7" toggleGroup="$menuGroup" />
-      <Pane maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="60.0" VBox.vgrow="SOMETIMES" />
-      <Button mnemonicParsing="false" prefWidth="60.0" styleClass="side-menu" text="log out" />
+            <FontAwesomeIconView glyphName="SHOPPING_BAG" />
+         </graphic>
+      </MenuButton>
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="25.0" prefWidth="98.0" text="User">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#onUserMenuClick" text="Users">
+               <graphic>
+                  <FontAwesomeIconView glyphName="USER" />
+               </graphic></MenuItem>
+          <MenuItem mnemonicParsing="false" text="Something" />
+        </items>
+         <graphic>
+            <FontAwesomeIconView glyphName="USER" />
+         </graphic>
+      </MenuButton>
    </children>
-   <padding>
-      <Insets bottom="10.0" />
-   </padding>
-</VBox>
+</fx:root>

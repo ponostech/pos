@@ -80,12 +80,19 @@ public class PonosPos extends Application {
             public void run() {
                 executors.shutdown();
                 Platform.exit();
-                System.exit(1);
+                System.exit(0);
                 System.out.println("executor shutdown");
             }
         });
         this.primaryStage.show();
     }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+         
+    }
+    
 
     /**
      * @param args the command line arguments

@@ -18,57 +18,42 @@ import javafx.scene.Parent;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import org.controlsfx.control.PopOver;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author Sawmtea
  */
-public class SideBarController extends Pane {
+public class SideBarController extends VBox {
     public interface SideBarListener{
         public void onUserMenuClick();
         public void onCustomerMenuClick();
         public void onDashboardMenuClick();
+        public void onProductMenuClick();
+        public void onCategoryMenuClick();
+        public void onSupplierMenuClick();
+        public void onStoreMenuClick();
     }
-    @FXML
-    ToggleButton userMenu;   
-    @FXML
-    ToggleButton customerMenu;
-    @FXML
-    private ToggleButton dashboardMenu;
-    @FXML
-    private ToggleGroup menuGroup;
+   
     private DashboardController dashboard;
     private BorderPane container;
     private UserMenuController userMenuController;
     private UsersController userController;
     private CustomersController customerController;
     private SideBarListener listener;
+    
     public SideBarController(){
         try {
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/side_bar.fxml"));
             loader.setController(this);
-            this.getStyleClass().add("side-bar");
-            Parent parent = loader.load();
-            this.getChildren().add(parent);
+            loader.setRoot(this);
+            loader.load();
+            this.getStyleClass().add("side-bar");          
         } catch (IOException ex) {
             Logger.getLogger(SideBarController.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-    }
-    @FXML
-    public void onUserMenuClick(ActionEvent e){
-        listener.onUserMenuClick();
-    }
-    @FXML
-    public void onDashBoardMenuClick(ActionEvent event) {
-       listener.onDashboardMenuClick();
-    }
-    @FXML
-    public void onClickCustomerMenu(ActionEvent event){
-        listener.onCustomerMenuClick();
     }
    
     void setDashboard(DashboardController dashboard) {
@@ -80,8 +65,29 @@ public class SideBarController extends Pane {
     }
     
     public void displayDashBoard(){
-        dashboardMenu.fire();
     }
     
+    @FXML
+    private void onCategoryMenuClick(ActionEvent event) {
+        listener.onCategoryMenuClick();
+    }
+
+    @FXML
+    private void onCustomerMenuClick(ActionEvent event) {
+        listener.onCustomerMenuClick();
+    }
+
+    @FXML
+    private void onSupplierMenuClick(ActionEvent event) {
+       listener.onSupplierMenuClick();
+    }
+    @FXML
+    private void onUserMenuClick(ActionEvent event){
+        listener.onUserMenuClick();
+    }
+    @FXML
+    private void onStoreMenuClick(ActionEvent event){
+        listener.onStoreMenuClick();
+    }
 
 }

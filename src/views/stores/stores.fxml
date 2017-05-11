@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root id="AnchorPane" prefHeight="402.0" prefWidth="733.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton fx:id="newStoreBtn" layoutX="21.0" layoutY="39.0" onAction="#onNewStoreBtnClick" prefHeight="25.0" prefWidth="104.0" text="New Store">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+         </graphic>
+      </JFXButton>
+      <TextField fx:id="searchField" layoutX="385.0" layoutY="37.0" prefHeight="25.0" prefWidth="267.0" promptText="Search" />
+      <Button fx:id="searchBtn" layoutX="652.0" layoutY="37.0" mnemonicParsing="false" text="Search">
+         <graphic>
+            <FontAwesomeIconView glyphName="SEARCH" />
+         </graphic>
+      </Button>
+      <TableView fx:id="storeTables" layoutX="13.0" layoutY="87.0" prefHeight="285.0" prefWidth="708.0">
+        <columns>
+          <TableColumn fx:id="idCol" prefWidth="86.0" text="ID" />
+          <TableColumn fx:id="nameCol" prefWidth="182.0" text="STORE NAME" />
+            <TableColumn fx:id="addressCol" prefWidth="220.0" text="ADDRESS" />
+            <TableColumn fx:id="actionCols" prefWidth="219.0" text="ACTIONS" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>

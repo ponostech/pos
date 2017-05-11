@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" prefHeight="401.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="-7.0" prefHeight="131.0" prefWidth="356.0">
+         <children>
+            <ImageView fitHeight="72.0" fitWidth="84.0" layoutX="147.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/category.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="title" alignment="CENTER" layoutX="16.0" layoutY="106.0" prefHeight="17.0" prefWidth="334.0" styleClass="h2" text="Label" />
+            <MaterialDesignIconView fx:id="close" fill="#f50909" glyphName="CLOSE" layoutX="314.0" layoutY="39.0" size="28" />
+         </children>
+      </Pane>
+      <JFXTextField fx:id="nameField" layoutX="18.0" layoutY="158.0" prefHeight="25.0" prefWidth="313.0" promptText="Category name" />
+      <JFXTextArea fx:id="descriptionField" layoutX="14.0" layoutY="207.0" prefHeight="90.0" prefWidth="313.0" promptText="Description" />
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="18.0" layoutY="354.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="115.0" text="Save">
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="negativebtn" buttonType="RAISED" cancelButton="true" layoutX="212.0" layoutY="354.0" onAction="#onNegativebtnClick" prefHeight="25.0" prefWidth="115.0" text="Delete">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

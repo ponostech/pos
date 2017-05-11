@@ -7,13 +7,16 @@ package controllers;
 
 import Messages.ProfileMessage;
 import Messages.RoleMessage;
+import controllers.categories.CategoryController;
 import controllers.customers.CustomersController;
+import controllers.stores.StoresController;
+import controllers.suppliers.SuppliersController;
 import controllers.users.ProfileDialog;
 import controllers.users.UsersController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.PonosPos;
@@ -63,11 +67,15 @@ public class MainController extends StackPane
     BorderPane layoutContainer;
     MaskerPane mask;
     
+    
+    private SuppliersController supplierController;
     private DashboardController dashboard;
     private SideBarController sideBar;
     private UsersController userController;
     private CustomersController customerController;
+    private CategoryController categoryController;
     private ProfileDialog profileDialog;
+    private StoresController storeController;
     private PonosPos app;
     public MainController(PonosPos app) {
         super();
@@ -77,7 +85,6 @@ public class MainController extends StackPane
             loader.setLocation(this.getClass().getResource("/views/main_screen.fxml"));
             loader.setController(this);
             layoutContainer= (BorderPane)loader.load();
-           
             mask=new MaskerPane();
             mask.setText("Please Wait... ");
             mask.setVisible(false);
@@ -104,15 +111,23 @@ public class MainController extends StackPane
         this.dashboard=new DashboardController(mask);
         this.userController=new UsersController(mask,this);
         this.customerController=new CustomersController(mask,this);
+        this.supplierController=new SuppliersController(mask, this);
+        this.categoryController=new CategoryController(mask,this);
+        this.storeController=new StoresController(mask,this);
         this.layoutContainer.setLeft(sideBar);
         
         this.userController.initDependencies();
         this.customerController.initDependencies();
+        this.supplierController.initDependencies();
+        this.categoryController.initDependencies();
     }
     @Override
     public void initControls(){
         this.userController.initControls();
         this.customerController.initControls();
+        this.supplierController.initControls();
+        this.categoryController.initControls();
+        this.storeController.initControls();
     }
 
     @Override
@@ -120,12 +135,17 @@ public class MainController extends StackPane
         
         userController.hookupEvent();
         this.customerController.hookupEvent();
+        this.supplierController.hookupEvent();
+        this.categoryController.hookupEvent();
+        this.storeController.hookupEvent();
     }
     @Override
     public void bindControls(){
         this.userController.bindControls();
         this.customerController.bindControls();
-    
+        this.supplierController.bindControls();
+        this.categoryController.bindControls();
+        this.storeController.bindControls();
     }
 
     @Override
@@ -138,6 +158,7 @@ public class MainController extends StackPane
         switchScreen(userController);
         userController.fetchAllUser();
         userController.controlFocus();
+        
     }
 
     @Override
@@ -152,7 +173,18 @@ public class MainController extends StackPane
     }
     private void switchScreen(Parent parent){
         //TODO::animation goes here
+        FadeTransition fadeOut=new FadeTransition(Duration.millis(2000));
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setNode(layoutContainer.getCenter());
+        fadeOut.play();
+        
         this.layoutContainer.setCenter(parent);
+        FadeTransition fadeIn=new FadeTransition(Duration.seconds(2));
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setNode(layoutContainer.getCenter());
+        fadeIn.play();
     }
 
     @Override
@@ -178,8 +210,6 @@ public class MainController extends StackPane
         
         d.show(this);
         
-        Platform.runLater(()->d.requestFocusToUsername());
-      
     }
    
     @FXML
@@ -198,6 +228,31 @@ public class MainController extends StackPane
     public void controlFocus() {
         userController.controlFocus();
         customerController.controlFocus();
+        supplierController.controlFocus();
+    }
+
+    
+    @Override
+    public void onCategoryMenuClick() {
+           switchScreen(categoryController);
+           categoryController.fetchAllCategories();
+    }
+
+    @Override
+    public void onSupplierMenuClick() {
+        switchScreen(supplierController);
+        supplierController.fetchAllSupplier();
+    }
+
+    @Override
+    public void onProductMenuClick() {
+        
+    }
+
+    @Override
+    public void onStoreMenuClick() {
+        switchScreen(storeController);
+        storeController.fetchAllStores();
     }
 
        

@@ -4,6 +4,9 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>ponospos.entities.User</class>
     <class>ponospos.entities.Customer</class>
+    <class>ponospos.entities.Supplier</class>
+    <class>ponospos.entities.Category</class>
+    <class>ponospos.entities.Stores</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ponospos?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

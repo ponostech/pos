@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="130.0" prefWidth="355.0" styleClass="panel">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="163.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/store.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="title" alignment="CENTER" layoutY="92.0" prefHeight="17.0" prefWidth="355.0" styleClass="h2" text="Store" />
+            <MaterialDesignIconView fx:id="close" fill="#f20a0a" glyphName="CLOSE" layoutX="323.0" layoutY="29.0" size="28" />
+         </children>
+      </Pane>
+      <JFXTextField fx:id="nameField" labelFloat="true" layoutX="24.0" layoutY="167.0" prefHeight="25.0" prefWidth="312.0" promptText="Store name" />
+      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="21.0" layoutY="208.0" prefHeight="100.0" prefWidth="312.0" promptText="Address" />
+      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="21.0" layoutY="346.0" prefHeight="25.0" prefWidth="312.0" promptText="Contact" />
+      <JFXButton fx:id="positiveBtn" defaultButton="true" layoutX="18.0" layoutY="414.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="113.0" text="Save">
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="negativeBtn" layoutX="219.0" layoutY="414.0" onAction="#onNegativeBtnClick" prefHeight="25.0" prefWidth="113.0" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

@@ -55,6 +55,7 @@ public class ConfirmDialog extends JFXDialog {
                     });
             noBtn.setOnAction(e->this.close());
             close.setOnMouseClicked(e->this.close());
+            this.setOnDialogOpened(e->noBtn.requestFocus());
         } catch (IOException ex) {
             Logger.getLogger(ConfirmDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
