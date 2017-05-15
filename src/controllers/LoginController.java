@@ -7,11 +7,14 @@ package controllers;
 
 import Messages.LoginMessages;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +24,11 @@ import javafx.scene.layout.StackPane;
 import javax.persistence.NoResultException;
 import jpa.UserJpa;
 import ponospos.PonosPos;
+import ponospos.entities.Stores;
 import ponospos.entities.User;
 import singletons.Auth;
 import singletons.PonosExecutor;
+import tasks.stores.FetchAllTask;
 import util.PasswordGenerator;
 
 /**
@@ -32,6 +37,8 @@ import util.PasswordGenerator;
  * @author Sawmtea
  */
 public class LoginController extends StackPane {
+    @FXML
+    JFXComboBox<Stores> storesCombo;
     @FXML
     JFXTextField usernameField;
     @FXML
@@ -42,6 +49,8 @@ public class LoginController extends StackPane {
     JFXButton exitButton;
     @FXML
     Label errorLabel;
+    
+    private ObservableList<Stores> stores=FXCollections.observableArrayList();
     private PonosPos app;
     
     public LoginController() {
@@ -52,9 +61,26 @@ public class LoginController extends StackPane {
             Parent parent=loader.load();  
             this.getChildren().add(parent);
             this.getStyleClass().add("login-root-container");
+            init();
+            loginButton.disableProperty().bind(
+                 usernameField.textProperty().isEmpty().or(
+                         passwordField.textProperty().isEmpty()
+                 ).or(storesCombo.getSelectionModel().selectedItemProperty().isNull())
+            );
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void init(){
+        storesCombo.setItems(stores);
+        FetchAllTask task=new FetchAllTask();
+        task.setOnSucceeded(e->{
+            stores.clear();
+            stores.addAll(task.getValue());
+        });
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        PonosExecutor.getInstance().getExecutor().submit(task);
+        
     }
 
     public void setApp(PonosPos app) {
@@ -82,6 +108,7 @@ public class LoginController extends StackPane {
                         passwordField.clear();
                         Auth.getInstance().setUser(task.getValue());
                         Auth.getInstance().setIsLogged(true);
+                        Auth.getInstance().setLoginStore(storesCombo.getSelectionModel().getSelectedItem());
                         System.out.println("logged user password "+Auth.getInstance().getUser().getPassword());
                         app.displayMainScreen();
                     }else{
@@ -105,7 +132,7 @@ public class LoginController extends StackPane {
     }
 
     private boolean isValidInput(String username, String password) {
-        return !(username.isEmpty() || password.isEmpty());
+        return !(username.isEmpty() || password.isEmpty() || storesCombo.getSelectionModel().getSelectedItem()==null);
     }
     
     private class LoginTask extends Task<User>{

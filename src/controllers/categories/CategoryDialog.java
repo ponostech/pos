@@ -45,6 +45,7 @@ public class CategoryDialog  extends JFXDialog{
     
     private boolean isEdit;
     private boolean isCreate;
+    private boolean isView;
     private Category category;
     private CategoryDialogListener listener;
     
@@ -58,6 +59,7 @@ public class CategoryDialog  extends JFXDialog{
             this.setContent(region);
             this.setOnDialogOpened(e->this.nameField.requestFocus());
             close.setOnMouseClicked(e->CategoryDialog.this.close());
+            this.positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty());
         } catch (IOException ex) {
             Logger.getLogger(CategoryDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,17 +79,32 @@ public class CategoryDialog  extends JFXDialog{
             this.close();
             listener.onUpdate(category);
         }else{
-            //TODO: view
+            this.close();
         }
 
     }
     public CategoryDialog isCreate(boolean val){
         this.isCreate=true;
+        this.title.setText("Create Category");
+        this.positiveBtn.setText("Create");
         return this;
     }
+     public CategoryDialog isView(){
+        this.isView=true;
+        this.title.setText("Category Info");
+        this.positiveBtn.setText("Close");
+        return this;
+    }
+     public CategoryDialog setCategory(Category category){
+         this.category=category;
+         this.nameField.setText(category.getName());
+         this.descriptionField.setText(category.getDescription());
+         return this;
+     }
     public CategoryDialog isToUpdate(Category cat){
         this.isEdit=true;
-        this.positiveBtn.setText("Update category");
+        this.positiveBtn.setText("Update");
+        this.title.setText("Edit Category");
         this.category=cat;
         this.nameField.setText(cat.getName());
         this.descriptionField.setText(cat.getDescription());

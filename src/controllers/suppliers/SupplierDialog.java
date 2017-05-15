@@ -42,7 +42,6 @@ public class SupplierDialog extends JFXDialog{
     @FXML
     private JFXButton negativeBtn;
 
-   
     
     public interface SupplierDialogListener{
         
@@ -52,6 +51,7 @@ public class SupplierDialog extends JFXDialog{
     private SupplierDialogListener listener;
     private boolean isCreatePurpose;
     private boolean isEditPurpose;
+    private boolean isViewPurpose;
     private Supplier model;
     public SupplierDialog(SupplierDialogListener listener){
         try {
@@ -63,22 +63,31 @@ public class SupplierDialog extends JFXDialog{
             this.setContent(region);
             this.setOnDialogOpened(e->nameField.requestFocus());
             this.positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty());
+            this.closeBtn.setOnMouseClicked(e->SupplierDialog.this.close());
         } catch (IOException ex) {
             Logger.getLogger(SupplierDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void setModels(Supplier models){
+    public SupplierDialog setModels(Supplier models){
         this.model=models;
+        return this;
     }
     public void createPurpose(){
-        this.positiveBtn.setText("Create supplier");
+        this.positiveBtn.setText("Create");
         this.isCreatePurpose=true;
+        this.title.setText("Create Supplier");
     }
     
     public void editPurpose(){
-        this.positiveBtn.setText("Update supplier");
+        this.positiveBtn.setText("Update");
         this.isEditPurpose=true;
+        this.title.setText("Edit Supplier");
+    }
+    public void viewPurpose(){
+        this.positiveBtn.setText("Close");
+        this.isViewPurpose=true;
+        this.title.setText("Supplier Info");
     }
     //Cascading methods
     public SupplierDialog isCreate(){
@@ -87,6 +96,16 @@ public class SupplierDialog extends JFXDialog{
     }
     public SupplierDialog isEdit(){
         editPurpose();
+         nameField.setText(model.getName());
+        addressField.setText(model.getAddress());
+        contactField.setText(model.getContact());
+        return this;
+    }
+    public SupplierDialog isView(){
+        viewPurpose();
+        nameField.setText(model.getName());
+        addressField.setText(model.getAddress());
+        contactField.setText(model.getContact());
         return this;
     }
     public SupplierDialog toUpdateModel(Supplier supplier){
@@ -116,6 +135,9 @@ public class SupplierDialog extends JFXDialog{
             model.setContact(contactField.getText().trim());
             listener.onEditSupplier(model);
          } 
+         if (isViewPurpose) {
+             //TODO::nothing
+         }
          
     }
 

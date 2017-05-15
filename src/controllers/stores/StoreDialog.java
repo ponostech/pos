@@ -50,6 +50,7 @@ public class StoreDialog extends JFXDialog{
     
     private boolean isEditPurpose;
     private boolean isCreatePurpose;
+    private boolean isViewPurpose;
     private StoreDialogListener listener;
     private Stores store;
     
@@ -80,15 +81,21 @@ public class StoreDialog extends JFXDialog{
         return this;
     }
     public StoreDialog updateStore(){   
-        this.title.setText("Update store");
+        this.title.setText("Edit Store");
         this.isEditPurpose=true;
         this.positiveBtn.setText("Update");
         return this;
     }
     public StoreDialog createStore(){
-        this.title.setText("Create");
+        this.title.setText("Create Store");
         this.isCreatePurpose=true;
         this.positiveBtn.setText("Create");
+        return this;
+    } 
+    public StoreDialog viewStore(){
+        this.title.setText("Store Info");
+        this.isViewPurpose=true;
+        this.positiveBtn.setText("Close");
         return this;
     } 
     
@@ -109,7 +116,7 @@ public class StoreDialog extends JFXDialog{
             s.setCreatedAt(new Date(System.currentTimeMillis()));
             listener.onCreate(s);
         }else{
-            
+            this.close();
         }
     }
     @FXML

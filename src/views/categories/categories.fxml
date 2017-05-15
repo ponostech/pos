@@ -10,7 +10,7 @@
 
 <fx:root id="AnchorPane" prefHeight="528.0" prefWidth="763.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton fx:id="newBtn" buttonType="RAISED" layoutX="9.0" layoutY="64.0" onAction="#onNewBtnClick" prefHeight="25.0" prefWidth="99.0" text="Add new">
+      <JFXButton fx:id="newBtn" buttonType="RAISED" layoutX="9.0" layoutY="64.0" onAction="#onNewBtnClick" prefHeight="25.0" prefWidth="133.0" ripplerFill="#440bd3" text="New Category">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
          </graphic></JFXButton>
@@ -22,8 +22,8 @@
             <TableColumn fx:id="actionCol" prefWidth="222.0" text="Actions" />
         </columns>
       </TableView>
-      <TextField layoutX="497.0" layoutY="64.0" prefHeight="25.0" prefWidth="189.0" />
-      <Button layoutX="685.0" layoutY="64.0" mnemonicParsing="false" text="Search">
+      <TextField fx:id="searchField" layoutX="497.0" layoutY="64.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
+      <Button fx:id="searchBtn" layoutX="685.0" layoutY="64.0" mnemonicParsing="false" text="Search">
          <graphic>
             <FontAwesomeIconView glyphName="SEARCH" />
          </graphic>

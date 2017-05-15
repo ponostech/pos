@@ -7,6 +7,7 @@ package controllers.users;
 
 import Messages.ConfirmationMessage;
 import Messages.UserMessage;
+import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -15,10 +16,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -48,6 +50,7 @@ import singletons.PonosExecutor;
 import tasks.users.CreateTask;
 import tasks.users.DeleteTask;
 import tasks.users.FetchAllTask;
+import tasks.users.SearchByUsernameTask;
 import tasks.users.UpdateTask;
 import util.Role;
 import static util.Role.ADMIN;
@@ -75,9 +78,13 @@ public class UsersController extends AnchorPane implements
     @FXML
     TableColumn <Void,User>actionCol;
     @FXML
-    Button newUserBtn;
+    JFXButton newUserBtn;
     @FXML
     Label noOfUserLabel;
+    @FXML
+    Button searchBtn;
+    @FXML
+    TextField searchField;
     
     private ObservableList<User>users=FXCollections.observableArrayList();
     private UserDialog userDialog;
@@ -262,6 +269,16 @@ public class UsersController extends AnchorPane implements
         users.addListener((Observable observable) -> {
             noOfUserLabel.setText(Integer.toString(users.size()));
         });
+        searchField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                   doSearch();
+            }
+        });
+//        searchField.textProperty().addListener(e->{
+//            doSearch(searchField.getText().trim());
+//            System.out.println("sratch paramameter "+searchField.getText());
+//        });
     }
 
     @Override
@@ -283,13 +300,7 @@ public class UsersController extends AnchorPane implements
             });
             return row;
         });
-//        newUserBtn.setOnKeyPressed(e->{
-//            if (e.getCode()==KeyCode.TAB) {
-//                
-//            }
-//            e.consume();
-//        });
-       
+        searchBtn.setOnAction(e->doSearch());
         
     }
 
@@ -353,5 +364,17 @@ public class UsersController extends AnchorPane implements
     @Override
     public void controlFocus() {
         newUserBtn.requestFocus();
+    }
+
+    private void doSearch() {
+        SearchByUsernameTask task=new SearchByUsernameTask();
+        task.setQuery(searchField.getText().trim());
+        task.setOnSucceeded(e->{
+            users.clear();
+            System.out.println(task.getValue());
+            users.addAll(task.getValue());
+        });
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        PonosExecutor.getInstance().getExecutor().submit(task);
     }
 }

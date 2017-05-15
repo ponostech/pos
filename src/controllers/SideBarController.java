@@ -33,6 +33,14 @@ public class SideBarController extends VBox {
         public void onCategoryMenuClick();
         public void onSupplierMenuClick();
         public void onStoreMenuClick();
+
+        public void onStockControlClick();
+
+        public void onSellMenuClick();
+
+        public void onSellHistoryMenuClick();
+
+        public void onSettingMenuClick();
     }
    
     private DashboardController dashboard;
@@ -65,6 +73,7 @@ public class SideBarController extends VBox {
     }
     
     public void displayDashBoard(){
+        listener.onDashboardMenuClick();
     }
     
     @FXML
@@ -88,6 +97,30 @@ public class SideBarController extends VBox {
     @FXML
     private void onStoreMenuClick(ActionEvent event){
         listener.onStoreMenuClick();
+    }
+     @FXML
+    public void onProductMenuClick(ActionEvent e){
+        listener.onProductMenuClick();
+    }
+    @FXML
+    private void onDashboardMenuClick(ActionEvent event){
+        listener.onDashboardMenuClick();
+    }
+    @FXML
+    private void onStockControlMenuClick(ActionEvent event){
+        listener.onStockControlClick();
+    }
+    @FXML
+    private void onSellMenuClick(ActionEvent event){
+        listener.onSellMenuClick();
+    }
+    @FXML
+    private void onSellHistoryMenuClick(ActionEvent event){
+        listener.onSellHistoryMenuClick();
+    }
+    @FXML
+    private void onSettingMenuClick(ActionEvent event){
+        listener.onSettingMenuClick();
     }
 
 }

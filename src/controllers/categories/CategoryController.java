@@ -7,14 +7,15 @@ package controllers.categories;
 
 import Messages.CategoryMessage;
 import Messages.ConfirmationMessage;
-import Messages.SupplierMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
+import controllers.users.UserDialog;
+import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -25,20 +26,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Window;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Category;
+import ponospos.entities.User;
 import singletons.PonosExecutor;
 import tasks.categories.CreateTask;
 import tasks.categories.DeleteTask;
 import tasks.categories.UpdateTask;
 import tasks.categories.FetchAllTask;
+import tasks.categories.SearchCategoryByNameTask;
+import util.Role;
 
 /**
  *
@@ -60,10 +71,15 @@ public class CategoryController extends AnchorPane implements
     private TableColumn<Category, String> descCol;
     @FXML
     private TableColumn<Category, Category> actionCol;
+    @FXML 
+    private TextField searchField;
+    @FXML
+    private Button searchBtn;
     
     private ObservableList<Category> categories=FXCollections.observableArrayList();
     private StackPane root;
     private MaskerPane mask;
+    
     
     public CategoryController(MaskerPane mask,StackPane root){
         this.root=root;
@@ -105,7 +121,7 @@ public class CategoryController extends AnchorPane implements
                         setText(null);
                         setGraphic(null);
                     }else{
-                        viewBtn.setOnAction(e->{});
+                        viewBtn.setOnAction(e->new CategoryDialog(CategoryController.this).isView().setCategory(categories.get(getIndex())).show(root));
                         editBtn.setOnAction(e->{
                             new CategoryDialog(CategoryController.this).isToUpdate(categories.get(getIndex())).show(root);
                         });
@@ -126,12 +142,30 @@ public class CategoryController extends AnchorPane implements
 
     @Override
     public void bindControls() {
-       
+       searchField.textProperty().addListener(e->{
+           doSearch();
+       });
     }
 
     @Override
     public void hookupEvent() {
-        
+        searchBtn.setOnAction(e->doSearch());
+        categoryTable.setRowFactory(p->{
+            TableRow<Category> row=new TableRow();
+            
+            row.setOnMouseClicked(e->{
+                List<Category> selectedItems=categoryTable.getSelectionModel().getSelectedItems();
+                
+                if ( e.getButton()==MouseButton.SECONDARY) {
+                    displayPopOver(e.getScreenX(),e.getScreenY(),selectedItems);
+                }else if(e.getClickCount()==2){
+                    new CategoryDialog(CategoryController.this).isView().setCategory(categories.get(row.getIndex())).show(root);
+                }else{
+                    //do nothing
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -193,5 +227,56 @@ public class CategoryController extends AnchorPane implements
         });
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
+
+    private void doSearch() {
+        SearchCategoryByNameTask task=new SearchCategoryByNameTask();
+        task.setOnSucceeded(e->{
+            categories.clear();
+            categories.addAll(task.getValue());
+        });
+        task.setName(searchField.getText().trim());
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
     
+private void displayPopOver(double x,double y,List<Category> selectedItems){
+        FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+        FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+        FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
+        
+        viewIcon.setFill(Color.CORAL);
+        editIcon.setFill(Color.CORAL);
+        delIcon.setFill(Color.CORAL);
+                
+        MenuItem view=new MenuItem("View",viewIcon);
+        MenuItem edit=new MenuItem("Edit",editIcon);
+        MenuItem del=new MenuItem("Delete",delIcon);
+        
+        ContextMenu menu=new ContextMenu();
+        
+        if (selectedItems.size()>1) {
+            menu.getItems().add(del);
+        }else{
+            menu.getItems().addAll(view,edit,del);
+        }
+        
+        view.setOnAction(e->new CategoryDialog(CategoryController.this).isView().setCategory(selectedItems.get(0)).show(root));
+        del.setOnAction(e->{
+            for (Category selectedItem : selectedItems) {
+                
+                ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE+" "
+                        + "" +selectedItem.getName());
+                d.setModel(selectedItem);
+                d.setListener(CategoryController.this);
+               d.show(root);
+                
+            }
+        });
+        edit.setOnAction(e->{
+            new CategoryDialog(CategoryController.this).isToUpdate(selectedItems.get(0)).show(root);
+        });
+        Window window = this.getScene().getWindow();
+        menu.show(window,x,y);
+    }
+
 }

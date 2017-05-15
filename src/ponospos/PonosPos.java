@@ -62,8 +62,7 @@ public class PonosPos extends Application {
         decorator.setCustomMaximize(true);        
         decorator.getStyleClass().add("bar");
         
-        this.primaryScene=new Scene(decorator,900,600);
-        this.primaryScene.setFill(null);
+        this.primaryScene=new Scene(decorator,1000,800);
         this.primaryScene.getStylesheets().addAll(
                 this.getClass().getResource("/resource/css/login.css").toExternalForm(),
                 this.getClass().getResource("/resource/css/ponos_table.css").toExternalForm(),

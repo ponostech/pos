@@ -115,6 +115,7 @@ public class UserDialog extends JFXDialog {
     }
     public void isViewPurpose(boolean val){
         this.isViewPurpose=true;
+        this.topLabel.setText("User Info");
         if (isViewPurpose) {
             disableForViewPurpose();
         }else{
@@ -124,11 +125,13 @@ public class UserDialog extends JFXDialog {
     public void isEditPurpose(boolean value){
         this.isEditPurpose=value;
         if (value) {
+            this.topLabel.setText("Edit User");
             positiveBtn.setText("Update");
             positiveBtn.disableProperty().bind(usernameField.textProperty().isEmpty());
             passwordField.setDisable(true);
             confirmPasswordField.setDisable(true);
         }else{
+            this.topLabel.setText("Create User");
             positiveBtn.setText("Create");
             positiveBtn.disableProperty().bind(
                 usernameField.textProperty().isEmpty()

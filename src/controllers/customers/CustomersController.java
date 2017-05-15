@@ -214,8 +214,7 @@ public class CustomersController extends AnchorPane implements
         FindCustomerTask task=new FindCustomerTask();
         task.setFname(searchField.getText().trim());
         task.setFname(searchField.getText().trim());
-        mask.visibleProperty().bind(task.runningProperty());
-        task.setOnFailed(c->{task.getException().printStackTrace();});
+        task.setOnFailed(c->{task.getException().printStackTrace(System.err);});
         task.setOnSucceeded(c->{
             customers.clear();
             customers.addAll(task.getValue());
@@ -291,6 +290,9 @@ public class CustomersController extends AnchorPane implements
                 noOfCustomerlabel.setText(Integer.toString(customers.size()));
             }
         });
+         searchField.textProperty().addListener(e->{
+             doSearch();
+         });
     }
     @Override
     public void hookupEvent() {
@@ -423,7 +425,7 @@ public class CustomersController extends AnchorPane implements
         private String lname;
         @Override
         protected List<Customer> call() throws Exception {
-            Thread.sleep(5000);
+           
             return CustomerJpa.findCustomerByName(fname, lname);
         } 
 

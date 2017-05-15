@@ -5,6 +5,7 @@
  */
 package singletons;
 
+import ponospos.entities.Stores;
 import ponospos.entities.User;
 
 
@@ -16,8 +17,10 @@ import ponospos.entities.User;
 public class Auth {
     private User user;
     private boolean isLogged;
+    private Stores store;
     private Auth() {
         user=new User();
+        store=new Stores();
     }
     
     public static Auth getInstance() {
@@ -43,6 +46,9 @@ public class Auth {
 
     public void setIsLogged(boolean isLogged) {
         this.isLogged = isLogged;
+    }
+    public void setLoginStore(Stores store){
+        this.store=store;
     }
     
 }

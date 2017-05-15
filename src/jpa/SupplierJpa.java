@@ -49,7 +49,7 @@ public class SupplierJpa {
         System.out.println("alll supplier:"+resultList);
         return resultList;
     }
-    public static List findCustomerByName(String name  ){
+    public static List findSupplierByName(String name){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         List<Supplier> founds = em.createNamedQuery("Supplier.findByName", Supplier.class)
                 .setParameter("name", name+"%")

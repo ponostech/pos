@@ -9,6 +9,10 @@ import Messages.ProfileMessage;
 import Messages.RoleMessage;
 import controllers.categories.CategoryController;
 import controllers.customers.CustomersController;
+import controllers.products.ProductController;
+import controllers.products.StockControlController;
+import controllers.sales.SellController;
+import controllers.sales.SellHistoryController;
 import controllers.stores.StoresController;
 import controllers.suppliers.SuppliersController;
 import controllers.users.ProfileDialog;
@@ -67,7 +71,11 @@ public class MainController extends StackPane
     BorderPane layoutContainer;
     MaskerPane mask;
     
-    
+    private SettingController settingController;
+    private SellHistoryController sellHistoryController;
+    private SellController sellController;
+    private StockControlController stockController;
+    private ProductController productController;
     private SuppliersController supplierController;
     private DashboardController dashboard;
     private SideBarController sideBar;
@@ -108,21 +116,35 @@ public class MainController extends StackPane
     public void initDependencies(){
         this.sideBar=new SideBarController();
         this.sideBar.setListener(this);        
-        this.dashboard=new DashboardController(mask);
+        this.settingController=new SettingController(mask,this);
+        this.dashboard=new DashboardController(mask,this);
         this.userController=new UsersController(mask,this);
         this.customerController=new CustomersController(mask,this);
         this.supplierController=new SuppliersController(mask, this);
         this.categoryController=new CategoryController(mask,this);
         this.storeController=new StoresController(mask,this);
+        this.productController=new ProductController(mask,this);
+        this.stockController=new StockControlController(mask, this);
+        this.sellController=new SellController(mask,this);
+        this.sellHistoryController=new SellHistoryController(mask,this);
         this.layoutContainer.setLeft(sideBar);
         
+        this.sellHistoryController.initDependencies();
+        this.sellController.initDependencies();
+        this.stockController.initDependencies();
+        this.stockController.initDependencies();
         this.userController.initDependencies();
         this.customerController.initDependencies();
         this.supplierController.initDependencies();
         this.categoryController.initDependencies();
+        this.productController.initDependencies();
     }
     @Override
     public void initControls(){
+        this.sellHistoryController.initControls();
+        this.sellController.initControls();
+        this.stockController.initControls();
+        this.productController.initControls();
         this.userController.initControls();
         this.customerController.initControls();
         this.supplierController.initControls();
@@ -133,19 +155,27 @@ public class MainController extends StackPane
     @Override
     public void hookupEvent() {
         
+        sellHistoryController.hookupEvent();
+        sellController.hookupEvent();
         userController.hookupEvent();
         this.customerController.hookupEvent();
         this.supplierController.hookupEvent();
         this.categoryController.hookupEvent();
         this.storeController.hookupEvent();
+        this.productController.hookupEvent();
+        this.stockController.hookupEvent();
     }
     @Override
     public void bindControls(){
+        this.sellHistoryController.bindControls();
+        this.sellController.bindControls();
+        this.stockController.bindControls();
         this.userController.bindControls();
         this.customerController.bindControls();
         this.supplierController.bindControls();
         this.categoryController.bindControls();
         this.storeController.bindControls();
+        this.productController.bindControls();
     }
 
     @Override
@@ -220,6 +250,7 @@ public class MainController extends StackPane
         app.displayLoginScreen();
     }
     
+    
     public void greetUser(){
         label.setText(Auth.getInstance().getUser().getUsername());
     }
@@ -229,6 +260,8 @@ public class MainController extends StackPane
         userController.controlFocus();
         customerController.controlFocus();
         supplierController.controlFocus();
+        categoryController.controlFocus();
+        productController.controlFocus();
     }
 
     
@@ -246,13 +279,37 @@ public class MainController extends StackPane
 
     @Override
     public void onProductMenuClick() {
-        
+        switchScreen(productController);
+        productController.fetchAllProducts();
     }
 
     @Override
     public void onStoreMenuClick() {
         switchScreen(storeController);
         storeController.fetchAllStores();
+    }
+
+    @Override
+    public void onStockControlClick() {
+        switchScreen(stockController);
+        stockController.fetchStock();
+    }
+
+    @Override
+    public void onSellMenuClick() {
+        switchScreen(sellController);
+        sellController.fetchAll();
+    }
+
+    @Override
+    public void onSellHistoryMenuClick() {
+        switchScreen(sellHistoryController);
+        sellHistoryController.fetchAll();
+    }
+
+    @Override
+    public void onSettingMenuClick() {
+        switchScreen(settingController);
     }
 
        

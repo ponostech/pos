@@ -127,8 +127,9 @@ public class CustomerDialog extends JFXDialog{
     
     public void setIsViewPurpose(boolean tobeTrue){
         this.isViewPurpose=tobeTrue;
+        
         if (isViewPurpose) {
-            topLabel.setText("User info");
+            topLabel.setText("Customer info");
             saveButton.setVisible(false);
             
         }
@@ -157,6 +158,7 @@ public class CustomerDialog extends JFXDialog{
         this.listener = listener;
     }
     void setEditPurpose(boolean b) {
+        topLabel.setText("Edit Customer");
        this.isEditPurpose=b;
     }
     

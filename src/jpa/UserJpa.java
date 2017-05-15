@@ -58,5 +58,12 @@ public class UserJpa {
                 .getSingleResult();
         return user;
     }
+     public static List searchByUsername(String username)throws Exception{
+        EntityManager em=JpaSingleton.getInstance().getEntityManager();
+        List<User> users = em.createNamedQuery("User.findByUsername",User.class)
+                .setParameter("uname",username+"%")
+                .getResultList();
+        return users;
+    }
     
 }

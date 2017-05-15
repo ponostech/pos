@@ -10,9 +10,12 @@ import Messages.StoreMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
+import controllers.users.UserDialog;
+import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -23,21 +26,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Window;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Stores;
+import ponospos.entities.User;
 import singletons.PonosExecutor;
 import tasks.stores.CreateTask;
 import tasks.stores.DeleteTask;
 import tasks.stores.FetchAllTask;
+import tasks.stores.FindStoreByNameTask;
 import tasks.stores.UpdateTask;
+import util.Role;
 
 /**
  * FXML Controller class
@@ -104,6 +116,10 @@ public class StoresController extends AnchorPane implements
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
 
+    /**
+     *save the store info to database and then add an instance into list
+     * @param store
+     */
     @Override
     public void onCreate(Stores store) {
         CreateTask task=new CreateTask();
@@ -139,7 +155,7 @@ public class StoresController extends AnchorPane implements
     public void initControls() {
         storeTables.setItems(stores);
         idCol.setCellValueFactory(e->new SimpleObjectProperty(e.getValue().getId()));
-        nameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getAddress()));
+        nameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getName()));
         addressCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getAddress()));
         actionCols.setCellFactory((TableColumn<Stores, Stores> param) -> 
             new TableCell<Stores,Stores>(){
@@ -157,6 +173,7 @@ public class StoresController extends AnchorPane implements
                         setGraphic(null);
                     }else{
                         viewBtn.setOnAction(e->{
+                            new StoreDialog(StoresController.this).model(stores.get(getIndex())).viewStore().show(root);
                         });
                         editBtn.setOnAction(e->{
                             new StoreDialog(StoresController.this).model(stores.get(getIndex())).updateStore().show(root);
@@ -178,10 +195,32 @@ public class StoresController extends AnchorPane implements
 
     @Override
     public void bindControls() {
+        searchField.textProperty().addListener(e->doSearch());
     }
 
+    /**
+     *
+     */
     @Override
     public void hookupEvent() {
+        searchBtn.setOnAction(e->doSearch());
+        storeTables.setRowFactory(c->{
+            TableRow<Stores> row = new TableRow<Stores>();
+            row.setOnMouseClicked(e->{
+                 List<Stores> selectedItems=storeTables.getSelectionModel().getSelectedItems();
+                if (e.getClickCount()==2) {
+                    new StoreDialog(StoresController.this).model(stores.get(row.getIndex())).viewStore().show(root);
+                }
+                else if (e.getButton()==MouseButton.SECONDARY) {
+                    displayPopOver(e.getScreenX(),e.getScreenY(),selectedItems);
+
+                }else{
+                    //TODO::nothing
+                }
+            });
+            return row;
+            
+        });
     }
 
     @Override
@@ -197,6 +236,58 @@ public class StoresController extends AnchorPane implements
             stores.addAll(task.getValue());
         });
         PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+
+    private void doSearch() {
+        FindStoreByNameTask task=new FindStoreByNameTask();
+        task.setParam(searchField.getText().trim());
+        task.setOnSucceeded(e->{
+            stores.clear();
+            stores.addAll(task.getValue());
+        });
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+
+    private void displayPopOver(double x, double y, List<Stores> selectedItems) {
+        FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+        FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+        FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
+        
+        viewIcon.setFill(Color.CORAL);
+        editIcon.setFill(Color.CORAL);
+        delIcon.setFill(Color.CORAL);
+                
+        MenuItem view=new MenuItem("View",viewIcon);
+        MenuItem edit=new MenuItem("Edit",editIcon);
+        MenuItem del=new MenuItem("Delete",delIcon);
+        
+        ContextMenu menu=new ContextMenu();
+        
+        if (selectedItems.size()>1) {
+            menu.getItems().add(del);
+        }else{
+            menu.getItems().addAll(view,edit,del);
+        }
+        
+        view.setOnAction(e->{
+            new StoreDialog(StoresController.this).model(selectedItems.get(0)).viewStore().show(root);
+        });
+        del.setOnAction(e->{
+                for (Stores selectedItem : selectedItems) {
+                
+                    ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE+" "
+                        + "" +selectedItem.getName());
+                    d.setModel(selectedItem);
+                    d.setListener(StoresController.this);
+                    d.show(root);
+                }
+            });
+        edit.setOnAction(e->{
+             new StoreDialog(StoresController.this).model(selectedItems.get(0)).updateStore().show(root);
+        });
+        Window window = this.getScene().getWindow();
+        menu.show(window,x,y);
     }
     
     
