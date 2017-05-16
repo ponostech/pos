@@ -41,6 +41,8 @@ public class SideBarController extends VBox {
         public void onSellHistoryMenuClick();
 
         public void onSettingMenuClick();
+
+        public void onInvoiceClick();
     }
    
     private DashboardController dashboard;
@@ -121,6 +123,10 @@ public class SideBarController extends VBox {
     @FXML
     private void onSettingMenuClick(ActionEvent event){
         listener.onSettingMenuClick();
+    }
+    @FXML
+    private void onInvoiceMenuClick(ActionEvent event){
+        listener.onInvoiceClick();
     }
 
 }

@@ -9,6 +9,7 @@ import Messages.ProfileMessage;
 import Messages.RoleMessage;
 import controllers.categories.CategoryController;
 import controllers.customers.CustomersController;
+import controllers.invoices.InvoiceController;
 import controllers.products.ProductController;
 import controllers.products.StockControlController;
 import controllers.sales.SellController;
@@ -71,6 +72,7 @@ public class MainController extends StackPane
     BorderPane layoutContainer;
     MaskerPane mask;
     
+    private InvoiceController invoiceController;
     private SettingController settingController;
     private SellHistoryController sellHistoryController;
     private SellController sellController;
@@ -116,6 +118,7 @@ public class MainController extends StackPane
     public void initDependencies(){
         this.sideBar=new SideBarController();
         this.sideBar.setListener(this);        
+        this.invoiceController=new InvoiceController(mask,this);
         this.settingController=new SettingController(mask,this);
         this.dashboard=new DashboardController(mask,this);
         this.userController=new UsersController(mask,this);
@@ -129,6 +132,7 @@ public class MainController extends StackPane
         this.sellHistoryController=new SellHistoryController(mask,this);
         this.layoutContainer.setLeft(sideBar);
         
+        this.invoiceController.initDependencies();
         this.sellHistoryController.initDependencies();
         this.sellController.initDependencies();
         this.stockController.initDependencies();
@@ -141,6 +145,7 @@ public class MainController extends StackPane
     }
     @Override
     public void initControls(){
+        this.invoiceController.initControls();
         this.sellHistoryController.initControls();
         this.sellController.initControls();
         this.stockController.initControls();
@@ -155,6 +160,7 @@ public class MainController extends StackPane
     @Override
     public void hookupEvent() {
         
+        invoiceController.hookupEvent();
         sellHistoryController.hookupEvent();
         sellController.hookupEvent();
         userController.hookupEvent();
@@ -167,6 +173,7 @@ public class MainController extends StackPane
     }
     @Override
     public void bindControls(){
+        this.invoiceController.bindControls();
         this.sellHistoryController.bindControls();
         this.sellController.bindControls();
         this.stockController.bindControls();
@@ -311,6 +318,13 @@ public class MainController extends StackPane
     public void onSettingMenuClick() {
         switchScreen(settingController);
     }
+
+    @Override
+    public void onInvoiceClick() {
+        switchScreen(invoiceController);
+        invoiceController.fetchAll();
+    }
+    
 
        
     

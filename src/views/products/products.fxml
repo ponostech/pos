@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-
-<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="AnchorPane" prefHeight="532.0" prefWidth="784.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="327.0" layoutY="136.0" text="Product" />
+      <Label layoutX="239.0" layoutY="14.0" text="Product" />
+      <HBox layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="760.0" style="-fx-background-color: yellow;" />
+      <JFXButton layoutX="14.0" layoutY="125.0" text="New Product">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+         </graphic>
+      </JFXButton>
+      <JFXComboBox labelFloat="true" layoutX="168.0" layoutY="125.0" prefHeight="25.0" prefWidth="274.0" promptText="Category" />
+      <Button layoutX="442.0" layoutY="125.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Filter">
+         <graphic>
+            <FontAwesomeIconView glyphName="FILTER" />
+         </graphic>
+      </Button>
+      <TableView layoutX="23.0" layoutY="177.0" prefHeight="305.0" prefWidth="745.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="ID" />
+          <TableColumn prefWidth="75.0" text="PRODUCT PRIZE" />
+            <TableColumn prefWidth="75.0" text="SELLING PRIZE" />
+            <TableColumn prefWidth="75.0" text="CREATED AT" />
+            <TableColumn prefWidth="75.0" text="ADDED BY" />
+        </columns>
+      </TableView>
    </children>
 </fx:root>

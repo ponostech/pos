@@ -75,16 +75,19 @@
             <FontAwesomeIconView fill="#9fbf0f" glyphName="SHOPPING_BAG" size="28" />
          </graphic>
       </MenuButton>
-      <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSettingMenuClick" prefHeight="50.0" prefWidth="90.0" styleClass="side-menu" text="Setting">
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefWidth="90.0" styleClass="side-menu" text="Invoice">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#onInvoiceMenuClick" text="Invoices" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+         <graphic>
+            <FontAwesomeIconView fill="#6c8320" glyphName="AREA_CHART" size="28" />
+         </graphic>
+      </MenuButton>
+      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSettingMenuClick" popupSide="RIGHT" prefWidth="90.0" styleClass="side-menu" text="Setting">
          <graphic>
             <FontAwesomeIconView fill="#bfb9b9" glyphName="GEAR" size="28" />
          </graphic>
-         <padding>
-            <Insets right="15.0" />
-         </padding>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Button>
+      </MenuButton>
    </children>
 </fx:root>

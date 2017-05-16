@@ -1,11 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" >
-    
+<AnchorPane id="AnchorPane" prefHeight="637.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProductDialog">
+   <children>
+      <VBox fx:id="container" layoutX="15.0" layoutY="153.0" prefHeight="413.0" prefWidth="367.0" spacing="20.0">
+         <children>
+            <JFXTextField fx:id="nameField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Product/Model name" />
+            <JFXTextField fx:id="barcodeField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Barcode" />
+            <JFXTextField fx:id="costPriceField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Cost price" />
+            <JFXTextField fx:id="sellingPriceField" prefHeight="25.0" prefWidth="330.0" promptText="Selling price" />
+            <JFXTextArea fx:id="descriptionField" labelFloat="true" prefHeight="58.0" prefWidth="330.0" promptText="Description" />
+            <JFXToggleButton fx:id="activateToggle" selected="true" text="Active" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Pane prefHeight="131.0" prefWidth="398.0" styleClass="top-pane">
+         <children>
+            <ImageView fitHeight="81.0" fitWidth="50.0" layoutX="174.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/product.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="title" alignment="CENTER" layoutY="98.0" prefHeight="17.0" prefWidth="398.0" styleClass="h2" text="Label" />
+            <MaterialDesignIconView fx:id="close" fill="#e80a0a" glyphName="CLOSE" layoutX="357.0" layoutY="35.0" size="28" />
+         </children>
+      </Pane>
+      <JFXButton fx:id="positiveBtn" layoutX="34.0" layoutY="586.0" onAction="#onPositiveBtnClick" text="Create">
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="negativeBtn" layoutX="298.0" layoutY="586.0" onAction="#onNegativeBtnClick" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+   </children>
 </AnchorPane>
