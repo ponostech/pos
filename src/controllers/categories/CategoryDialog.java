@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,8 +37,6 @@ import ponospos.entities.Variation;
  * @author Sawmtea
  */
 public class CategoryDialog  extends JFXDialog{
-
-   
     public interface CategoryDialogListener{
         public void onCreate(Category category);
         public void onUpdate(Category category);
@@ -167,6 +166,7 @@ public class CategoryDialog  extends JFXDialog{
          HBox hb=new HBox(10);
          
          Label nameLabel=new Label();
+         nameLabel.setAlignment(Pos.BOTTOM_RIGHT);
          nameLabel.setMaxSize(200, 20);
          HBox.setHgrow(nameLabel, Priority.ALWAYS);
          

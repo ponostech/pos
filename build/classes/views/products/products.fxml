@@ -9,12 +9,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import org.controlsfx.control.NotificationPane?>
 
-<fx:root id="AnchorPane" prefHeight="532.0" prefWidth="784.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="AnchorPane" prefHeight="532.0" prefWidth="977.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="239.0" layoutY="14.0" text="Product" />
       <HBox layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="760.0" style="-fx-background-color: yellow;" />
-      <JFXButton layoutX="14.0" layoutY="125.0" text="New Product">
+      <JFXButton fx:id="newProductbtn" buttonType="RAISED" layoutX="14.0" layoutY="125.0" onAction="#onNewProductBtnClick" text="New Product">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
          </graphic>
@@ -25,14 +26,16 @@
             <FontAwesomeIconView glyphName="FILTER" />
          </graphic>
       </Button>
-      <TableView layoutX="23.0" layoutY="177.0" prefHeight="305.0" prefWidth="745.0">
+      <TableView fx:id="productTable" layoutX="23.0" layoutY="177.0" prefHeight="305.0" prefWidth="911.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
-          <TableColumn prefWidth="75.0" text="PRODUCT PRIZE" />
-            <TableColumn prefWidth="75.0" text="SELLING PRIZE" />
-            <TableColumn prefWidth="75.0" text="CREATED AT" />
-            <TableColumn prefWidth="75.0" text="ADDED BY" />
+          <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="nameCol" prefWidth="171.0" text="MODEL/PRODUCT NAME" />
+            <TableColumn fx:id="prizeCol" prefWidth="179.0" text="SELLING PRICE" />
+            <TableColumn fx:id="activeCol" prefWidth="83.0" text="ACTIVE" />
+            <TableColumn fx:id="addedbyCol" minWidth="7.0" prefWidth="112.0" text="ADDED BY" />
+            <TableColumn fx:id="actionCols" prefWidth="275.0" text="ACTIONS" />
         </columns>
       </TableView>
+      <NotificationPane />
    </children>
 </fx:root>

@@ -32,7 +32,7 @@
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <JFXTextField fx:id="usernameField" focusColor="#3610e3" labelFloat="true" prefColumnCount="15" prefHeight="35.0" promptText="Username" styleClass="log-box" unFocusColor="#2e2d32">
+            <JFXTextField fx:id="usernameField" focusColor="#e31220" labelFloat="true" prefColumnCount="15" prefHeight="35.0" promptText="Username" styleClass="log-box" unFocusColor="#b5b00e">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -40,12 +40,12 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </JFXTextField>
-            <JFXPasswordField fx:id="passwordField" focusColor="#0d1ae0" labelFloat="true" prefColumnCount="15" prefHeight="35.0" prefWidth="300.0" promptText="Password" styleClass="log-box" unFocusColor="#58565b">
+            <JFXPasswordField fx:id="passwordField" focusColor="#de0d2d" labelFloat="true" prefColumnCount="15" prefHeight="35.0" prefWidth="300.0" promptText="Password" styleClass="log-box" unFocusColor="#d7af0f">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </JFXPasswordField>
-            <JFXComboBox fx:id="storesCombo" labelFloat="true" prefHeight="25.0" prefWidth="317.0" promptText="Select store " styleClass="log-box" visibleRowCount="4" />
+            <JFXComboBox fx:id="storesCombo" focusColor="#eb1745" labelFloat="true" prefHeight="25.0" prefWidth="317.0" promptText="Select store " styleClass="log-box" unFocusColor="#f2b80b" visibleRowCount="4" />
             <HBox alignment="CENTER" spacing="60.0">
                <children>
                   <JFXButton id="login-btn" fx:id="loginButton" buttonType="RAISED" defaultButton="true" graphicTextGap="6.0" prefWidth="100.0" ripplerFill="#9eb918" text="login">

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
@@ -14,41 +16,77 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="637.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProductDialog">
+<AnchorPane id="AnchorPane" prefHeight="624.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="container" layoutX="15.0" layoutY="153.0" prefHeight="413.0" prefWidth="367.0" spacing="20.0">
+      <VBox layoutX="17.0" layoutY="172.0" prefHeight="413.0" prefWidth="312.0" spacing="20.0">
          <children>
-            <JFXTextField fx:id="nameField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Product/Model name" />
-            <JFXTextField fx:id="barcodeField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Barcode" />
-            <JFXTextField fx:id="costPriceField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Cost price" />
-            <JFXTextField fx:id="sellingPriceField" prefHeight="25.0" prefWidth="330.0" promptText="Selling price" />
-            <JFXTextArea fx:id="descriptionField" labelFloat="true" prefHeight="58.0" prefWidth="330.0" promptText="Description" />
+            <JFXComboBox fx:id="categoryCombo" labelFloat="true" prefHeight="25.0" prefWidth="346.0" promptText="Select category">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </JFXComboBox>
+            <JFXTextField fx:id="nameField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Product/Model name">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="barcodeField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Barcode">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="costPriceField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="Cost price">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="sellingPriceField" labelFloat="true" prefHeight="25.0" prefWidth="330.0" promptText="MRP">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXCheckBox fx:id="taxIncludeCheck" selected="true" text="Include of all Tax" />
+            <JFXTextArea fx:id="descriptionField" labelFloat="true" prefHeight="58.0" prefWidth="330.0" promptText="Description">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </JFXTextArea>
             <JFXToggleButton fx:id="activateToggle" selected="true" text="Active" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <Pane prefHeight="131.0" prefWidth="398.0" styleClass="top-pane">
+      <Pane prefHeight="131.0" prefWidth="692.0" styleClass="top-pane">
          <children>
-            <ImageView fitHeight="81.0" fitWidth="50.0" layoutX="174.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="81.0" fitWidth="50.0" layoutX="321.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../resource/icons/product.png" />
                </image>
             </ImageView>
-            <Label fx:id="title" alignment="CENTER" layoutY="98.0" prefHeight="17.0" prefWidth="398.0" styleClass="h2" text="Label" />
-            <MaterialDesignIconView fx:id="close" fill="#e80a0a" glyphName="CLOSE" layoutX="357.0" layoutY="35.0" size="28" />
+            <Label fx:id="title" alignment="CENTER" layoutY="98.0" prefHeight="25.0" prefWidth="692.0" styleClass="h2" text="Label" />
+            <MaterialDesignIconView fx:id="close" fill="#e80a0a" glyphName="CLOSE" layoutX="652.0" layoutY="34.0" size="28" />
          </children>
       </Pane>
-      <JFXButton fx:id="positiveBtn" layoutX="34.0" layoutY="586.0" onAction="#onPositiveBtnClick" text="Create">
+      <JFXButton fx:id="positiveBtn" layoutX="202.0" layoutY="586.0" onAction="#onPositiveBtnClick" text="Create">
          <graphic>
             <FontAwesomeIconView glyphName="SAVE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="negativeBtn" layoutX="298.0" layoutY="586.0" onAction="#onNegativeBtnClick" text="Cancel">
+      <JFXButton fx:id="negativeBtn" layoutX="464.0" layoutY="586.0" onAction="#onNegativeBtnClick" text="Cancel">
          <graphic>
             <FontAwesomeIconView glyphName="CLOSE" />
          </graphic>
       </JFXButton>
+      <Label layoutX="493.0" layoutY="136.0" styleClass="h3" text="Details" />
+      <VBox fx:id="container" alignment="TOP_CENTER" layoutX="355.0" layoutY="167.0" prefHeight="413.0" prefWidth="312.0" spacing="20.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Label layoutX="144.0" layoutY="136.0" styleClass="h3" text="Product Info" />
    </children>
 </AnchorPane>

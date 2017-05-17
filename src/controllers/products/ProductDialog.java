@@ -5,12 +5,41 @@
  */
 package controllers.products;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import ponospos.entities.Attribute;
+import ponospos.entities.Category;
+import ponospos.entities.Product;
+import ponospos.entities.Variation;
+import singletons.Auth;
 
 /**
  * FXML Controller class
@@ -19,15 +48,45 @@ import javafx.scene.layout.Region;
  */
 public class ProductDialog extends JFXDialog {
     public interface ProductDialogListener{
-        //public void onCreate(Product product);
-        //public void onUpdate(Product product);
+        public void onCreate(Product product);
+        public void onUpdate(Product product);
     }
+
+    @FXML
+    private VBox container;
+    @FXML
+    private JFXComboBox<Category>categoryCombo;
+    @FXML
+    private JFXTextField nameField;
+    @FXML
+    private JFXTextField barcodeField;
+    @FXML
+    private JFXTextField costPriceField;
+    @FXML
+    private JFXTextField sellingPriceField;
+    @FXML
+    private JFXCheckBox taxIncludeCheck;
+    @FXML
+    private JFXTextArea descriptionField;
+    @FXML
+    private JFXToggleButton activateToggle;
+    @FXML
+    private Label title;
+    @FXML
+    private MaterialDesignIconView close;
+    @FXML
+    private JFXButton positiveBtn;
+    @FXML
+    private JFXButton negativeBtn;
+
+   
     
     private boolean isView;
     private boolean isCreate;
     private boolean isEdit;
     private ProductDialogListener listener;
-    
+    private ObservableList categories=FXCollections.observableArrayList();
+    private List<Attribute> attributes=new ArrayList<>();
     public ProductDialog(ProductDialogListener listener){
         try {
             this.listener=listener;
@@ -36,6 +95,25 @@ public class ProductDialog extends JFXDialog {
             loader.setController(this);
             Region region = loader.load();
             this.setContent(region);
+            this.setOnDialogOpened(e->categoryCombo.requestFocus());
+            this.categoryCombo.setItems(categories);
+            this.categoryCombo.setOnAction(e->{
+                Category cat=categoryCombo.getSelectionModel().getSelectedItem();
+                container.getChildren().clear();
+                generateControlsByVariation(cat.getVariations());
+            });
+            this.close.setOnMouseClicked(e->ProductDialog.this.close());
+            this.sellingPriceField.setOnKeyReleased(e->{
+                clearIfTextInparseable(sellingPriceField);
+            });
+            this.costPriceField.setOnKeyReleased(e->{
+                clearIfTextInparseable(costPriceField);
+            });
+           
+            positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty()
+            .or(sellingPriceField.textProperty().isEmpty()
+            )
+            );
         } catch (IOException ex) {
             Logger.getLogger(ProductDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,7 +134,106 @@ public class ProductDialog extends JFXDialog {
         
         return this;
     }
-   
     
+    public void setCategories(ObservableList<Category> cat){
+        this.categories.clear();
+        this.categories.addAll(cat);
+    }
+    
+    
+    private void generateControlsByVariation(List<Variation> var){
+        
+        Set<String> names=getDistinctVariationName(var);
+        
+        for (String name : names) {
+            
+            ObservableList<String> items=FXCollections.observableArrayList();
+            JFXComboBox <String> optionsBox=new JFXComboBox(items);
+            optionsBox.setPromptText(name);
+            optionsBox.setPrefSize(350, USE_PREF_SIZE);
+            optionsBox.setPadding(new Insets(5));
+            
+            optionsBox.setLabelFloat(true);
+            VBox.setVgrow(optionsBox, Priority.ALWAYS);
+            optionsBox.setOnAction(e->{
+                Attribute attr=new Attribute();
+                attr.setName(name);
+                attr.setValue(optionsBox.getSelectionModel().getSelectedItem());
+               
+                attributes.add(attr);
+            });
+            for(String val:extractVariationValuesByName(var,name)){
+                items.add(val);
+            }
+            if (!items.isEmpty()) {
+                optionsBox.getSelectionModel().selectFirst();
+            }
+            container.getChildren().add(optionsBox);
+        }
+    }
+    private Iterable<String> extractVariationValuesByName(List<Variation> var, String name) {
+        ArrayList<String> values=new ArrayList<String>();
+        for (Variation variation : var) {
+                if (variation.getName().equalsIgnoreCase(name)) {
+                    values.add(variation.getValue());
+                }
+        }
+        return values;
+    }
+    
+    private Set<String> getDistinctVariationName(List<Variation> var) {
+        Set<String> names=new HashSet<>();
+        var.forEach((v) -> {
+            names.add(v.getName());
+        });
+        return names;
+    }
+    
+   @FXML
+    private void onPositiveBtnClick(ActionEvent event) {
+        if (isCreate) {
+           Product p=new Product();
+           p.setName(nameField.getText().trim());
+           p.setBarcode(barcodeField.getText().trim());
+           p.setDescription(descriptionField.getText().trim());
+            if (categoryCombo.getSelectionModel().getSelectedItem()!=null) {
+                p.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
+            }
+            if (costPriceField.getText().isEmpty()) {
+                p.setCostPrice(BigDecimal.ZERO);
+            }else{
+                p.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
+            }
+            p.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
+            p.setCreatedAt(new Date(System.currentTimeMillis()));
+            p.setIsIncludeTax(taxIncludeCheck.isSelected());
+            p.setIsActive(activateToggle.isSelected());
+            p.setAddedBy(Auth.getInstance().getUser());
+            p.setAttributes(attributes);
+//            for(Attribute attr:attributes){
+//                attr.setProduct(p);
+//            }
+            this.close();
+            listener.onCreate(p);
+       }else if (isEdit) {
+           
+       }else{
+           
+       }
+        
+    }
+
+    @FXML
+    private void onNegativeBtnClick(ActionEvent event) {
+        categories=null;
+        this.close();
+    }
+     private void clearIfTextInparseable(JFXTextField field){
+        try{
+            Double.parseDouble(field.getText());
+        }catch(NumberFormatException e){
+            field.clear();
+        }
+    }
     
 }

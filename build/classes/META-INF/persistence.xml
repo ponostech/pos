@@ -8,6 +8,8 @@
     <class>ponospos.entities.Category</class>
     <class>ponospos.entities.Stores</class>
     <class>ponospos.entities.Variation</class>
+    <class>ponospos.entities.Attribute</class>
+    <class>ponospos.entities.Product</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ponospos?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
