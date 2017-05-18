@@ -89,8 +89,8 @@ public class Product implements Serializable {
     private boolean isActive;
     
     @Basic(optional=false)
-    @Column(name="is_tax_include")
-    private boolean isIncludeTax;
+    @Column(name="tax_include")
+    private boolean includeTax;
     
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="added_by",nullable = true)
@@ -149,6 +149,7 @@ public class Product implements Serializable {
     public String getDescription() {
         return description;
     }
+    
 
     public void setDescription(String description) {
         this.description = description;
@@ -218,14 +219,15 @@ public class Product implements Serializable {
         this.attributes = attributes;
     }
 
-    public boolean isIsIncludeTax() {
-        return isIncludeTax;
+    public boolean isIncludeTax() {
+        return includeTax;
     }
 
-    public void setIsIncludeTax(boolean isIncludeTax) {
-        this.isIncludeTax = isIncludeTax;
+    public void setIncludeTax(boolean includeTax) {
+        this.includeTax = includeTax;
     }
 
+    
     
     
     @Override

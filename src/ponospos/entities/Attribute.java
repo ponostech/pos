@@ -49,7 +49,7 @@ public class Attribute implements Serializable {
     @Column(name = "value")
     private String value;
     
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="product_id")
     private Product product;
 

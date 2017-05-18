@@ -47,6 +47,8 @@ import singletons.Auth;
  * @author Sawmtea
  */
 public class ProductDialog extends JFXDialog {
+
+   
     public interface ProductDialogListener{
         public void onCreate(Product product);
         public void onUpdate(Product product);
@@ -80,7 +82,7 @@ public class ProductDialog extends JFXDialog {
     private JFXButton negativeBtn;
 
    
-    
+    private Product product;
     private boolean isView;
     private boolean isCreate;
     private boolean isEdit;
@@ -131,7 +133,29 @@ public class ProductDialog extends JFXDialog {
     }
     public ProductDialog isEdit(){
         this.isEdit=true;
+        if (product.getCategory()!=null) {
+            categoryCombo.getSelectionModel().select(product.getCategory());
+        }
+        nameField.setText(product.getName());
+        barcodeField.setText(product.getBarcode());
+        descriptionField.setText(product.getDescription());
+        activateToggle.setSelected(product.getIsActive());
+        costPriceField.setText(Double.toString(product.getCostPrice().doubleValue()));
+        sellingPriceField.setText(Double.toString(product.getSellingPrice().doubleValue()));
+        taxIncludeCheck.setSelected(product.isIncludeTax());
         
+       
+        if (product.getAttributes()!=null
+                && product.getCategory()!=null
+                && !product.getCategory().getVariations().isEmpty()) {
+            List<Attribute> attrs = product.getAttributes();
+            List<Variation> variations = product.getCategory().getVariations();
+            
+            generateControlsByAttributes(product);
+        }
+        
+        this.positiveBtn.setText("Update");
+        this.title.setText("Edit product");
         return this;
     }
     
@@ -139,14 +163,54 @@ public class ProductDialog extends JFXDialog {
         this.categories.clear();
         this.categories.addAll(cat);
     }
+    public void setProduct(Product product){
+        this.product=product;
+    }
     
+     private void generateControlsByAttributes(Product p) {
+         container.getChildren().clear();
+        List<Variation> variations = p.getCategory().getVariations();
+        attributes = p.getAttributes();
+        Set<String> distinctName=getDistinctVariationName(variations);
+         for (String name : distinctName) {
+             
+             ObservableList<String> items=FXCollections.observableArrayList();
+            JFXComboBox <String> optionsBox=new JFXComboBox(items);
+            optionsBox.setPromptText(name);
+            optionsBox.setPrefSize(350, USE_PREF_SIZE);
+            optionsBox.setPadding(new Insets(5));
+            optionsBox.setLabelFloat(true);
+            VBox.setVgrow(optionsBox, Priority.ALWAYS);
+
+            optionsBox.setOnAction(e->{
+                for (Attribute attr : attributes) {
+                    String selectedItem = optionsBox.getSelectionModel().getSelectedItem();
+                    if (attr.getName().equalsIgnoreCase(name)) {
+                        attr.setValue(selectedItem);
+                        
+                    }
+                }
+            });
+            
+            for(String val:extractVariationValuesByName(variations,name)){
+                items.add(val);
+            }
+             for (Attribute attr:attributes) {
+                 if (attr.getName().equalsIgnoreCase(name)) {
+                     optionsBox.getSelectionModel().select(attr.getValue());
+                 }
+             }
+             container.getChildren().add(optionsBox);
+             
+         }
+     }
+     
     
     private void generateControlsByVariation(List<Variation> var){
         
         Set<String> names=getDistinctVariationName(var);
         
         for (String name : names) {
-            
             ObservableList<String> items=FXCollections.observableArrayList();
             JFXComboBox <String> optionsBox=new JFXComboBox(items);
             optionsBox.setPromptText(name);
@@ -159,15 +223,12 @@ public class ProductDialog extends JFXDialog {
                 Attribute attr=new Attribute();
                 attr.setName(name);
                 attr.setValue(optionsBox.getSelectionModel().getSelectedItem());
-               
                 attributes.add(attr);
             });
             for(String val:extractVariationValuesByName(var,name)){
                 items.add(val);
             }
-            if (!items.isEmpty()) {
-                optionsBox.getSelectionModel().selectFirst();
-            }
+           
             container.getChildren().add(optionsBox);
         }
     }
@@ -206,17 +267,35 @@ public class ProductDialog extends JFXDialog {
             }
             p.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
             p.setCreatedAt(new Date(System.currentTimeMillis()));
-            p.setIsIncludeTax(taxIncludeCheck.isSelected());
+            p.setIncludeTax(taxIncludeCheck.isSelected());
             p.setIsActive(activateToggle.isSelected());
             p.setAddedBy(Auth.getInstance().getUser());
             p.setAttributes(attributes);
-//            for(Attribute attr:attributes){
-//                attr.setProduct(p);
-//            }
+            for(Attribute attr:attributes){
+                attr.setProduct(p);
+            }
             this.close();
             listener.onCreate(p);
        }else if (isEdit) {
-           
+           product.setName(nameField.getText().trim());
+           product.setBarcode(barcodeField.getText().trim());
+           product.setDescription(descriptionField.getText().trim());
+            if (categoryCombo.getSelectionModel().getSelectedItem()!=null) {
+                product.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
+            }
+            if (costPriceField.getText().isEmpty()) {
+                product.setCostPrice(BigDecimal.ZERO);
+            }else{
+                product.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
+            }
+            product.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
+            product.setIncludeTax(taxIncludeCheck.isSelected());
+            product.setIsActive(activateToggle.isSelected());
+            product.setEdittedBy(Auth.getInstance().getUser());
+            product.setAttributes(attributes);
+            this.close();
+            listener.onUpdate(product);
+            
        }else{
            
        }

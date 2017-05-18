@@ -132,6 +132,10 @@ implements PonosControllerInterface,
                             
                         });
                         editBtn.setOnAction(e->{
+                            ProductDialog p=new ProductDialog(ProductController.this);
+                            p.setProduct(products.get(getIndex()));
+                            p.setCategories(categories);
+                            p.isEdit().show(root);
                         });
                         delBtn.setOnAction(e->{
                              ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE, ConfirmationMessage.MESSAGE);
@@ -208,10 +212,12 @@ implements PonosControllerInterface,
     @Override
     public void onUpdate(Product product) {
         EditTask task=new EditTask();
-        task.setOnSucceeded(e->Notifications.create()
+        task.setOnSucceeded(e->{
+                productTable.refresh();
+                Notifications.create()
                 .title(ProductMessage.UPDATE_SUCCESS_TITLE)
                 .text(ProductMessage.UPDATE_SUCCESS_MESSAGE)
-                .showInformation());
+                .showInformation();});
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
         mask.visibleProperty().bind(task.runningProperty());
         task.setProduct(product);

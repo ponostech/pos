@@ -130,7 +130,7 @@ public class SuppliersController extends AnchorPane implements
                             new SupplierDialog(SuppliersController.this).setModels(suppliers.get(getIndex())).isView().show(root);
                         });
                         editBtn.setOnAction(e->{
-                            new SupplierDialog(SuppliersController.this).isEdit().toUpdateModel(suppliers.get(getIndex())).show(root);
+                            new SupplierDialog(SuppliersController.this).toUpdateModel(suppliers.get(getIndex())).isEdit().show(root);
                             
                         });
                         delBtn.setOnAction(e->{
