@@ -11,34 +11,25 @@ and open the template in the editor.
 .bar{
     -fx-background-color:#fff;
 }
-.bar{
-    -fx-background-color:#660000;
-}
+
 .vbox{
     -fx-background-color:#660000;
 }
 .side-bar {
-    -fx-background-color: 
-        #090a0c,
-        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-        linear-gradient(#20262b, #191d22),
-        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
-    -fx-text-fill: white;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-font-family: "Arial";
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 12px;
+     -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );  
 }
 .top-bar{
-    -fx-background-color: #000000 ;
-    -fx-text-fill: white;
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-font-family: "Arial";
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 12px;
-}
-.side-bar{
-    -fx-background-color:#000000;
 }
 
 
@@ -61,20 +52,13 @@ and open the template in the editor.
     -fx-background-color:lightgray;
 }
 /*profile menu styling*/
-.menu-button{
-    -fx-background-color:darkblue;
-}
-.menu-button.label {
-    -fx-background-color: #fff;
-    }
 
-.menu-button .arrow {
-    -fx-background-color: red;
-    }
  /*profile menu styling ends here */
  
  /* menu styling*/
 .side-menu{  
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-text-fill:#fff;
     -fx-padding: 5px;
 }
@@ -82,21 +66,26 @@ and open the template in the editor.
     -fx-text-fill: #fff;
 }
 .side-menu .arrow{
-    -fx-background-color:#fff;
+    -fx-background-color: #fff;
     -fx-text-fill:#fff;
 }
-.side-menu .menu-item{
+
+.side-menu .pane{
+    -fx-background-color: red;
     -fx-padding: 4px;
-    -fx-background-color: darkgray;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #fff;
 }
 .side-menu:hover{
+    -fx-border-style: solid inside;
     -fx-border-color:transparent transparent transparent white;
     -fx-border-width:4px;
+    -fx-background-insets: 4;
 }
 .side-menu:focused{
     -fx-border-color:transparent transparent transparent white;
     -fx-border-width:4px;
+        -fx-background-insets: 0,1,2,3;
+
 }
 
 /*end menu styling*/
@@ -160,7 +149,6 @@ and open the template in the editor.
         linear-gradient(#426ab7, #263e75),
         linear-gradient(#395cab, #223768);
     -fx-background-insets: 0,1,2,3;
-    -fx-background-radius: 3,2,2,2;
  }
  
  /*dialog interface styling end*/
@@ -178,7 +166,7 @@ and open the template in the editor.
         linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
     -fx-padding: 2px;
     -fx-text-fill:white;
-    -fx-font: 10px;
+    -fx-font-size: 10px;
     
     
 }

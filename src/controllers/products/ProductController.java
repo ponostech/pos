@@ -110,7 +110,7 @@ implements PonosControllerInterface,
             String str = NumberFormat.getCurrencyInstance(new Locale("en","in")).format(sellingPrice.doubleValue());
             return new SimpleStringProperty(str);
         });
-        activeCol.setCellValueFactory(e->new SimpleObjectProperty<Boolean>(e.getValue().getIsActive()));
+        activeCol.setCellValueFactory(e->new SimpleObjectProperty<Boolean>(e.getValue().isActive()));
         addedbyCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getAddedBy().getUsername()));
         actionCols.setCellFactory((TableColumn<Product, Product> param) -> 
             new TableCell<Product,Product>(){
@@ -188,9 +188,8 @@ implements PonosControllerInterface,
 
     @FXML
     private void onNewProductBtnClick(ActionEvent event) {
-        ProductDialog d=new ProductDialog(this);
-        d.isCreate().setCategories(categories);
-        d.show(root);
+       NewProductController p=new NewProductController();
+       p.show(root);
         
     }
 

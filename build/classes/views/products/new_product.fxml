@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="697.0" prefWidth="567.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTabPane layoutY="62.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="597.0" prefWidth="566.0" rotateGraphic="true" tabClosingPolicy="ALL_TABS">
+         <tabs>
+            <Tab text="Basic info">
+              <content>
+                <AnchorPane accessibleRole="TAB_PANE" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="765.0">
+                     <children>
+                        <JFXComboBox fx:id="categoryCombo" labelFloat="true" layoutX="99.0" layoutY="35.0" prefHeight="25.0" prefWidth="350.0" promptText="Category" />
+                        <JFXTextField fx:id="nameField" labelFloat="true" layoutX="97.0" layoutY="84.0" prefHeight="25.0" prefWidth="350.0" promptText="Model" />
+                        <JFXTextArea fx:id="descriptionField" labelFloat="true" layoutX="103.0" layoutY="140.0" prefHeight="63.0" prefWidth="350.0" promptText="Description" />
+                        <JFXComboBox fx:id="supplierField" labelFloat="true" layoutX="102.0" layoutY="236.0" prefHeight="25.0" prefWidth="350.0" promptText="Supplier" />
+                        <JFXTextField fx:id="costPriceField" labelFloat="true" layoutX="98.0" layoutY="292.0" prefHeight="25.0" prefWidth="350.0" promptText="Cost Price" />
+                        <JFXTextField fx:id="sellingPriceField" labelFloat="true" layoutX="95.0" layoutY="343.0" prefHeight="25.0" prefWidth="350.0" promptText="MRP" />
+                        <JFXCheckBox fx:id="taxIncludeCheck" checkedColor="#168a5d" layoutX="87.0" layoutY="399.0" selected="true" text="Include of All Tax" />
+                        <JFXTextField fx:id="taxField" labelFloat="true" layoutX="94.0" layoutY="426.0" prefHeight="25.0" prefWidth="350.0" promptText="Tax" />
+                        <JFXToggleButton fx:id="activeToggle" layoutX="84.0" layoutY="459.0" selected="true" text="Active" toggleColor="#139a8d" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Variant">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="newVariantBtn" layoutX="416.0" layoutY="14.0" prefHeight="25.0" prefWidth="116.0" text="New Variant">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+                           </graphic></JFXButton>
+                        <TableView fx:id="variantTable" layoutX="17.0" layoutY="285.0" prefHeight="234.0" prefWidth="520.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <VBox fx:id="variantContainer" layoutX="19.0" layoutY="56.0" prefHeight="224.0" prefWidth="517.0" style="-fx-background-color: coral;" />
+                        <JFXButton fx:id="addBtn" layoutX="19.0" layoutY="14.0" text="Add Variant">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PLUS" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </JFXTabPane>
+      <JFXButton buttonType="RAISED" layoutX="34.0" layoutY="647.0" prefHeight="27.0" prefWidth="169.0" ripplerFill="#1b36bf" text="Save">
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="366.0" layoutY="647.0" prefHeight="27.0" prefWidth="169.0" ripplerFill="#253db5" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+      <Pane prefHeight="73.0" prefWidth="567.0" styleClass="top-pane">
+         <children>
+            <Label fx:id="title" alignment="CENTER" layoutY="35.0" prefHeight="17.0" prefWidth="566.0" styleClass="h2" text="New product" />
+            <MaterialDesignIconView fx:id="closeBtn" fill="#e10e0e" glyphName="CLOSE" layoutX="531.0" layoutY="35.0" size="28" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

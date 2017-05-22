@@ -6,7 +6,9 @@
 package ponospos.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,15 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Sawmtea
  */
 @Entity
-@Table(name = "variations")
+@Table(name = "variants")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Variation.findAll", query = "SELECT v FROM Variation v")
-    , @NamedQuery(name = "Variation.findById", query = "SELECT v FROM Variation v WHERE v.id = :id")
-    , @NamedQuery(name = "Variation.findByCategories", query = "SELECT v FROM Variation v WHERE v.category = :category")
-    , @NamedQuery(name = "Variation.findByName", query = "SELECT v FROM Variation v WHERE v.name = :name")
-    , @NamedQuery(name = "Variation.findByValue", query = "SELECT v FROM Variation v WHERE v.value = :value")})
-public class Variation implements Serializable {
+    @NamedQuery(name = "Variant.findAll", query = "SELECT v FROM Variant v")
+    , @NamedQuery(name = "Variant.findById", query = "SELECT v FROM Variant v WHERE v.id = :id")
+    , @NamedQuery(name = "Variant.findByName", query = "SELECT v FROM Variant v WHERE v.name = :name")})
+public class Variant implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,26 +47,25 @@ public class Variation implements Serializable {
     @Column(name = "name")
     private String name;
     
-    @Basic(optional = false)
-    @Column(name = "value")
-    private String value;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
     
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="categories")
-    private Category category;
+    @OneToMany(mappedBy = "variant",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<VariantValue> values;
 
-    public Variation() {
+    public Variant() {
+        name="";
     }
 
-    public Variation(Integer id) {
+    public Variant(Integer id) {
         this.id = id;
     }
 
-    public Variation(Integer id, Category categories, String name, String value) {
+    public Variant(Integer id, String name, Product product) {
         this.id = id;
-        this.category = categories;
         this.name = name;
-        this.value = value;
+        this.product = product;
     }
 
     public Integer getId() {
@@ -76,16 +76,6 @@ public class Variation implements Serializable {
         this.id = id;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    
-
     public String getName() {
         return name;
     }
@@ -94,12 +84,12 @@ public class Variation implements Serializable {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -112,10 +102,10 @@ public class Variation implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Variation)) {
+        if (!(object instanceof Variant)) {
             return false;
         }
-        Variation other = (Variation) object;
+        Variant other = (Variant) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -124,7 +114,7 @@ public class Variation implements Serializable {
 
     @Override
     public String toString() {
-        return "ponospos.entities.Variation[ id=" + id + " ]";
+        return "ponospos.entities.Variants[ id=" + id + " ]";
     }
     
 }

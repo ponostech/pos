@@ -46,8 +46,6 @@ import singletons.Auth;
     , @NamedQuery(name = "Product.findByBarcode", query = "SELECT p FROM Product p WHERE p.barcode = :barcode")
     , @NamedQuery(name = "Product.findByCostPrice", query = "SELECT p FROM Product p WHERE p.costPrice = :costPrice")
     , @NamedQuery(name = "Product.findBySellingPrice", query = "SELECT p FROM Product p WHERE p.sellingPrice = :sellingPrice")
-    , @NamedQuery(name = "Product.findByCategory", query = "SELECT p FROM Product p WHERE p.category = :category")
-    , @NamedQuery(name = "Product.findByIsActive", query = "SELECT p FROM Product p WHERE p.isActive = :isActive")
     , @NamedQuery(name = "Product.findByAddedBy", query = "SELECT p FROM Product p WHERE p.addedBy = :addedBy")
     , @NamedQuery(name = "Product.findByEdittedBy", query = "SELECT p FROM Product p WHERE p.edittedBy = :edittedBy")
     , @NamedQuery(name = "Product.findByCreatedAt", query = "SELECT p FROM Product p WHERE p.createdAt = :createdAt")})
@@ -59,6 +57,26 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+    @Column(name = "cost_price")
+    private BigDecimal costPrice;
+    
+    @Basic(optional = false)
+    @Column(name = "selling_price")
+    private BigDecimal sellingPrice;
+    
+    @Basic(optional = false)
+    @Column(name = "active")
+    private boolean active;
+    
+    @Column(name = "include_tax")
+    private Boolean includeTax;
+
+    @Column(name = "tax")
+    private Float tax;
+    
+    @Column(name = "supplier_id")
+    private Integer supplierId;
     
     @Basic(optional = false)
     @Column(name = "name")
@@ -72,31 +90,15 @@ public class Product implements Serializable {
     @Basic(optional = false)
     private String description;
     
-    
-    @Column(name = "cost_price")
-    private BigDecimal costPrice;
-    
-    @Basic(optional = false)
-    @Column(name = "selling_price")
-    private BigDecimal sellingPrice;
-    
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="category_id",nullable = true)
     private Category category;
-    
-    @Basic(optional = false)
-    @Column(name = "is_active")
-    private boolean isActive;
-    
-    @Basic(optional=false)
-    @Column(name="tax_include")
-    private boolean includeTax;
-    
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="added_by",nullable = true)
+  
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="added_by",nullable = false)
     private User addedBy;
     
-    @ManyToOne(fetch=FetchType.EAGER )
+    @ManyToOne(fetch=FetchType.LAZY )
     @JoinColumn(name="editted_by",nullable = true)
     private User edittedBy;
     
@@ -104,8 +106,11 @@ public class Product implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     
-    @OneToMany(mappedBy="product",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    List<Attribute> attributes;
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Variant> variants;
+    
+//    @OneToMany(mappedBy="product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    List<Attribute> attributes;
 
     public Product() {
         this.name="";
@@ -113,7 +118,6 @@ public class Product implements Serializable {
         this.description="";
         this.addedBy=Auth.getInstance().getUser();
         this.createdAt=new Date(System.currentTimeMillis());
-        
         this.costPrice=new BigDecimal("0");
         this.sellingPrice=new BigDecimal("0");
     }
@@ -179,14 +183,6 @@ public class Product implements Serializable {
         this.category = category;
     }
 
-    public boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
     public User getAddedBy() {
         return addedBy;
     }
@@ -210,15 +206,7 @@ public class Product implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
+   
     public boolean isIncludeTax() {
         return includeTax;
     }
@@ -227,9 +215,14 @@ public class Product implements Serializable {
         this.includeTax = includeTax;
     }
 
-    
-    
-    
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -250,10 +243,50 @@ public class Product implements Serializable {
         return true;
     }
 
+    
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    
+
+    public Boolean getIncludeTax() {
+        return includeTax;
+    }
+
+    public void setIncludeTax(Boolean includeTax) {
+        this.includeTax = includeTax;
+    }
+
+    public Float getTax() {
+        return tax;
+    }
+
+    public void setTax(Float tax) {
+        this.tax = tax;
+    }
+
+    public Integer getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    
+    
+   
     @Override
     public String toString() {
         return "ponospos.entities.Product[ id=" + id + " ]";
     }
-    
-   
+
 }

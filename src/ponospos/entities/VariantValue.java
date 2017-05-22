@@ -25,14 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Sawmtea
  */
 @Entity
-@Table(name = "attributes")
+@Table(name = "attribute_values")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Attribute.findAll", query = "SELECT a FROM Attribute a")
-    , @NamedQuery(name = "Attribute.findById", query = "SELECT a FROM Attribute a WHERE a.id = :id")
-    , @NamedQuery(name = "Attribute.findByName", query = "SELECT a FROM Attribute a WHERE a.name = :name")
-    , @NamedQuery(name = "Attribute.findByValue", query = "SELECT a FROM Attribute a WHERE a.value = :value")})
-public class Attribute implements Serializable {
+    @NamedQuery(name = "VariantValue.findAll", query = "SELECT a FROM VariantValue a")
+    , @NamedQuery(name = "VariantValue.findById", query = "SELECT a FROM VariantValue a WHERE a.id = :id")
+    , @NamedQuery(name = "VariantValue.findByValue", query = "SELECT a FROM VariantValue a WHERE a.value = :value")})
+public class VariantValue implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,32 +41,25 @@ public class Attribute implements Serializable {
     private Integer id;
     
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    
-    @Basic(optional = false)
     @Column(name = "value")
     private String value;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="product_id")
-    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "variant_id")
+    private Variant variant;
 
-    public Attribute() {
-        this.name = "";
-        this.value = "";
+    public VariantValue() {
+        value="";
     }
 
-    public Attribute(Integer id) {
+    public VariantValue(Integer id) {
         this.id = id;
-        this.name="";
-        this.value="";
     }
 
-    public Attribute(Integer id, String name, String value) {
+    public VariantValue(Integer id, String value, Variant variant) {
         this.id = id;
-        this.name = name;
         this.value = value;
+        this.variant = variant;
     }
 
     public Integer getId() {
@@ -78,14 +70,6 @@ public class Attribute implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getValue() {
         return value;
     }
@@ -94,15 +78,13 @@ public class Attribute implements Serializable {
         this.value = value;
     }
 
-    public Product getProduct() {
-        return product;
+    public Variant getVariant() {
+        return variant;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setVariantId(Variant variant) {
+        this.variant = variant;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -110,15 +92,14 @@ public class Attribute implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Attribute)) {
+        if (!(object instanceof VariantValue)) {
             return false;
         }
-        Attribute other = (Attribute) object;
+        VariantValue other = (VariantValue) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -127,7 +108,7 @@ public class Attribute implements Serializable {
 
     @Override
     public String toString() {
-        return "ponospos.entities.Attribute[ id=" + id + " ]";
+        return "ponospos.entities.AttributeValues[ id=" + id + " ]";
     }
     
 }

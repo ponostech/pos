@@ -60,7 +60,9 @@ public class PonosPos extends Application {
         
         decorator = new JFXDecorator(stage, mainController);
         decorator.setCustomMaximize(true);        
-        decorator.getStyleClass().add("bar");
+        decorator.setStyle(""
+                + "-fx-background-color:blue;"
+                + "");
         
         this.primaryScene=new Scene(decorator,1000,800);
         this.primaryScene.getStylesheets().addAll(

@@ -5,13 +5,10 @@
         <group>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductDialog.java</file>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Product.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/MainController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/resource/css/login.css</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/categories/CategoryDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Attribute.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/categories/CategoryController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/UserJpa.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/resource/css/ponos_style.css</file>
+            <file>file:/D:/PROJEX/PonosPos/src/util/controls/PonosTextfield.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/products/new_product.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/NewProductController.java</file>
         </group>
     </open-files>
 </project-private>

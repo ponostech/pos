@@ -6,21 +6,16 @@
 package ponospos.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.omg.CORBA.PERSIST_STORE;
 
 /**
  *
@@ -49,26 +44,19 @@ public class Category implements Serializable {
     
     @Column(name = "description")
     private String description;
-    
-    @OneToMany(mappedBy="category",cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-    private List<Variation> variations;
-    
 
     public Category() {
+        name="";
+        description="";
     }
 
-    public List<Variation> getVariations() {
-        return variations;
-    }
-
-    public void setVariations(List<Variation> variations) {
-        this.variations = variations;
-    }
     
     
 
     public Category(Integer id) {
         this.id = id;
+        name="";
+        description="";
     }
 
     public Category(Integer id, String name) {
@@ -121,7 +109,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "ponospos.entities.Category[ id=" + id + " ]";
+        return name;
     }
     
 }
