@@ -7,6 +7,7 @@ package ponospos.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +45,7 @@ public class VariantValue implements Serializable {
     @Column(name = "value")
     private String value;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "variant_id")
     private Variant variant;
 
@@ -82,7 +83,7 @@ public class VariantValue implements Serializable {
         return variant;
     }
 
-    public void setVariantId(Variant variant) {
+    public void setVariant(Variant variant) {
         this.variant = variant;
     }
 

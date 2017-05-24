@@ -15,8 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -47,9 +46,8 @@ public class Variant implements Serializable {
     @Column(name = "name")
     private String name;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToMany(mappedBy = "variants")
+    private List<Product> products;
     
     @OneToMany(mappedBy = "variant",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<VariantValue> values;
@@ -62,11 +60,7 @@ public class Variant implements Serializable {
         this.id = id;
     }
 
-    public Variant(Integer id, String name, Product product) {
-        this.id = id;
-        this.name = name;
-        this.product = product;
-    }
+    
 
     public Integer getId() {
         return id;
@@ -84,13 +78,23 @@ public class Variant implements Serializable {
         this.name = name;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProduct() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(List<Product> product) {
+        this.products = product;
     }
+
+    public List<VariantValue> getValues() {
+        return values;
+    }
+
+    public void setValues(List<VariantValue> values) {
+        this.values = values;
+    }
+    
+    
 
     @Override
     public int hashCode() {
@@ -114,7 +118,7 @@ public class Variant implements Serializable {
 
     @Override
     public String toString() {
-        return "ponospos.entities.Variants[ id=" + id + " ]";
+        return name;
     }
     
 }

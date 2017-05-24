@@ -5,13 +5,10 @@
  */
 package ponospos.entities;
 
-import com.jfoenix.controls.JFXTextField;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +18,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -73,10 +72,11 @@ public class Product implements Serializable {
     private Boolean includeTax;
 
     @Column(name = "tax")
-    private Float tax;
+    private BigDecimal tax;
     
-    @Column(name = "supplier_id")
-    private Integer supplierId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_id",nullable = true)
+    private Supplier supplier;
     
     @Basic(optional = false)
     @Column(name = "name")
@@ -106,7 +106,14 @@ public class Product implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
+     @JoinTable(name="product_variant",
+                 joinColumns=
+                      @JoinColumn(name="product_id"),
+                 inverseJoinColumns=
+                      @JoinColumn(name="variant_id")
+             
+     )
     private List<Variant> variants;
     
 //    @OneToMany(mappedBy="product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -262,20 +269,20 @@ public class Product implements Serializable {
         this.includeTax = includeTax;
     }
 
-    public Float getTax() {
+    public BigDecimal getTax() {
         return tax;
     }
 
-    public void setTax(Float tax) {
+    public void setTax(BigDecimal tax) {
         this.tax = tax;
     }
 
-    public Integer getSupplierId() {
-        return supplierId;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public boolean isActive() {
