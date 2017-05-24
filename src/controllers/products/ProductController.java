@@ -41,6 +41,7 @@ import ponospos.entities.Variant;
 import singletons.PonosExecutor;
 import tasks.products.CreateTask;
 import tasks.products.DeleteTask;
+import tasks.products.EditTask;
 import tasks.products.FetchAllTask;
 import tasks.variants.FetchAllVariant;
 
@@ -51,7 +52,7 @@ import tasks.variants.FetchAllVariant;
  */
 public class ProductController extends AnchorPane 
 implements PonosControllerInterface,
-        NewProductController.ProductListener,
+        ProductDialog.ProductDialogListener,
         ConfirmDialog.ConfirmDialogListener{
 
     private StackPane root;
@@ -80,7 +81,6 @@ implements PonosControllerInterface,
     
     private ObservableList<Product> products=FXCollections.observableArrayList();
     private ObservableList<Category> categories=FXCollections.observableArrayList();
-    private ObservableList<Variant>variants=FXCollections.observableArrayList();
     private ObservableList<Supplier>suppliers=FXCollections.observableArrayList();
     
     public ProductController(MaskerPane mask,StackPane root){
@@ -135,7 +135,11 @@ implements PonosControllerInterface,
                             
                         });
                         editBtn.setOnAction(e->{
-                            
+                            ProductDialog d=new ProductDialog(ProductController.this);
+                            d.setCategories(categories);
+                            d.setSuppliers(suppliers);
+                            d.setProduct(products.get(getIndex()));
+                            d.isEdit().show(root);
                         });
                         delBtn.setOnAction(e->{
                              ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE, ConfirmationMessage.MESSAGE);
@@ -182,12 +186,6 @@ implements PonosControllerInterface,
         t2.setOnFailed(e->task.getException().printStackTrace(System.err));
         mask.visibleProperty().bind(t2.runningProperty());
         
-        FetchAllVariant t3=new FetchAllVariant();
-        t3.setOnSucceeded(e->{
-            variants.clear();
-            variants.addAll(t3.getValue());
-        });
-        t3.setOnFailed(e -> task.getException().printStackTrace(System.err));
         tasks.suppliers.FetchAllTask t4=new tasks.suppliers.FetchAllTask();
         t4.setOnSucceeded(e->{
             suppliers.clear();
@@ -197,19 +195,17 @@ implements PonosControllerInterface,
 
         PonosExecutor.getInstance().getExecutor().submit(task);
         PonosExecutor.getInstance().getExecutor().submit(t2);
-        PonosExecutor.getInstance().getExecutor().submit(t3);
         PonosExecutor.getInstance().getExecutor().submit(t4);
 
     }
 
     @FXML
     private void onNewProductBtnClick(ActionEvent event) {
-       NewProductController p=new NewProductController(this);
-       p.setCategories(categories);
-       p.setVariants(variants);
-       p.setSuppliers(suppliers);
-       p.isCreate(true);
-       p.show(root);
+       ProductDialog d=new ProductDialog(this);
+       d.setCategories(categories);
+       d.setSuppliers(suppliers);
+       d.isCreate();
+       d.show(root);
         
     }
 
@@ -245,6 +241,22 @@ implements PonosControllerInterface,
         mask.visibleProperty().bind(task.runningProperty());
         task.setProduct((Product) obj);
         PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+
+    @Override
+    public void onUpdate(Product product) {
+        EditTask task=new EditTask();
+        task.setProduct(product);
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        task.setOnSucceeded(e->{
+            Notifications.create().title(ProductMessage.UPDATE_SUCCESS_TITLE)
+                    .text(ProductMessage.UPDATE_SUCCESS_MESSAGE)
+                    .showInformation();
+            productTable.refresh();
+        });
+        mask.visibleProperty().bind(task.runningProperty());
+        PonosExecutor.getInstance().getExecutor().submit(task);
+
     }
 
    

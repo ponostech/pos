@@ -246,8 +246,6 @@ public class NewProductController extends JFXDialog implements VariantBox.Varian
             p.setActive(activeToggle.isSelected());
             p.setAddedBy(Auth.getInstance().getUser());
             
-            p.setVariants(selectedVariants);
-           
             listener.onCreate(p);
             this.close();
         }

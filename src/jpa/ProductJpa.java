@@ -29,6 +29,7 @@ public class ProductJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.merge(product);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return product;

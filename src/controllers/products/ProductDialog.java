@@ -12,12 +12,12 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -25,12 +25,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import ponospos.entities.Attribute;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
+import ponospos.entities.Supplier;
 import singletons.Auth;
+import util.controls.VariantControl;
 
 /**
  * FXML Controller class
@@ -39,7 +44,6 @@ import singletons.Auth;
  */
 public class ProductDialog extends JFXDialog {
 
-   
     public interface ProductDialogListener{
         public void onCreate(Product product);
         public void onUpdate(Product product);
@@ -49,6 +53,8 @@ public class ProductDialog extends JFXDialog {
     private VBox container;
     @FXML
     private JFXComboBox<Category>categoryCombo;
+    @FXML
+    private JFXComboBox<Supplier>supplierCombo;
     @FXML
     private JFXTextField nameField;
     @FXML
@@ -64,6 +70,8 @@ public class ProductDialog extends JFXDialog {
     @FXML
     private JFXToggleButton activateToggle;
     @FXML
+    private JFXTextField taxField;
+    @FXML
     private Label title;
     @FXML
     private MaterialDesignIconView close;
@@ -71,16 +79,30 @@ public class ProductDialog extends JFXDialog {
     private JFXButton positiveBtn;
     @FXML
     private JFXButton negativeBtn;
+    @FXML
+    private Hyperlink addAttributeLink;
 
+    
+    @FXML
+    private TextField variantNameField;
+    @FXML
+    private TextField variantValueField;
+    @FXML
+    private FontAwesomeIconView variantAddBtn;
    
     private Product product;
     private boolean isView;
     private boolean isCreate;
     private boolean isEdit;
     private ProductDialogListener listener;
+    
+    private VariantControl variantControl;
+    
     private ObservableList categories=FXCollections.observableArrayList();
+    private ObservableList suppliers=FXCollections.observableArrayList();
     public ProductDialog(ProductDialogListener listener){
         try {
+            this.variantControl=new VariantControl();
             this.listener=listener;
             FXMLLoader loader=new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/products/product_dialog.fxml"));
@@ -88,13 +110,14 @@ public class ProductDialog extends JFXDialog {
             Region region = loader.load();
             this.setContent(region);
             this.setOnDialogOpened(e->categoryCombo.requestFocus());
+            
+            this.container.getChildren().add(variantControl);
+            
             this.categoryCombo.setItems(categories);
-            this.categoryCombo.setOnAction(e->{
-                Category cat=categoryCombo.getSelectionModel().getSelectedItem();
-                container.getChildren().clear();
-               // generateControlsByVariation(cat.getVariations());
-            });
+            this.supplierCombo.setItems(suppliers);
+            
             this.close.setOnMouseClicked(e->ProductDialog.this.close());
+            
             this.sellingPriceField.setOnKeyReleased(e->{
                 clearIfTextInparseable(sellingPriceField);
             });
@@ -106,6 +129,26 @@ public class ProductDialog extends JFXDialog {
             .or(sellingPriceField.textProperty().isEmpty()
             )
             );
+            
+            taxIncludeCheck.selectedProperty().addListener(e->{
+                if (taxIncludeCheck.isSelected()) {
+                    taxField.setText("0");
+                }
+            });
+            
+            variantAddBtn.setOnMouseClicked(e->{
+                if (variantNameField.getText().isEmpty() || variantValueField.getText().isEmpty()) {
+                    return;
+                }
+                Attribute attr=new Attribute();
+                attr.setName(variantNameField.getText().trim());
+                attr.setValue(variantValueField.getText().trim());
+                
+                variantControl.addAttribute(attr);
+                
+                variantNameField.clear();
+                variantValueField.clear();
+            });
         } catch (IOException ex) {
             Logger.getLogger(ProductDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -126,6 +169,9 @@ public class ProductDialog extends JFXDialog {
         if (product.getCategory()!=null) {
             categoryCombo.getSelectionModel().select(product.getCategory());
         }
+        if (product.getSupplier()!=null) {
+            supplierCombo.getSelectionModel().select(product.getSupplier());
+        }
         nameField.setText(product.getName());
         barcodeField.setText(product.getBarcode());
         descriptionField.setText(product.getDescription());
@@ -133,9 +179,11 @@ public class ProductDialog extends JFXDialog {
         costPriceField.setText(Double.toString(product.getCostPrice().doubleValue()));
         sellingPriceField.setText(Double.toString(product.getSellingPrice().doubleValue()));
         taxIncludeCheck.setSelected(product.isIncludeTax());
-        
+        taxField.setText(Double.toString(product.getTax().doubleValue()));
        
-       
+        for (Attribute at : product.getAttributes()) {
+            variantControl.addAttribute(at);
+        }
         this.positiveBtn.setText("Update");
         this.title.setText("Edit product");
         return this;
@@ -160,6 +208,9 @@ public class ProductDialog extends JFXDialog {
             if (categoryCombo.getSelectionModel().getSelectedItem()!=null) {
                 p.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
             }
+            if (supplierCombo.getSelectionModel().getSelectedItem()!=null) {
+                p.setSupplier(supplierCombo.getSelectionModel().getSelectedItem());
+            }
             if (costPriceField.getText().isEmpty()) {
                 p.setCostPrice(BigDecimal.ZERO);
             }else{
@@ -170,11 +221,15 @@ public class ProductDialog extends JFXDialog {
             p.setIncludeTax(taxIncludeCheck.isSelected());
             p.setActive(activateToggle.isSelected());
             p.setAddedBy(Auth.getInstance().getUser());
-            
-            
+            p.setTax(new BigDecimal(taxField.getText().trim()));
+            for (Attribute att : variantControl.getAttributes()) {
+                att.setProduct(p);
+            }
+            p.setAttributes(variantControl.getAttributes());
             this.close();
             listener.onCreate(p);
        }else if (isEdit) {
+            
            product.setName(nameField.getText().trim());
            product.setBarcode(barcodeField.getText().trim());
            product.setDescription(descriptionField.getText().trim());
@@ -190,7 +245,12 @@ public class ProductDialog extends JFXDialog {
             product.setIncludeTax(taxIncludeCheck.isSelected());
             product.setActive(activateToggle.isSelected());
             product.setEdittedBy(Auth.getInstance().getUser());
-          
+            product.setTax(new BigDecimal(taxField.getText().trim()));
+            
+            for (Attribute att : variantControl.getAttributes()) {
+                att.setProduct(product);
+            }
+            product.setAttributes(variantControl.getAttributes());
             this.close();
             listener.onUpdate(product);
             
@@ -212,5 +272,15 @@ public class ProductDialog extends JFXDialog {
             field.clear();
         }
     }
+     
+      void setSuppliers(ObservableList<Supplier> suppliers) {
+          this.suppliers.clear();
+          this.suppliers.addAll(suppliers);
+    }
+      
+     
+          
+          
+      
     
 }

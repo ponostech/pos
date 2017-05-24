@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Variant.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/util/controls/VariantBox.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductDialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/util/controls/VariantControl.java</file>
             <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Product.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/VariantValue.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/products/product_dialog.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/resource/css/login.css</file>
+            <file>file:/D:/PROJEX/PonosPos/src/jpa/ProductJpa.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Attribute.java</file>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/NewProductController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/META-INF/persistence.xml</file>
         </group>
     </open-files>
 </project-private>

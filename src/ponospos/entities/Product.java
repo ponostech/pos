@@ -93,6 +93,9 @@ public class Product implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="category_id",nullable = true)
     private Category category;
+    
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Attribute> attributes;
   
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="added_by",nullable = false)
@@ -105,16 +108,7 @@ public class Product implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    
-    @ManyToMany(cascade = CascadeType.ALL)
-     @JoinTable(name="product_variant",
-                 joinColumns=
-                      @JoinColumn(name="product_id"),
-                 inverseJoinColumns=
-                      @JoinColumn(name="variant_id")
-             
-     )
-    private List<Variant> variants;
+
     
 //    @OneToMany(mappedBy="product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 //    List<Attribute> attributes;
@@ -222,14 +216,15 @@ public class Product implements Serializable {
         this.includeTax = includeTax;
     }
 
-    public List<Variant> getVariants() {
-        return variants;
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 
-    public void setVariants(List<Variant> variants) {
-        this.variants = variants;
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
+   
     @Override
     public int hashCode() {
         int hash = 0;
