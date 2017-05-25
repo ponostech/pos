@@ -9,11 +9,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,6 +69,7 @@ public class SupplierDialog extends JFXDialog{
             this.setOnDialogOpened(e->nameField.requestFocus());
             this.positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty());
             this.closeBtn.setOnMouseClicked(e->SupplierDialog.this.close());
+            doValidate();
         } catch (IOException ex) {
             Logger.getLogger(SupplierDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -147,5 +153,20 @@ public class SupplierDialog extends JFXDialog{
         this.close();
     }
 
+     public void doValidate(){
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Input Required");
+        validator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class)
+            .glyph(FontAwesomeIcon.WARNING)
+            .size("1em")
+            .styleClass("error")
+            .build());
+        this.nameField.setValidators(validator);
+        this.nameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                this.nameField.validate();
+            }
+        });
+    }
     
 }

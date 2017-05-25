@@ -37,13 +37,11 @@ import org.controlsfx.control.Notifications;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
 import ponospos.entities.Supplier;
-import ponospos.entities.Variant;
 import singletons.PonosExecutor;
 import tasks.products.CreateTask;
 import tasks.products.DeleteTask;
 import tasks.products.EditTask;
 import tasks.products.FetchAllTask;
-import tasks.variants.FetchAllVariant;
 
 /**
  * FXML Controller class
@@ -223,9 +221,6 @@ implements PonosControllerInterface,
         task.setProduct(product);
         PonosExecutor.getInstance().getExecutor().submit(task);
     }
-
- 
-
     
     @Override
     public void onClickYes(Object obj) {

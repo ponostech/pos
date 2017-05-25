@@ -9,11 +9,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -122,7 +126,9 @@ public class CustomerDialog extends JFXDialog{
         saveButton.disableProperty().bind(
                 firstNameField.textProperty().isEmpty()
                         .or(lastNameField.textProperty().isEmpty())
+                
         );
+        doValidate();
     }
     
     public void setIsViewPurpose(boolean tobeTrue){
@@ -211,5 +217,19 @@ public class CustomerDialog extends JFXDialog{
         firstNameField.requestFocus();
     }
     
-    
+    public void doValidate(){
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Input Required");
+        validator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class)
+            .glyph(FontAwesomeIcon.WARNING)
+            .size("1em")
+            .styleClass("error")
+            .build());
+        this.firstNameField.setValidators(validator);
+        this.firstNameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                this.firstNameField.validate();
+            }
+        });
+    }
 }

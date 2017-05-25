@@ -12,29 +12,35 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import ponospos.entities.Attribute;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
+import ponospos.entities.Stock;
 import ponospos.entities.Supplier;
 import singletons.Auth;
+import util.TransactionType;
 import util.controls.VariantControl;
 
 /**
@@ -80,15 +86,16 @@ public class ProductDialog extends JFXDialog {
     @FXML
     private JFXButton negativeBtn;
     @FXML
-    private Hyperlink addAttributeLink;
-
+    private JFXTextField qtyField;
+    @FXML
+    private JFXTextArea remarkField;
     
     @FXML
     private TextField variantNameField;
     @FXML
     private TextField variantValueField;
     @FXML
-    private FontAwesomeIconView variantAddBtn;
+    private Button variantAddBtn;
    
     private Product product;
     private boolean isView;
@@ -136,7 +143,7 @@ public class ProductDialog extends JFXDialog {
                 }
             });
             
-            variantAddBtn.setOnMouseClicked(e->{
+            variantAddBtn.setOnAction(e->{
                 if (variantNameField.getText().isEmpty() || variantValueField.getText().isEmpty()) {
                     return;
                 }
@@ -149,6 +156,7 @@ public class ProductDialog extends JFXDialog {
                 variantNameField.clear();
                 variantValueField.clear();
             });
+            validate();
         } catch (IOException ex) {
             Logger.getLogger(ProductDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -186,6 +194,8 @@ public class ProductDialog extends JFXDialog {
         }
         this.positiveBtn.setText("Update");
         this.title.setText("Edit product");
+        qtyField.setText("");
+        qtyField.setDisable(true);
         return this;
     }
     
@@ -201,7 +211,9 @@ public class ProductDialog extends JFXDialog {
    @FXML
     private void onPositiveBtnClick(ActionEvent event) {
         if (isCreate) {
-           Product p=new Product();
+            Stock stock=new Stock();
+            
+            Product p=new Product();
            p.setName(nameField.getText().trim());
            p.setBarcode(barcodeField.getText().trim());
            p.setDescription(descriptionField.getText().trim());
@@ -226,6 +238,25 @@ public class ProductDialog extends JFXDialog {
                 att.setProduct(p);
             }
             p.setAttributes(variantControl.getAttributes());
+
+            
+            /*
+                Stock implementataion
+            */
+            stock.setProduct(p);
+            stock.setQuantity(Integer.parseInt(qtyField.getText()));
+            stock.setUpdateAt(new Date(System.currentTimeMillis()));
+            stock.setStore(Auth.getInstance().getStore());
+            stock.setRemark(remarkField.getText().trim());
+            stock.setTransactionType(TransactionType.STOCK_UPDATE.toString());
+            stock.setUser(Auth.getInstance().getUser());
+            stock.setInvoice(null);
+            List<Stock> stocks=new ArrayList();
+            stocks.add(stock);
+            p.setStocks(stocks);
+            /* ------------------------------------ */
+            /*  Stock implementation end */
+            /*------------------------------------*/
             this.close();
             listener.onCreate(p);
        }else if (isEdit) {
@@ -278,7 +309,32 @@ public class ProductDialog extends JFXDialog {
           this.suppliers.addAll(suppliers);
     }
       
-     
+     private void validate(){
+         RequiredFieldValidator required=new RequiredFieldValidator();
+         MaterialDesignIconView icon=new MaterialDesignIconView(MaterialDesignIcon.STAR);
+         icon.setFill(Color.RED);
+         required.setIcon(icon);
+         required.setMessage("Input Required");
+         this.nameField.setValidators(required);
+         this.nameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+             if (!newValue) {
+                 nameField.validate();
+             }
+         });
+         this.sellingPriceField.setValidators(required);
+         this.sellingPriceField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+             if (!newValue) {
+                 sellingPriceField.validate();
+             }
+         });
+         this.taxField.setValidators(required);
+         this.taxField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+             if (!newValue) {
+                 taxField.validate();
+             }
+         });
+         
+     }
           
           
       

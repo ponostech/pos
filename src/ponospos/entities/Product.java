@@ -18,9 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -85,6 +83,7 @@ public class Product implements Serializable {
     @Column(name = "barcode")
     private String barcode;
     
+    
     @Lob
     @Column(name = "description")
     @Basic(optional = false)
@@ -94,8 +93,11 @@ public class Product implements Serializable {
     @JoinColumn(name="category_id",nullable = true)
     private Category category;
     
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Attribute> attributes;
+    
+    @OneToMany(mappedBy = "product",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+    private List<Stock> stocks;
   
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="added_by",nullable = false)
@@ -110,6 +112,7 @@ public class Product implements Serializable {
     private Date createdAt;
 
     
+    
 //    @OneToMany(mappedBy="product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 //    List<Attribute> attributes;
 
@@ -121,6 +124,7 @@ public class Product implements Serializable {
         this.createdAt=new Date(System.currentTimeMillis());
         this.costPrice=new BigDecimal("0");
         this.sellingPrice=new BigDecimal("0");
+        
     }
 
     public Product(Integer id) {
@@ -245,6 +249,15 @@ public class Product implements Serializable {
         return true;
     }
 
+    public List<Stock> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(List<Stock> stocks) {
+        this.stocks = stocks;
+    }
+
+    
     
     public boolean getActive() {
         return active;
@@ -288,7 +301,7 @@ public class Product implements Serializable {
    
     @Override
     public String toString() {
-        return "ponospos.entities.Product[ id=" + id + " ]";
+        return this.name;
     }
 
 }

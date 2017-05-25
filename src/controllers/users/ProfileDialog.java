@@ -10,10 +10,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -127,6 +131,7 @@ public class ProfileDialog extends JFXDialog {
                 .or(newPasswordField.textProperty().isEmpty())
                 .or(oldPasswordField.textProperty().isEmpty())
         );
+        doValidate();
     }
 
     @Override
@@ -151,5 +156,31 @@ public class ProfileDialog extends JFXDialog {
         usernameField.requestFocus();
     }
     
-    
+     public void doValidate(){
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Input is Required");
+        validator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class)
+            .glyph(FontAwesomeIcon.WARNING)
+            .size("1em")
+            .styleClass("error")
+            .build());
+        this.usernameField.setValidators(validator);
+        this.usernameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                this.usernameField.validate();
+            }
+        });
+        this.oldPasswordField.setValidators(validator);
+        this.oldPasswordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                this.usernameField.validate();
+            }
+        });
+        this.newPasswordField.setValidators(validator);
+        this.newPasswordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                this.usernameField.validate();
+            }
+        });
+    }
 }

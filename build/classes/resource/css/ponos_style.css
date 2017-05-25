@@ -7,10 +7,38 @@ and open the template in the editor.
     Created on : May 3, 2017, 5:50:54 AM
     Author     : Sawmtea
 */
-
-.bar{
-    -fx-background-color:#fff;
+/*------DECORATOR-----*/
+/*------DECORATOR-----*/
+/*------DECORATOR-----*/
+.jfx-decorator {
+    -fx-decorator-color: linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
 }
+
+.jfx-decorator .jfx-decorator-buttons-container {
+    -fx-background-color: -fx-decorator-color;
+}
+
+.jfx-decorator .resize-border {
+    -fx-border-color: -fx-decorator-color;
+    -fx-border-width: 0 4 4 4;
+}
+/*----------------------------------------- */
+/*----------------------------------------- */
+/*----------------------------------------- */
+.error-label {
+    -fx-text-fill: #D34336;
+    -fx-font-size: 0.75em;
+    -fx-font-weight: bold;
+}
+
+.error-icon {
+    -fx-fill: #D34336;
+    -fx-font-size: 1.0em;
+}
+
+
 
 .vbox{
     -fx-background-color:#660000;
@@ -35,7 +63,7 @@ and open the template in the editor.
 
 /* root container stylyng begin*/
 .root-container{
-  -fx-background-color:rgba(255,255,255,0.5);
+  -fx-background-color: transparent;
 }
 /*root container stylying ends here*/
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="379.0" prefWidth="373.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <Pane layoutX="1.0" prefHeight="119.0" prefWidth="373.0" styleClass="top-pane">
+         <children>
+            <ImageView fitHeight="56.0" fitWidth="61.0" layoutX="158.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resource/icons/stock.png" />
+               </image>
+            </ImageView>
+            <MaterialDesignIconView fx:id="close" fill="#d00c0c" glyphName="CLOSE" layoutX="331.0" layoutY="39.0" size="28" />
+            <Label fx:id="title" layoutX="159.0" layoutY="88.0" styleClass="h2" text="Add Stock" />
+         </children>
+      </Pane>
+      <JFXTextField fx:id="qtyField" labelFloat="true" layoutX="34.0" layoutY="147.0" prefHeight="25.0" prefWidth="313.0" promptText="Quantity" />
+      <JFXTextArea fx:id="remarkField" labelFloat="true" layoutX="34.0" layoutY="202.0" prefHeight="64.0" prefWidth="313.0" promptText="Remark" />
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" layoutX="34.0" layoutY="328.0" prefHeight="25.0" prefWidth="139.0" text="Add">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="negativeBtn" buttonType="RAISED" layoutX="208.0" layoutY="328.0" prefHeight="25.0" prefWidth="139.0" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

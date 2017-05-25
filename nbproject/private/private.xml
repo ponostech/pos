@@ -5,14 +5,15 @@
         <group>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductController.java</file>
             <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/util/controls/VariantControl.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Stock.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/StockControlController.java</file>
             <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Product.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/views/products/product_dialog.fxml</file>
-            <file>file:/D:/PROJEX/PonosPos/src/resource/css/login.css</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/ProductJpa.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Attribute.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/NewProductController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/META-INF/persistence.xml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Invoice.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/tasks/stocks/FetchAllStockTask.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/jpa/StockJpa.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/tasks/stocks/FindStockByProductNameTask.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/views/products/add_stock_dialog.fxml</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/AddStockDialog.java</file>
         </group>
     </open-files>
 </project-private>

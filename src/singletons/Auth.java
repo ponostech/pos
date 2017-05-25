@@ -51,4 +51,8 @@ public class Auth {
         this.store=store;
     }
     
+    public Stores getStore(){
+        return store;
+    }
+    
 }
