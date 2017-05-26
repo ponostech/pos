@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="585.0" prefWidth="910.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <Label layoutX="416.0" layoutY="38.0" styleClass="h1" text="Inventory Details" />
+      <Label layoutX="20.0" layoutY="77.0" text="Product Id:" />
+      <Label layoutX="18.0" layoutY="116.0" text="Product Name" />
+      <Label layoutX="22.0" layoutY="156.0" text="Variant" />
+      <Label layoutX="20.0" layoutY="196.0" text="Current Stock" />
+      <Label fx:id="idLabel" layoutX="107.0" layoutY="75.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="nameLabel" layoutX="107.0" layoutY="115.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="variant" layoutX="107.0" layoutY="154.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="stockLabel" layoutX="107.0" layoutY="195.0" styleClass="h3" text="Product Id:" />
+      <MaterialDesignIconView fx:id="close" fill="#e10e0e" glyphName="CLOSE" layoutX="868.0" layoutY="43.0" size="28" />
+      <TableView fx:id="stockTable" layoutX="14.0" layoutY="242.0" prefHeight="329.0" prefWidth="892.0" tableMenuButtonVisible="true">
+        <columns>
+          <TableColumn fx:id="dateCol" prefWidth="179.0" text="DATE" />
+          <TableColumn fx:id="employeeCol" prefWidth="169.0" text="EMPLOYEE" />
+            <TableColumn fx:id="inOutCol" minWidth="0.0" prefWidth="61.0" text="IN/OUT" />
+            <TableColumn fx:id="qtyCol" prefWidth="113.0" text="QUANTITY" />
+            <TableColumn fx:id="transactionCol" prefWidth="143.0" text="TRANSACTION TYPE" />
+            <TableColumn fx:id="invoiceCol" prefWidth="127.0" text="INVOICE REFERENCE" />
+            <TableColumn fx:id="remarkCol" prefWidth="77.0" text="REMARK" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

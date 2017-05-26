@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="700.0" prefHeight="650.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="700.0" prefHeight="682.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane layoutX="2.0" prefHeight="122.0" prefWidth="614.0" styleClass="top-pane">
          <children>
@@ -37,14 +37,17 @@
       <JFXTextField fx:id="nameField" labelFloat="true" layoutX="32.0" layoutY="192.0" prefHeight="25.0" prefWidth="250.0" promptText="Product Name" />
       <JFXTextField fx:id="barcodeField" labelFloat="true" layoutX="334.0" layoutY="192.0" prefHeight="25.0" prefWidth="250.0" promptText="Barcode" />
       <JFXTextArea fx:id="descriptionField" labelFloat="true" layoutX="32.0" layoutY="240.0" prefHeight="98.0" prefWidth="250.0" promptText="Description" />
-      <JFXTextField fx:id="sellingPriceField" labelFloat="true" layoutX="334.0" layoutY="317.0" prefHeight="25.0" prefWidth="250.0" promptText="Selling Price" />
       <JFXTextField fx:id="costPriceField" labelFloat="true" layoutX="334.0" layoutY="264.0" prefHeight="25.0" prefWidth="250.0" promptText="Cost Prize" />
+      <JFXTextField fx:id="sellingPriceField" labelFloat="true" layoutX="334.0" layoutY="317.0" prefHeight="25.0" prefWidth="250.0" promptText="Selling Price" />
       <JFXCheckBox fx:id="taxIncludeCheck" layoutX="459.0" layoutY="356.0" prefHeight="17.0" prefWidth="125.0" selected="true" text="Include of all tax" />
       <JFXTextField fx:id="taxField" labelFloat="true" layoutX="32.0" layoutY="373.0" prefHeight="25.0" prefWidth="250.0" promptText="Tax" />
+      <JFXTextField fx:id="qtyField" labelFloat="true" layoutX="32.0" layoutY="433.0" prefHeight="25.0" prefWidth="250.0" promptText="Quantity" text="1" />
       <JFXToggleButton fx:id="activateToggle" layoutX="334.0" layoutY="360.0" prefHeight="35.0" prefWidth="101.0" selected="true" text="Active" />
-      <Label alignment="CENTER" layoutX="30.0" layoutY="481.0" prefHeight="17.0" prefWidth="559.0" styleClass="h2" text="Attributes" />
-      <VBox fx:id="container" layoutX="34.0" layoutY="561.0" prefHeight="34.0" prefWidth="541.0" />
-      <HBox alignment="CENTER" layoutX="32.0" layoutY="513.0" prefHeight="47.0" prefWidth="559.0" spacing="10.0" style="-fx-border-color: grey;">
+      <JFXComboBox fx:id="storeCombo" layoutX="35.0" layoutY="488.0" prefHeight="25.0" prefWidth="250.0" />
+      <JFXTextArea fx:id="remarkField" labelFloat="true" layoutX="334.0" layoutY="422.0" prefHeight="87.0" prefWidth="250.0" promptText="Remark" />
+      <Label alignment="CENTER" layoutX="30.0" layoutY="541.0" prefHeight="17.0" prefWidth="559.0" styleClass="h2" text="Attributes" />
+      <VBox fx:id="container" layoutX="38.0" layoutY="606.0" prefHeight="34.0" prefWidth="541.0" />
+      <HBox alignment="CENTER" layoutX="32.0" layoutY="566.0" prefHeight="47.0" prefWidth="559.0" spacing="10.0" style="-fx-border-color: grey;">
          <children>
             <TextField fx:id="variantNameField" maxWidth="1.7976931348623157E308" prefHeight="35.0" promptText="Name" HBox.hgrow="ALWAYS">
                <HBox.margin>
@@ -61,17 +64,15 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="32.0" layoutY="601.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="246.0" text="Save">
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="32.0" layoutY="643.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="246.0" text="Save">
          <graphic>
             <FontAwesomeIconView glyphName="SAVE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="negativeBtn" buttonType="RAISED" cancelButton="true" layoutX="334.0" layoutY="601.0" onAction="#onNegativeBtnClick" prefHeight="25.0" prefWidth="250.0" text="Cancel">
+      <JFXButton fx:id="negativeBtn" buttonType="RAISED" cancelButton="true" layoutX="334.0" layoutY="643.0" onAction="#onNegativeBtnClick" prefHeight="25.0" prefWidth="250.0" text="Cancel">
          <graphic>
             <FontAwesomeIconView glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXTextField fx:id="qtyField" labelFloat="true" layoutX="32.0" layoutY="433.0" prefHeight="25.0" prefWidth="250.0" promptText="Quantity" text="1" />
-      <JFXTextArea fx:id="remarkField" labelFloat="true" layoutX="334.0" layoutY="422.0" prefHeight="32.0" prefWidth="250.0" promptText="Remark" />
    </children>
 </AnchorPane>

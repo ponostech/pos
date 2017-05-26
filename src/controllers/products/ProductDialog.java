@@ -38,6 +38,7 @@ import ponospos.entities.Attribute;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
+import ponospos.entities.Stores;
 import ponospos.entities.Supplier;
 import singletons.Auth;
 import util.TransactionType;
@@ -61,6 +62,8 @@ public class ProductDialog extends JFXDialog {
     private JFXComboBox<Category>categoryCombo;
     @FXML
     private JFXComboBox<Supplier>supplierCombo;
+    @FXML
+    private JFXComboBox<Stores>storeCombo;
     @FXML
     private JFXTextField nameField;
     @FXML
@@ -107,6 +110,7 @@ public class ProductDialog extends JFXDialog {
     
     private ObservableList categories=FXCollections.observableArrayList();
     private ObservableList suppliers=FXCollections.observableArrayList();
+    private ObservableList stores=FXCollections.observableArrayList();
     public ProductDialog(ProductDialogListener listener){
         try {
             this.variantControl=new VariantControl();
@@ -122,6 +126,7 @@ public class ProductDialog extends JFXDialog {
             
             this.categoryCombo.setItems(categories);
             this.supplierCombo.setItems(suppliers);
+            this.storeCombo.setItems(stores);
             
             this.close.setOnMouseClicked(e->ProductDialog.this.close());
             
@@ -161,6 +166,10 @@ public class ProductDialog extends JFXDialog {
             Logger.getLogger(ProductDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void setStores(List<Stores> stores){
+        this.stores.clear();
+        this.stores.addAll(stores);
+    }
     
     public ProductDialog isView(){
         this.isView=true;
@@ -196,6 +205,7 @@ public class ProductDialog extends JFXDialog {
         this.title.setText("Edit product");
         qtyField.setText("");
         qtyField.setDisable(true);
+        storeCombo.setDisable(true);
         return this;
     }
     
@@ -246,11 +256,13 @@ public class ProductDialog extends JFXDialog {
             stock.setProduct(p);
             stock.setQuantity(Integer.parseInt(qtyField.getText()));
             stock.setUpdateAt(new Date(System.currentTimeMillis()));
-            stock.setStore(Auth.getInstance().getStore());
+            //TODO:: store selection might be changes
+            stock.setStore(storeCombo.getSelectionModel().getSelectedItem());
             stock.setRemark(remarkField.getText().trim());
             stock.setTransactionType(TransactionType.STOCK_UPDATE.toString());
             stock.setUser(Auth.getInstance().getUser());
             stock.setInvoice(null);
+            stock.setCreatedAt(new Date(System.currentTimeMillis()));
             List<Stock> stocks=new ArrayList();
             stocks.add(stock);
             p.setStocks(stocks);
@@ -299,6 +311,13 @@ public class ProductDialog extends JFXDialog {
      private void clearIfTextInparseable(JFXTextField field){
         try{
             Double.parseDouble(field.getText());
+        }catch(NumberFormatException e){
+            field.clear();
+        }
+    }
+     private void clearIfTextIsNotInteger(JFXTextField field){
+        try{
+            Integer.parseInt(field.getText());
         }catch(NumberFormatException e){
             field.clear();
         }

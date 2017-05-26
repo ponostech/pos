@@ -5,12 +5,15 @@
  */
 package controllers.products;
 
+import Messages.ProductMessage;
+import Messages.StockControlMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
+import controllers.modals.ExceptionDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.awt.Color;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -28,13 +31,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import org.controlsfx.control.MaskerPane;
+import org.controlsfx.control.Notifications;
+import ponospos.entities.Attribute;
 import ponospos.entities.Category;
-import ponospos.entities.Invoice;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
+import ponospos.entities.Stores;
+import ponospos.entities.Supplier;
 import singletons.PonosExecutor;
+import tasks.products.CreateTask;
+import tasks.stocks.CreateStockTask;
 import tasks.stocks.FetchAllStockTask;
 import tasks.stocks.FindStockByProductNameTask;
 
@@ -53,21 +60,37 @@ public class StockControlController extends AnchorPane implements
     private MaskerPane mask;
  
     @FXML
-    private TableView<Stock> stockTable;
+    private TableView<Product> stockTable;
     @FXML
-    private TableColumn<Stock, Integer> idCol;
+    private TableColumn<Product, Integer> idCol;
     @FXML
-    private TableColumn<Stock, Product> productCol;
+    private TableColumn<Product, String> productCol;
     @FXML
-    private TableColumn<Stock, String> barcodeCol;
+    private TableColumn<Product, String> barcodeCol;
     @FXML
-    private TableColumn<Stock, Category> categoryCol;
+    private TableColumn<Product, Category> categoryCol;
     @FXML
-    private TableColumn<Stock, Integer> qtyCol;
+    private TableColumn<Product, Integer> qtyCol;
+    
     @FXML
-    private TableColumn<Stock, Invoice> invoiceCol;
+    private TableColumn<Product, Product> actionCols;
     @FXML
-    private TableColumn<Stock, Stock> actionCols;
+    private TableView<Product> stockTable1;
+    @FXML
+    private TableColumn<Product, Integer> idCol1;
+    @FXML
+    private TableColumn<Product, String> productCol1;
+    @FXML
+    private TableColumn<Product, String> barcodeCol1;
+    @FXML
+    private TableColumn<Product, Category> categoryCol1;
+    @FXML
+    private TableColumn<Product, Integer> qtyCol1;
+    
+    @FXML
+    private TableColumn<Product, Product> actionCols1;
+    
+    
     @FXML
     private JFXButton addBtn;
     @FXML
@@ -76,6 +99,12 @@ public class StockControlController extends AnchorPane implements
     private Button searchBtn;
     
     private ObservableList<Stock> stocks=FXCollections.observableArrayList();
+    private ObservableList<Category> categories=FXCollections.observableArrayList();
+    private ObservableList<Supplier>suppliers=FXCollections.observableArrayList();
+    private ObservableList<Product>activeProducts=FXCollections.observableArrayList();
+    private ObservableList<Product>inactiveProducts=FXCollections.observableArrayList();
+    private ObservableList<Stores>stores=FXCollections.observableArrayList();
+    
     public StockControlController(MaskerPane mask,StackPane root){
         try {
             this.mask=mask;
@@ -96,20 +125,37 @@ public class StockControlController extends AnchorPane implements
 
     @Override
     public void initControls() {
-        stockTable.setItems(stocks);
+        stockTable.setItems(activeProducts);
+        stockTable1.setItems(inactiveProducts);
         idCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getId()));
-        productCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getProduct()));
-        barcodeCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getProduct().getBarcode()));
-        categoryCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getProduct().getCategory()));
-        qtyCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getQuantity()));
-        invoiceCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getInvoice()));
-        actionCols.setCellFactory((TableColumn<Stock, Stock> param) -> 
-            new TableCell<Stock,Stock>(){
+        productCol.setCellValueFactory((TableColumn.CellDataFeatures<Product, String> e)->{
+            Product p=e.getValue();
+            List<Attribute> attr = p.getAttributes();
+            String fullname=p.getName();
+            if (!attr.isEmpty()) {
+                for (Attribute at : attr) {
+                    fullname+=" /"+at.getName() +" : "+at.getValue();
+                }
+            }
+            return new SimpleStringProperty(fullname);
+        });
+        barcodeCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getBarcode()));
+        categoryCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getCategory()));
+        qtyCol.setCellValueFactory(e->{
+            Product p=e.getValue();
+            int sum=0;
+            for (Stock stock : p.getStocks()) {
+                sum+=stock.getQuantity();
+            }
+          return new SimpleObjectProperty<>(sum);
+        });
+        actionCols.setCellFactory((TableColumn<Product, Product> param) -> 
+            new TableCell<Product,Product>(){
                 private Button addBtn;
                 private Button viewBtn;
                 
                 @Override
-            protected void updateItem(Stock item, boolean empty) {
+            protected void updateItem(Product item, boolean empty) {
                 super.updateItem(item, empty); 
                 if (empty) {
                     setText(null);
@@ -119,8 +165,59 @@ public class StockControlController extends AnchorPane implements
                     FontAwesomeIconView addicon=new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE);
                     FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
                     
-                    addicon.setFont(new Font(14));
-                    viewIcon.setFont(new Font(14));
+                    addicon.setFill(Paint.valueOf("#1268b9"));
+                    viewIcon.setFill(Paint.valueOf("#1268b9"));
+                    
+                    addBtn=new Button("",addicon);
+                    viewBtn=new Button("",viewIcon);
+                    
+                    hb.getChildren().addAll(viewBtn,addBtn);
+                    
+                    setGraphic(hb);
+                    viewBtn.setOnAction(e->{
+                        StockDetailDialog d=new StockDetailDialog();
+                        d.setProduct(activeProducts.get(getIndex()));
+                        d.populateData();
+                        d.show(root);
+                    });
+                    addBtn.setOnAction(e->{
+                        AddStockDialog d=new AddStockDialog(StockControlController.this);
+                        d.setProduct(activeProducts.get(getIndex()));
+                        d.setStores(stores);
+                        d.show(root);
+                    });
+                }
+            }
+                    
+                }
+        );
+        idCol1.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getId()));
+        productCol1.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getName()));
+        barcodeCol1.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getBarcode()));
+        categoryCol1.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getCategory()));
+        qtyCol1.setCellValueFactory(e->{
+            Product p=e.getValue();
+            int sum=0;
+            for (Stock stock : p.getStocks()) {
+                sum+=stock.getQuantity();
+            }
+          return new SimpleObjectProperty<>(sum);
+        });
+        actionCols1.setCellFactory((TableColumn<Product, Product> param) -> 
+            new TableCell<Product,Product>(){
+                private Button addBtn;
+                private Button viewBtn;
+                
+                @Override
+            protected void updateItem(Product item, boolean empty) {
+                super.updateItem(item, empty); 
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                }else{
+                    HBox hb=new HBox(5);
+                    FontAwesomeIconView addicon=new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE);
+                    FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
                     
                     addicon.setFill(Paint.valueOf("#1268b9"));
                     viewIcon.setFill(Paint.valueOf("#1268b9"));
@@ -136,6 +233,8 @@ public class StockControlController extends AnchorPane implements
                     });
                     addBtn.setOnAction(e->{
                         AddStockDialog d=new AddStockDialog(StockControlController.this);
+                        d.setProduct(inactiveProducts.get(getIndex()));
+                        d.setStores(stores);
                         d.show(root);
                     });
                 }
@@ -156,6 +255,9 @@ public class StockControlController extends AnchorPane implements
         
         addBtn.setOnAction(e->{
             ProductDialog d=new ProductDialog(this);
+            d.setCategories(categories);
+            d.setSuppliers(suppliers);
+            d.setStores(stores);
             d.isCreate();
             d.show(root);
         });
@@ -173,7 +275,50 @@ public class StockControlController extends AnchorPane implements
         });
         mask.visibleProperty().bind(task.runningProperty());
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        
+        tasks.categories.FetchAllTask t2=new tasks.categories.FetchAllTask();
+        t2.setOnSucceeded(e->{
+            categories.clear();
+            categories.addAll(t2.getValue());
+        });
+        t2.setOnFailed(e->{
+            ExceptionDialog d=new ExceptionDialog(t2.getException());
+            d.show(root);
+        });
+        mask.visibleProperty().bind(t2.runningProperty());
+        
+        tasks.suppliers.FetchAllTask t4=new tasks.suppliers.FetchAllTask();
+        t4.setOnSucceeded(e->{
+            suppliers.clear();
+            suppliers.addAll(t4.getValue());
+        });
+        t4.setOnFailed(e -> task.getException().printStackTrace(System.err));
+
+        tasks.stores.FetchAllTask t5=new tasks.stores.FetchAllTask();
+        t5.setOnSucceeded(e->{
+            stores.clear();
+            stores.addAll(t5.getValue());
+        });
+        t5.setOnFailed(e -> task.getException().printStackTrace(System.err));
+        tasks.products.FetchAllTask t6=new tasks.products.FetchAllTask();
+        t6.setOnSucceeded(e->{
+            activeProducts.clear();
+            inactiveProducts.clear();
+            for (Product p : t6.getValue()) {
+                if (p.isActive()) {
+                    activeProducts.add(p);
+                }else{
+                    inactiveProducts.add(p);
+                }
+            }
+        });
+        t6.setOnFailed(e -> task.getException().printStackTrace(System.err));
+
         PonosExecutor.getInstance().getExecutor().submit(task);
+        PonosExecutor.getInstance().getExecutor().submit(t2);
+        PonosExecutor.getInstance().getExecutor().submit(t4);
+        PonosExecutor.getInstance().getExecutor().submit(t5);
+        PonosExecutor.getInstance().getExecutor().submit(t6);
         
     }
 
@@ -191,6 +336,22 @@ public class StockControlController extends AnchorPane implements
 
     @Override
     public void onCreate(Product product) {
+        tasks.products.CreateTask task=new CreateTask();
+        task.setOnSucceeded(e->{
+            Notifications.create()
+                .title(ProductMessage.CREATE_SUCCESS_TITLE)
+                .text(ProductMessage.CREATE_SUCCESS_MESSAGE)
+                .showInformation();
+            if (task.getValue().isActive()) {
+                activeProducts.add(task.getValue());
+            }else{
+                inactiveProducts.add(task.getValue());
+            }
+        });
+        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setProduct(product);
+        PonosExecutor.getInstance().getExecutor().submit(task);
     }
 
     @Override
@@ -199,6 +360,19 @@ public class StockControlController extends AnchorPane implements
 
     @Override
     public void onUpdate(Stock stock) {
-        
+        CreateStockTask task=new CreateStockTask();
+        task.setStock(stock);
+        task.setOnSucceeded(e->{
+            Notifications.create().title(StockControlMessage.STOCK_CREATE_TITLE).text(StockControlMessage.STOCK_CREATE_SUCCESS)
+                    .showInformation();
+          
+            stockTable.refresh();
+            stockTable1.refresh();
+        });
+        task.setOnFailed(e->{
+            ExceptionDialog d=new ExceptionDialog(task.getException());
+            d.show(root);
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
     }
 }

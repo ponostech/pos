@@ -36,6 +36,7 @@ import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
+import ponospos.entities.Stores;
 import ponospos.entities.Supplier;
 import singletons.PonosExecutor;
 import tasks.products.CreateTask;
@@ -80,6 +81,7 @@ implements PonosControllerInterface,
     private ObservableList<Product> products=FXCollections.observableArrayList();
     private ObservableList<Category> categories=FXCollections.observableArrayList();
     private ObservableList<Supplier>suppliers=FXCollections.observableArrayList();
+    private ObservableList<Stores>stores=FXCollections.observableArrayList();
     
     public ProductController(MaskerPane mask,StackPane root){
         try {
@@ -191,9 +193,17 @@ implements PonosControllerInterface,
         });
         t4.setOnFailed(e -> task.getException().printStackTrace(System.err));
 
+        tasks.stores.FetchAllTask t5=new tasks.stores.FetchAllTask();
+        mask.visibleProperty().bind(t5.runningProperty());
+        t5.setOnSucceeded(e->{
+            stores.clear();
+            stores.addAll(t5.getValue());
+        });
+        t5.setOnFailed(ev->t5.getException().printStackTrace(System.err));
         PonosExecutor.getInstance().getExecutor().submit(task);
         PonosExecutor.getInstance().getExecutor().submit(t2);
         PonosExecutor.getInstance().getExecutor().submit(t4);
+        PonosExecutor.getInstance().getExecutor().submit(t5);
 
     }
 
@@ -202,6 +212,7 @@ implements PonosControllerInterface,
        ProductDialog d=new ProductDialog(this);
        d.setCategories(categories);
        d.setSuppliers(suppliers);
+       d.setStores(stores);
        d.isCreate();
        d.show(root);
         

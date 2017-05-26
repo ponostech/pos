@@ -48,7 +48,7 @@ public class Stock implements Serializable {
     @Column(name = "id")
     private Integer id;
     
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="item_id",nullable = false)
     private Product product;
     
@@ -64,6 +64,11 @@ public class Stock implements Serializable {
     @Column(name = "update_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateAt;
+    
+    @Basic(optional = false)
+    @Column(name = "created_at",nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="store_id",nullable = false)
@@ -82,11 +87,18 @@ public class Stock implements Serializable {
     public Stock() {
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    
     public Stock(Integer id) {
         this.id = id;
     }
-
-   
 
     public Integer getId() {
         return id;

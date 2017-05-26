@@ -96,7 +96,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Attribute> attributes;
     
-    @OneToMany(mappedBy = "product",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
     private List<Stock> stocks;
   
     @ManyToOne(fetch=FetchType.LAZY)
@@ -257,7 +257,9 @@ public class Product implements Serializable {
         this.stocks = stocks;
     }
 
-    
+    public void addStock(Stock st){
+        this.stocks.add(st);
+    }
     
     public boolean getActive() {
         return active;
