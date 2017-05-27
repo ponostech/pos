@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/StockDetailDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/StockControlController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Invoice.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/User.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/AddStockDialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/ProductContainer.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/customers/CustomerDialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/MainController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/SellController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/CustomerSelectDialog.java</file>
         </group>
     </open-files>
 </project-private>

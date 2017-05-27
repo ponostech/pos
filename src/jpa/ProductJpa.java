@@ -58,6 +58,14 @@ public class ProductJpa {
 
         return founds;
     }
+    public static List findProductNameOrBarcode(String name){
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> founds = em.createNamedQuery("Product.find", Product.class)
+                .setParameter("param", name+"%")
+                .getResultList();
+
+        return founds;
+    }
     
 
 }

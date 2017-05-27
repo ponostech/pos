@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="511.0" prefWidth="394.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <TextField fx:id="searchField" layoutX="14.0" layoutY="57.0" prefHeight="38.0" prefWidth="369.0" promptText="type customer name" />
+      <MaterialDesignIconView fx:id="close" fill="#a40303" glyphName="CLOSE" layoutX="352.0" layoutY="39.0" size="28" />
+      <Label layoutX="14.0" layoutY="20.0" prefHeight="17.0" prefWidth="120.0" styleClass="h2" text="Select Customer" />
+      <JFXListView fx:id="customerList" layoutX="14.0" layoutY="107.0" prefHeight="349.0" prefWidth="369.0" />
+      <JFXButton fx:id="negativeBtn" layoutX="14.0" layoutY="472.0" prefHeight="25.0" prefWidth="157.0" text="Close">
+         <graphic>
+            <FontAwesomeIconView fill="#0b4f97" glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="positiveBtn" layoutX="223.0" layoutY="472.0" prefHeight="25.0" prefWidth="157.0" text="Select">
+         <graphic>
+            <FontAwesomeIconView fill="#0e399e" glyphName="CHECK" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

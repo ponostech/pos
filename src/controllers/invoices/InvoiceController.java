@@ -7,12 +7,15 @@ package controllers.invoices;
 
 import controllers.PonosControllerInterface;
 import controllers.SettingController;
+import controllers.sales.ProductContainer;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.MaskerPane;
 
 /**
@@ -23,6 +26,9 @@ public class InvoiceController extends AnchorPane implements PonosControllerInte
     private MaskerPane mask;
     private StackPane root;
     
+
+
+    
     public InvoiceController(MaskerPane mask,StackPane root){
         try {
             this.mask=mask;
@@ -32,6 +38,8 @@ public class InvoiceController extends AnchorPane implements PonosControllerInte
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
+            
+            
                     } catch (IOException ex) {
             Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -39,7 +39,7 @@ import ponospos.entities.Customer;
 public class CustomerDialog extends JFXDialog{ 
 
     
-    interface   CustomerDialogListener{
+   public  interface   CustomerDialogListener{
         public void onCreate(Customer customer);
         public void onEdit(Customer customer);
     }

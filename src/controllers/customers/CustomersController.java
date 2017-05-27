@@ -23,7 +23,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,12 +46,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import jpa.CustomerJpa;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Customer;
-import ponospos.entities.User;
 import singletons.PonosExecutor;
+import tasks.customers.*;
 
 /**
  * FXML Controller class
@@ -380,63 +378,10 @@ public class CustomersController extends AnchorPane implements
 
     
     
-    public class CreateTask extends Task<Customer>{
-        private Customer customer;
-        @Override
-        protected Customer call() throws Exception {
-            return CustomerJpa.createCustomer(customer);
-        }
-
-        public void setCustomer(Customer customer) {
-            this.customer = customer;
-        }
-        
-    }
-     public class UpdateTask extends Task<Customer>{
-         private Customer customer;
-        @Override
-        protected Customer call() throws Exception {
-            return CustomerJpa.updateCustomer(customer);
-        }
-        public void setCustomer(Customer customer) {
-            this.customer = customer;
-        }
     
-    }
-    public class DeleteTask extends Task<Customer>{
-          private Customer customer;
-        @Override
-        protected Customer call() throws Exception {
-            return CustomerJpa.deleteCustomer(customer);
-        }
-        public void setCustomer(Customer customer) {
-            this.customer = customer;
-        }
     
-    }
-    public class FetchAllCustomerTask extends Task<List<Customer>>{
-        @Override
-        protected List<Customer> call() throws Exception {
-            return CustomerJpa.getAllCustomers();
-        } 
-    }
-    public class FindCustomerTask extends Task<List<Customer>>{
-        private String fname;
-        private String lname;
-        @Override
-        protected List<Customer> call() throws Exception {
-           
-            return CustomerJpa.findCustomerByName(fname, lname);
-        } 
-
-        public void setFname(String fname) {
-            this.fname = fname;
-        }
-
-        public void setLname(String lname) {
-            this.lname = lname;
-        }
-        
-    }
+    
+   
+    
       
 }

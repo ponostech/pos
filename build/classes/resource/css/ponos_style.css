@@ -71,8 +71,9 @@ and open the template in the editor.
     -fx-background-color: blue;
 }
 .h1{
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size:38px;
+    -fx-text-fill: darkgray;
+    -fx-font-weight:700;
+    -fx-font-size:28px;
     -fx-font-family: "Arial";
 }
 
@@ -215,4 +216,10 @@ and open the template in the editor.
     -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
  }*/
+.box{
+    -fx-background-color: yellow;
+    -fx-padding: 5;
+    -fx-border-color: darkblue transparent darkblue transparent;
+    -fx-border-width: 4;
+}
  

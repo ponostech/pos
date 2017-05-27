@@ -44,6 +44,7 @@ import singletons.Auth;
     , @NamedQuery(name = "Product.findByCostPrice", query = "SELECT p FROM Product p WHERE p.costPrice = :costPrice")
     , @NamedQuery(name = "Product.findBySellingPrice", query = "SELECT p FROM Product p WHERE p.sellingPrice = :sellingPrice")
     , @NamedQuery(name = "Product.findByAddedBy", query = "SELECT p FROM Product p WHERE p.addedBy = :addedBy")
+    , @NamedQuery(name = "Product.find", query = "SELECT p FROM Product p WHERE p.name Like :param OR p.barcode LIKE :param")
     , @NamedQuery(name = "Product.findByEdittedBy", query = "SELECT p FROM Product p WHERE p.edittedBy = :edittedBy")
     , @NamedQuery(name = "Product.findByCreatedAt", query = "SELECT p FROM Product p WHERE p.createdAt = :createdAt")})
 public class Product implements Serializable {
