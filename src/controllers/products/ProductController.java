@@ -64,6 +64,20 @@ implements PonosControllerInterface,
     
    
     @FXML
+    private TableView<Product> productTable1;
+    @FXML
+    private TableColumn<Product, Integer> idCol1;
+    @FXML
+    private TableColumn<Product, String> nameCol1;
+    @FXML
+    private TableColumn<Product, String> prizeCol1;
+    @FXML
+    private TableColumn<Product, Boolean> activeCol1;
+    @FXML
+    private TableColumn<Product, String> addedbyCol1;
+    @FXML
+    private TableColumn<Product, Product> actionCols1;
+    @FXML
     private TableView<Product> productTable;
     @FXML
     private TableColumn<Product, Integer> idCol;
@@ -78,6 +92,7 @@ implements PonosControllerInterface,
     @FXML
     private TableColumn<Product, Product> actionCols;
     
+    private ObservableList<Product> inactiveProducts=FXCollections.observableArrayList();
     private ObservableList<Product> products=FXCollections.observableArrayList();
     private ObservableList<Category> categories=FXCollections.observableArrayList();
     private ObservableList<Supplier>suppliers=FXCollections.observableArrayList();
@@ -94,6 +109,7 @@ implements PonosControllerInterface,
             loader.setController(this);
             loader.load();
             this.productTable.setItems(products);
+            this.productTable1.setItems(inactiveProducts);
         } catch (IOException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -154,6 +170,55 @@ implements PonosControllerInterface,
                 
             }
         );
+        idCol1.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getId()));
+        nameCol1.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getName()));
+        prizeCol1.setCellValueFactory(e->{
+            Product value = e.getValue();
+            BigDecimal sellingPrice = value.getSellingPrice();
+            String str = NumberFormat.getCurrencyInstance(new Locale("en","in")).format(sellingPrice.doubleValue());
+            return new SimpleStringProperty(str);
+        });
+        activeCol1.setCellValueFactory(e->new SimpleObjectProperty<Boolean>(e.getValue().isActive()));
+        addedbyCol1.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getAddedBy().getUsername()));
+        actionCols1.setCellFactory((TableColumn<Product, Product> param) -> 
+            new TableCell<Product,Product>(){
+                FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
+                FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                Button viewBtn=new Button("",viewIcon);
+                Button editBtn=new Button("",editIcon);
+                Button delBtn=new Button("",delIcon);
+                
+                @Override
+                protected void updateItem(Product item, boolean empty) {
+                    super.updateItem(item, empty); 
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    }else{
+                        viewBtn.setOnAction(e->{
+                            
+                        });
+                        editBtn.setOnAction(e->{
+                            ProductDialog d=new ProductDialog(ProductController.this);
+                            d.setCategories(categories);
+                            d.setSuppliers(suppliers);
+                            d.setProduct(products.get(getIndex()));
+                            d.isEdit().show(root);
+                        });
+                        delBtn.setOnAction(e->{
+                             ConfirmDialog d=new ConfirmDialog(ConfirmationMessage.TITLE, ConfirmationMessage.MESSAGE);
+                            Product model = inactiveProducts.get(getIndex());
+                            d.setModel(model);
+                            d.setListener(ProductController.this);
+                            d.show(root);
+                        });
+                        setGraphic(new HBox(5,viewBtn,editBtn,delBtn));
+                    }
+                }
+                
+            }
+        );
     }
 
     @Override
@@ -172,7 +237,14 @@ implements PonosControllerInterface,
         FetchAllTask task=new FetchAllTask();
         task.setOnSucceeded(e->{
             products.clear();
-            products.addAll(task.getValue());
+            inactiveProducts.clear();
+            for (Product p : task.getValue()) {
+                if (p.isActive()) {
+                    products.add(p);
+                } else {
+                    inactiveProducts.add(p);
+                }
+            }
         });
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
         mask.visibleProperty().bind(task.runningProperty());
@@ -222,7 +294,11 @@ implements PonosControllerInterface,
     public void onCreate(Product product) {
         CreateTask task=new CreateTask();
         task.setOnSucceeded(e->{
-            products.add(task.getValue());
+            if (task.getValue().isActive()) {
+                products.add(task.getValue());
+            }else{
+                inactiveProducts.add(task.getValue());
+            }
             Notifications.create()
                 .title(ProductMessage.CREATE_SUCCESS_TITLE)
                 .text(ProductMessage.CREATE_SUCCESS_MESSAGE)
@@ -259,6 +335,7 @@ implements PonosControllerInterface,
                     .text(ProductMessage.UPDATE_SUCCESS_MESSAGE)
                     .showInformation();
             productTable.refresh();
+            productTable1.refresh();
         });
         mask.visibleProperty().bind(task.runningProperty());
         PonosExecutor.getInstance().getExecutor().submit(task);

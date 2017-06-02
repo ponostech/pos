@@ -10,10 +10,28 @@ and open the template in the editor.
 /*------DECORATOR-----*/
 /*------DECORATOR-----*/
 /*------DECORATOR-----*/
+
+@font-face {
+    font-family: Roboto;
+    src: url("../font/roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Medium";
+    src: url("../font/roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Light";
+    src: url("../font/roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Bold";
+    src: url("../font/roboto/Roboto-Bold.ttf");
+}
 .jfx-decorator {
-    -fx-decorator-color: linear-gradient(#7ebcea, #2f4b8f),
-        linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);
+    -fx-decorator-color:#003333;
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -44,19 +62,15 @@ and open the template in the editor.
     -fx-background-color:#660000;
 }
 .side-bar {
-     -fx-background-color: 
-        #000000,
+    -fx-background-color: #003333;
+/*        #000000,
         linear-gradient(#7ebcea, #2f4b8f),
         linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );  
+        linear-gradient(#395cab, #223768);*/
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/  
 }
 .top-bar{
-    -fx-background-color: 
-        #000000,
-        linear-gradient(#7ebcea, #2f4b8f),
-        linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);
+    -fx-background-color: #003333;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
@@ -86,8 +100,8 @@ and open the template in the editor.
  
  /* menu styling*/
 .side-menu{  
-    -fx-background-color: transparent;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-color: #003333;
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
     -fx-text-fill:#fff;
     -fx-padding: 5px;
 }
@@ -153,11 +167,12 @@ and open the template in the editor.
  }
  /* dialog interface styling*/
  .top-pane{
-     -fx-background-color: 
+     -fx-background-color: #009999;
+/*     -fx-background-color: 
         #000000,
         linear-gradient(#7ebcea, #2f4b8f),
         linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);
+        linear-gradient(#395cab, #223768);*/
  }
  .top-pane .h2{
      -fx-font-size:18px;
@@ -217,9 +232,39 @@ and open the template in the editor.
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
  }*/
 .box{
-    -fx-background-color: yellow;
+    -fx-background-color: #fff;
     -fx-padding: 5;
-    -fx-border-color: darkblue transparent darkblue transparent;
+    -fx-border-color: #232723 transparent transparent transparent;
     -fx-border-width: 4;
 }
- 
+.box:hover{
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+
+}
+
+.control-group{
+    -fx-background-color: #fff;
+    -fx-border-color:darkgray;
+    -fx-border-style:solid inside;
+    -fx-background-radius: 30 30 30 30; 
+    -fx-border-radius: 30 30 30 30;
+    -fx-padding:10px;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.5) , 1, 0.0 , 0 , 1);
+
+}
+.search-field{
+   -fx-background-radius: 30 0 0 30; 
+   -fx-pref-columns: 150;
+   
+}
+.search-btn{
+    -fx-background-radius: 0 30 30 0;
+    -fx-background-color: #009999;
+    
+}
+.info-label{
+    -fx-font-family:"Roboto";
+    -fx-font-size:14;
+    /*-fx-font-weight:700;*/
+    -fx-text-fill:#2a2b2a;
+}

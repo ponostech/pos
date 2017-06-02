@@ -40,11 +40,11 @@ public class InvoiceItem implements Serializable {
     @Column(name = "id")
     private Integer id;
     
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "invoice")
+    @ManyToOne(optional = false,cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice",nullable = false)
     private Invoice invoice;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Product item;
     

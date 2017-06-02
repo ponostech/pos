@@ -42,13 +42,17 @@ public class Stores implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
+    
     @Column(name = "address")
     private String address;
+    
     @Column(name = "contact")
     private String contact;
+    
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -130,7 +134,7 @@ public class Stores implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.Stores[ id=" + id + " ]";
+        return name;
     }
     
 }

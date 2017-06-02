@@ -21,6 +21,7 @@ public class StoreJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.persist(store);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return store;
@@ -45,8 +46,12 @@ public class StoreJpa {
     
     public static List getAllStore()throws Exception{
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
         List<Stores> all = em.createNamedQuery("Stores.findAll",Stores.class)
                 .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
         return all;
     }
     public static List findStoreByName(String name){

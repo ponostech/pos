@@ -46,6 +46,8 @@ import singletons.Auth;
     , @NamedQuery(name = "Product.findByAddedBy", query = "SELECT p FROM Product p WHERE p.addedBy = :addedBy")
     , @NamedQuery(name = "Product.find", query = "SELECT p FROM Product p WHERE p.name Like :param OR p.barcode LIKE :param")
     , @NamedQuery(name = "Product.findByEdittedBy", query = "SELECT p FROM Product p WHERE p.edittedBy = :edittedBy")
+    , @NamedQuery(name = "Product.findByEdittedBy", query = "SELECT p FROM Product p WHERE p.edittedBy = :edittedBy")
+    , @NamedQuery(name = "Product.findStock", query = "SELECT p FROM Product p WHERE p.active = true AND p.stocks !=null")
     , @NamedQuery(name = "Product.findByCreatedAt", query = "SELECT p FROM Product p WHERE p.createdAt = :createdAt")})
 public class Product implements Serializable {
 
@@ -97,7 +99,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Attribute> attributes;
     
-    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Stock> stocks;
   
     @ManyToOne(fetch=FetchType.LAZY)

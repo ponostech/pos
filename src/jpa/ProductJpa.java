@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
+import ponospos.entities.Stores;
 
 /**
  *
@@ -21,6 +22,7 @@ public class ProductJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.persist(product);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return product;
@@ -39,29 +41,58 @@ public class ProductJpa {
         em.getTransaction().begin();
         Product c = em.merge(product);
         em.remove(c);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return c;
     }
     
-    public static List getAllProduct()throws Exception{
+    public static List<Product> getAllProduct()throws Exception{
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
-        List<Product> all = em.createNamedQuery("Product.findAll",Product.class)
+        List<Product> all = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.stocks")
                 .getResultList();
+       
+        em.close();
         return all;
     }
     public static List findProductName(String name){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
+
         List<Product> founds = em.createNamedQuery("Product.findByName", Product.class)
                 .setParameter("name", name+"%")
                 .getResultList();
-
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
         return founds;
     }
     public static List findProductNameOrBarcode(String name){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
         List<Product> founds = em.createNamedQuery("Product.find", Product.class)
                 .setParameter("param", name+"%")
+                .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
+        return founds;
+    }
+
+    public static List<Product> findStockInStore(Stores store) {
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> founds = em.createNamedQuery("Stock.findProduct", Product.class)
+                .setParameter("store", store)
+                .getResultList();
+
+        return founds;
+    }
+
+    public static List<Product> findAvailableByName(Stores store,String param) {
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> founds = em.createNamedQuery("Stock.findProductByName", Product.class)
+                .setParameter("store", store)
+                .setParameter("param", param+"%")
                 .getResultList();
 
         return founds;

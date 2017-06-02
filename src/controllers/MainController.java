@@ -12,8 +12,9 @@ import controllers.customers.CustomersController;
 import controllers.invoices.InvoiceController;
 import controllers.products.ProductController;
 import controllers.products.StockControlController;
+import controllers.sales.SaleHistoryController;
 import controllers.sales.SellController;
-import controllers.sales.SellHistoryController;
+import controllers.stores.StockTransferController;
 import controllers.stores.StoresController;
 import controllers.suppliers.SuppliersController;
 import controllers.users.ProfileDialog;
@@ -74,7 +75,7 @@ public class MainController extends StackPane
     
     private InvoiceController invoiceController;
     private SettingController settingController;
-    private SellHistoryController sellHistoryController;
+    private SaleHistoryController sellHistoryController;
     private SellController sellController;
     private StockControlController stockController;
     private ProductController productController;
@@ -86,6 +87,7 @@ public class MainController extends StackPane
     private CategoryController categoryController;
     private ProfileDialog profileDialog;
     private StoresController storeController;
+    private StockTransferController transferController;
     private PonosPos app;
     public MainController(PonosPos app) {
         super();
@@ -129,9 +131,11 @@ public class MainController extends StackPane
         this.productController=new ProductController(mask,this);
         this.stockController=new StockControlController(mask, this);
         this.sellController=new SellController(mask,this);
-        this.sellHistoryController=new SellHistoryController(mask,this);
+        this.sellHistoryController=new SaleHistoryController(mask,this);
+        this.transferController=new StockTransferController(mask,this);
         this.layoutContainer.setLeft(sideBar);
         
+        this.transferController.initDependencies();
         this.invoiceController.initDependencies();
         this.sellHistoryController.initDependencies();
         this.sellController.initDependencies();
@@ -145,6 +149,7 @@ public class MainController extends StackPane
     }
     @Override
     public void initControls(){
+        this.transferController.initControls();
         this.invoiceController.initControls();
         this.sellHistoryController.initControls();
         this.sellController.initControls();
@@ -160,6 +165,7 @@ public class MainController extends StackPane
     @Override
     public void hookupEvent() {
         
+        transferController.hookupEvent();
         invoiceController.hookupEvent();
         sellHistoryController.hookupEvent();
         sellController.hookupEvent();
@@ -173,6 +179,7 @@ public class MainController extends StackPane
     }
     @Override
     public void bindControls(){
+        this.transferController.bindControls();
         this.invoiceController.bindControls();
         this.sellHistoryController.bindControls();
         this.sellController.bindControls();
@@ -259,7 +266,9 @@ public class MainController extends StackPane
     
     
     public void greetUser(){
-        label.setText(Auth.getInstance().getUser().getUsername());
+        label.setText("Welcome "+Auth.getInstance().getUser().getUsername()
+                +" in "+Auth.getInstance().getStore().getName());
+        
     }
 
     @Override
@@ -298,8 +307,15 @@ public class MainController extends StackPane
 
     @Override
     public void onStockControlClick() {
+//        StockControlController s=new StockControlController(mask, this);
+//        s.initDependencies();
+//        s.initControls();
+//        s.hookupEvent();
+//        s.bindControls();
+        //s.fetchStock();
         switchScreen(stockController);
         stockController.fetchStock();
+//        s.fetchStock();
     }
 
     @Override
@@ -323,6 +339,12 @@ public class MainController extends StackPane
     public void onInvoiceClick() {
         switchScreen(invoiceController);
         invoiceController.fetchAll();
+    }
+
+    @Override
+    public void onStockTransferClick() {
+        switchScreen(transferController);
+        transferController.fetchAll();
     }
     
 

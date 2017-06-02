@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" prefHeight="552.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="itemTable" layoutX="37.0" layoutY="244.0" prefHeight="293.0" prefWidth="524.0">
+        <columns>
+          <TableColumn fx:id="itemCol" prefWidth="75.0" text="ITEM" />
+          <TableColumn fx:id="taxCol" prefWidth="75.0" text="TAX" />
+            <TableColumn fx:id="qtyCol" prefWidth="75.0" text="QUANTITY" />
+            <TableColumn fx:id="totalCol" prefWidth="75.0" text="TOTAL" />
+        </columns>
+      </TableView>
+      <Label layoutX="37.0" layoutY="140.0" text="Customer" />
+      <Label layoutX="56.0" layoutY="172.0" text="Status" />
+      <Label layoutX="56.0" layoutY="203.0" text="Store" />
+      <Label layoutX="347.0" layoutY="113.0" text="Date" />
+      <Label fx:id="dateLabel" layoutX="383.0" layoutY="113.0" styleClass="info-label" text="Label" />
+      <Label fx:id="customerLabel" layoutX="114.0" layoutY="141.0" styleClass="info-label" text="Label" />
+      <Label fx:id="statusLabel" layoutX="114.0" layoutY="173.0" styleClass="info-label" text="Label" />
+      <Label fx:id="storeLabel" layoutX="114.0" layoutY="204.0" styleClass="info-label" text="Label" />
+      <Pane prefHeight="84.0" prefWidth="600.0" styleClass="top-pane">
+         <children>
+            <MaterialDesignIconView fx:id="close" fill="#b90b0b" glyphName="CLOSE" layoutX="564.0" layoutY="33.0" size="28" />
+            <Label layoutX="256.0" layoutY="53.0" styleClass="h2" text="Invoice Detail" />
+         </children>
+      </Pane>
+      <Label layoutX="37.0" layoutY="113.0" text="Invoice Id" />
+      <Label fx:id="idLabel" layoutX="114.0" layoutY="113.0" styleClass="info-label" text="Label" />
+      <Label layoutX="320.0" layoutY="203.0" text="Employee" />
+      <Label fx:id="empLabel" layoutX="383.0" layoutY="203.0" styleClass="info-label" text="label" />
+   </children>
+</AnchorPane>

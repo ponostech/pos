@@ -5,8 +5,10 @@
  */
 package jpa;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
 import ponospos.entities.Invoice;
 import ponospos.entities.Stock;
 
@@ -19,6 +21,7 @@ public class InvoiceJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.persist(invoice);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return invoice;
@@ -43,8 +46,25 @@ public class InvoiceJpa {
     
     public static List getAllInvoice()throws Exception{
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
-        List<Invoice> all = em.createNamedQuery("Product.findAll",Invoice.class)
+        em.getTransaction().begin();
+        List<Invoice> all = em.createNamedQuery("Invoice.findAll",Invoice.class)
                 .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
+        return all;
+    }
+
+    public static List<Invoice> findBetweenDates(Date from, Date to) {
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
+        List<Invoice> all = em.createNamedQuery("Invoice.findBetweenDates", Invoice.class)
+                .setParameter("from", from,TemporalType.DATE)
+                .setParameter("to", to,TemporalType.DATE)
+                .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
         return all;
     }
 }

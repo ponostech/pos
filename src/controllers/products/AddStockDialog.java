@@ -102,7 +102,7 @@ public class AddStockDialog extends JFXDialog {
     }
    
     private void hookUpEvent(){
-        this.qtyField.textProperty().addListener(e->clearIfInParseable(qtyField));
+        this.qtyField.setOnKeyReleased(e->clearIfInParseable(qtyField));
         positiveBtn.setOnAction(e->{
             int qty=Integer.parseInt(qtyField.getText().trim());
             
@@ -119,7 +119,8 @@ public class AddStockDialog extends JFXDialog {
             AddStockDialog.this.close();
             listener.onUpdate(stock);
         });
-        negativeBtn.setOnAction(e->{});
+        negativeBtn.setOnAction(e->close());
+        close.setOnMouseClicked(e->close());
     }
    
     private void validate(){

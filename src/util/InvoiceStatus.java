@@ -16,7 +16,6 @@ public enum InvoiceStatus {
     InvoiceStatus(String val){
         this.val=val;
     }
-
     @Override
     public String toString() {
         return val;

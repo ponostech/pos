@@ -19,6 +19,7 @@ public class CustomerJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.persist(customer);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return customer;
@@ -27,6 +28,7 @@ public class CustomerJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
         em.merge(customer);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return customer;
@@ -36,6 +38,7 @@ public class CustomerJpa {
         em.getTransaction().begin();
         Customer c = em.merge(customer);
         em.remove(c);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         return c;
@@ -43,16 +46,24 @@ public class CustomerJpa {
     
     public static List getAllCustomers(){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
         List<Customer> all = em.createNamedQuery("Customer.findAll",Customer.class)
                 .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
         return all;
     }
     public static List findCustomerByName(String fname,String lname){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
         List<Customer> founds = em.createNamedQuery("Customer.findByNames", Customer.class)
                 .setParameter("fname", fname+"%")
                 .setParameter("lname", lname+"%")
                 .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
 
         return founds;
     }

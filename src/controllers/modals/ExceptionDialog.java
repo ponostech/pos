@@ -49,7 +49,7 @@ public class ExceptionDialog extends JFXDialog{
             e.printStackTrace(pw);
             stackTrace.setText(pw.toString());
             errorMessage.setText(e.getMessage());
-            errorCode.setText(e.getCause().getMessage());
+//            errorCode.setText(e.getCause().getMessage());
             
             exitBtn.setOnAction(ev->{
                 PonosExecutor.getInstance().getExecutor().shutdownNow();

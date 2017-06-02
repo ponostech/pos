@@ -71,7 +71,7 @@ public class LoginController extends StackPane {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void init(){
+    public void init(){
         storesCombo.setItems(stores);
         FetchAllTask task=new FetchAllTask();
         task.setOnSucceeded(e->{
@@ -134,6 +134,8 @@ public class LoginController extends StackPane {
     private boolean isValidInput(String username, String password) {
         return !(username.isEmpty() || password.isEmpty() || storesCombo.getSelectionModel().getSelectedItem()==null);
     }
+
+    
     
     private class LoginTask extends Task<User>{
         private String username;

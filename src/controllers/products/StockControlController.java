@@ -250,7 +250,7 @@ public class StockControlController extends AnchorPane implements
 
     @Override
     public void hookupEvent() {
-        searchBtn.setOnAction(e->doSearch());
+        searchBtn.setOnAction(e->fetchStock());
         searchField.textProperty().addListener(inv->doSearch());
         
         addBtn.setOnAction(e->{
@@ -268,14 +268,14 @@ public class StockControlController extends AnchorPane implements
     }
 
     public void fetchStock() {
-        FetchAllStockTask task=new FetchAllStockTask();
-        task.setOnSucceeded(e->{
-            stocks.clear();
-            stocks.addAll(task.getValue());
-        });
-        mask.visibleProperty().bind(task.runningProperty());
-        task.setOnFailed(e->task.getException().printStackTrace(System.err));
-        
+//        FetchAllStockTask task=new FetchAllStockTask();
+//        task.setOnSucceeded(e->{
+//            stocks.clear();
+//            stocks.addAll(task.getValue());
+//        });
+//        mask.visibleProperty().bind(task.runningProperty());
+//        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+//        
         tasks.categories.FetchAllTask t2=new tasks.categories.FetchAllTask();
         t2.setOnSucceeded(e->{
             categories.clear();
@@ -292,29 +292,33 @@ public class StockControlController extends AnchorPane implements
             suppliers.clear();
             suppliers.addAll(t4.getValue());
         });
-        t4.setOnFailed(e -> task.getException().printStackTrace(System.err));
+        t4.setOnFailed(e -> t4.getException().printStackTrace(System.err));
 
         tasks.stores.FetchAllTask t5=new tasks.stores.FetchAllTask();
         t5.setOnSucceeded(e->{
             stores.clear();
             stores.addAll(t5.getValue());
         });
-        t5.setOnFailed(e -> task.getException().printStackTrace(System.err));
+        t5.setOnFailed(e -> t5.getException().printStackTrace(System.err));
         tasks.products.FetchAllTask t6=new tasks.products.FetchAllTask();
         t6.setOnSucceeded(e->{
+            
             activeProducts.clear();
             inactiveProducts.clear();
             for (Product p : t6.getValue()) {
                 if (p.isActive()) {
+                    
                     activeProducts.add(p);
                 }else{
                     inactiveProducts.add(p);
                 }
             }
+            stockTable.refresh();
+            stockTable1.refresh();
         });
-        t6.setOnFailed(e -> task.getException().printStackTrace(System.err));
+        t6.setOnFailed(e -> t6.getException().printStackTrace(System.err));
 
-        PonosExecutor.getInstance().getExecutor().submit(task);
+//        PonosExecutor.getInstance().getExecutor().submit(task);
         PonosExecutor.getInstance().getExecutor().submit(t2);
         PonosExecutor.getInstance().getExecutor().submit(t4);
         PonosExecutor.getInstance().getExecutor().submit(t5);
@@ -365,13 +369,15 @@ public class StockControlController extends AnchorPane implements
         task.setOnSucceeded(e->{
             Notifications.create().title(StockControlMessage.STOCK_CREATE_TITLE).text(StockControlMessage.STOCK_CREATE_SUCCESS)
                     .showInformation();
-          
             stockTable.refresh();
             stockTable1.refresh();
+            System.out.println("add stock task is finish"+task.isDone());
+     
         });
         task.setOnFailed(e->{
-            ExceptionDialog d=new ExceptionDialog(task.getException());
-            d.show(root);
+//            ExceptionDialog d=new ExceptionDialog(task.getException());
+//            d.show(root);
+            task.getException().printStackTrace(System.err);
         });
         PonosExecutor.getInstance().getExecutor().submit(task);
     }

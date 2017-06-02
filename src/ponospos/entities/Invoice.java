@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,9 +23,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.eclipse.persistence.jpa.config.Cascade;
 import singletons.Auth;
 
 /**
@@ -39,11 +42,11 @@ import singletons.Auth;
     , @NamedQuery(name = "Invoice.findByCustomer", query = "SELECT i FROM Invoice i WHERE i.customer = :customer")
     , @NamedQuery(name = "Invoice.findByUser", query = "SELECT i FROM Invoice i WHERE i.soldBy = :user")
     , @NamedQuery(name = "Invoice.findByDiscount", query = "SELECT i FROM Invoice i WHERE i.discount = :discount")
-    , @NamedQuery(name = "Invoice.findByPaymentAmount", query = "SELECT i FROM Invoice i WHERE i.paymentAmount = :paymentAmount")
     , @NamedQuery(name = "Invoice.findByTotal", query = "SELECT i FROM Invoice i WHERE i.total = :total")
-    , @NamedQuery(name = "Invoice.findByPaymentDate", query = "SELECT i FROM Invoice i WHERE i.paymentDate = :paymentDate")
+    , @NamedQuery(name = "Invoice.findByPaymentDate", query = "SELECT i FROM Invoice i WHERE i.invoiceDate = :paymentDate")
     , @NamedQuery(name = "Invoice.findByTax", query = "SELECT i FROM Invoice i WHERE i.tax = :tax")
-    , @NamedQuery(name = "Invoice.findByStatus", query = "SELECT i FROM Invoice i WHERE i.status = :status")})
+    , @NamedQuery(name = "Invoice.findBetweenDates", query = "SELECT i FROM Invoice i WHERE i.invoiceDate BETWEEN :from AND :to")
+    })
 public class Invoice implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,57 +57,56 @@ public class Invoice implements Serializable {
     private Integer id;
     
     @ManyToOne()
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id",nullable = true)
     private Customer customer;
     
     @ManyToOne()
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable=false)
     private User soldBy;
     
     @Basic(optional = false)
-    @Column(name = "discount")
+    @Column(name = "discount",nullable=false)
     private BigDecimal discount;
     
-    @Basic(optional = false)
-    @Column(name = "payment_amount")
-    private BigDecimal paymentAmount;
+//    @Basic(optional = false)
+//    @Column(name = "payment_amount")
+//    private BigDecimal paymentAmount;
     
     @Basic(optional = false)
-    @Column(name = "total")
+    @Column(name = "total",scale =2,precision = 10)
     private BigDecimal total;
-    
+  
     @Basic(optional = false)
-    @Column(name = "inv_date")
+    @Column(name = "invoice_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date soldDate;
+    private Date invoiceDate;
     
     @Basic(optional = false)
-    @Column(name = "payment_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date paymentDate;
+    @Column(name = "tax",scale = 2,precision = 10)
+    private BigDecimal tax;
     
     @Basic(optional = false)
-    @Column(name = "tax")
-    private float tax;
-    
-    @Column(name = "status")
+    @Column(name = "status",nullable = true)
     private String status;
     
     @Lob
-    @Column(name = "remark")
+    @Column(name = "remark",nullable=true)
     private String remark;
     
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade ={ CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH})
     private List<Stock>stocks;
     
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "invoice",orphanRemoval = true)
+    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL)
     private List<InvoiceItem>invoiceItem;
 
+    @OneToOne(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Payment payment;
+    
     public Invoice() {
         this.discount=new BigDecimal("0");
-        this.paymentAmount=new BigDecimal("0");
+//        this.paymentAmount=new BigDecimal("0");
         this.soldBy=Auth.getInstance().getUser();
-        this.tax=0.0f;
+        
     }
 
     public Invoice(Integer id) {
@@ -153,8 +155,15 @@ public class Invoice implements Serializable {
     public void setInvoiceItem(List<InvoiceItem> invoiceItem) {
         this.invoiceItem = invoiceItem;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
-   
     public BigDecimal getDiscount() {
         return discount;
     }
@@ -163,14 +172,7 @@ public class Invoice implements Serializable {
         this.discount = discount;
     }
 
-    public BigDecimal getPaymentAmount() {
-        return paymentAmount;
-    }
-
-    public void setPaymentAmount(BigDecimal paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    }
-
+   
     public BigDecimal getTotal() {
         return total;
     }
@@ -179,44 +181,30 @@ public class Invoice implements Serializable {
         this.total = total;
     }
 
-    public Date getSoldDate() {
-        return soldDate;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setSoldDate(Date soldDate) {
-        this.soldDate = soldDate;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
-    public float getTax() {
+    public BigDecimal getTax() {
         return tax;
     }
 
-    public void setTax(float tax) {
+    public void setTax(BigDecimal tax) {
         this.tax = tax;
     }
 
     
-   
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getInvoiceDate() {
+        return invoiceDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-  
-    public void setTax(long tax) {
-        this.tax = tax;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
     public String getRemark() {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <TextField fx:id="searchField" layoutX="29.0" layoutY="39.0" prefHeight="40.0" prefWidth="535.0" promptText="Type product name or scan barcode" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="39.0" />
+      <TableView fx:id="itemsTable" layoutX="29.0" layoutY="100.0" prefHeight="286.0" prefWidth="535.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="100.0">
+        <columns>
+          <TableColumn fx:id="nameCol" prefWidth="375.0" text="ITEMS" />
+          <TableColumn fx:id="qtyCol" minWidth="0.0" prefWidth="64.0" text="QTY" />
+            <TableColumn fx:id="actionCol" prefWidth="83.0" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>

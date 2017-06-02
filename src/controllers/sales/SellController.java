@@ -6,33 +6,35 @@
 package controllers.sales;
 
 import Messages.CustomerMessage;
+import Messages.InvoiceMessage;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextField;
 import controllers.PonosControllerInterface;
 import controllers.customers.CustomerDialog;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Customer;
+import ponospos.entities.Invoice;
+import ponospos.entities.InvoiceItem;
 import ponospos.entities.Product;
+import singletons.Auth;
 import singletons.PonosExecutor;
 import tasks.customers.FetchAllCustomerTask;
-import tasks.products.FetchAllTask;
+import tasks.invoices.CreateInvoiceTask;
+import tasks.products.FindProductStockInStore;
 
 /**
  * FXML Controller class
@@ -40,7 +42,12 @@ import tasks.products.FetchAllTask;
  * @author Sawmtea
  */
 public class SellController extends AnchorPane implements 
-        CustomerDialog.CustomerDialogListener,CustomerSelectDialog.CustomerSelectionInterface, 
+        CustomerDialog.CustomerDialogListener,
+        CustomerSelectDialog.CustomerSelectionInterface, 
+        QuantityDialog.QuantityListener,
+        ProductContainer.ProductContainerListener,
+        CheckoutController.CheckoutListener,
+        PaymentConfirmDialog.PaymentListener,
         PonosControllerInterface {
 
     private StackPane root;
@@ -55,36 +62,18 @@ public class SellController extends AnchorPane implements
     private AnchorPane AnchorPane;
     @FXML
     private JFXButton customerBtn;
-    @FXML
-    private TableView<?> checkoutTable;
-    @FXML
-    private TableColumn<?, ?> itemCol;
-    @FXML
-    private TableColumn<?, ?> qtyCol;
-    @FXML
-    private TableColumn<?, ?> actionCol;
-    @FXML
-    private JFXTextField customerField;
-    @FXML
-    private JFXTextField taxField;
-    @FXML
-    private JFXTextField totalField;
-    @FXML
-    private JFXRadioButton percentField;
-    @FXML
-    private JFXRadioButton amountField;
-    @FXML
-    private JFXTextField totalAmountField;
-    @FXML
-    private Button selectCustomerBtn;
     
+    @FXML
+    private VBox checkoutContainer;
+    
+    private CheckoutController checkoutController;
     private ObservableList customers=FXCollections.observableArrayList();
-    
+    private ObservableList<InvoiceItem> invoiceItems=FXCollections.observableArrayList();
     public SellController(MaskerPane mask,StackPane root){
         try {
             this.mask=mask;
             this.root=root;
-            this.productContainer=new ProductContainer();
+            this.productContainer=new ProductContainer(this);
             FXMLLoader loader =new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/views/sales/sell.fxml"));
             loader.setRoot(this);
@@ -98,15 +87,20 @@ public class SellController extends AnchorPane implements
 
     @Override
     public void initDependencies() {
+        checkoutController=new CheckoutController(this, root);
+       
+        checkoutContainer.getChildren().add(checkoutController);
     }
 
     @Override
     public void initControls() {
+        
+        
     }
 
     @Override
     public void bindControls() {
-    }
+            }
 
     @Override
     public void hookupEvent() {
@@ -114,11 +108,7 @@ public class SellController extends AnchorPane implements
             CustomerDialog d=new CustomerDialog(this);
             d.show(root);
         });
-        selectCustomerBtn.setOnAction(e->{
-            CustomerSelectDialog d=new CustomerSelectDialog(this);
-            d.setCustomers(customers);
-            d.show(root);
-        });
+       
     }
 
     @Override
@@ -126,19 +116,23 @@ public class SellController extends AnchorPane implements
     }
     
     public void fetchAll(){
-        FetchAllTask task=new FetchAllTask();
+        FindProductStockInStore task=new FindProductStockInStore();
+        task.setStore(Auth.getInstance().getStore());
         task.setOnSucceeded(e->{
-            this.productContainer.populateData(task.getValue());
+            Set<Product> set = new HashSet<>(task.getValue());
+            this.productContainer.populateByTable(set);
         });
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        //fetch all customer
         mask.visibleProperty().bind(task.runningProperty());
         tasks.customers.FetchAllCustomerTask t2=new FetchAllCustomerTask();
         t2.setOnSucceeded(e->{
             this.customers.clear();
             this.customers.addAll(t2.getValue());
+            checkoutController.setCustomers(t2.getValue());
         });
         t2.setOnFailed(e->task.getException().printStackTrace(System.err));
-        mask.visibleProperty().bind(task.runningProperty());
+        mask.visibleProperty().bind(t2.runningProperty());
         PonosExecutor.getInstance().getExecutor().submit(task);
         PonosExecutor.getInstance().getExecutor().submit(t2);
         
@@ -153,6 +147,7 @@ public class SellController extends AnchorPane implements
                     .text(CustomerMessage.CREATE_SUCCESS_MESSAGE)
                     .showInformation();
             customers.add(task.getValue());
+            checkoutController.setCustomers(customers);
         });
         task.setCustomer(customer);
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
@@ -167,6 +162,63 @@ public class SellController extends AnchorPane implements
 
     @Override
     public void onSelect(Customer customer) {
-        this.customerField.setText(customer.getFirstName() + customer.getLastName());
+        checkoutController.setSelectedCustomer(customer);
     }
+
+    @Override
+    public void onQuantitySet(Product product, int qty) {
+        checkoutController.addItemsInCheckout(product, qty);
+    }
+    
+    
+
+    @Override
+    public void onSelect(Product p, int count) {
+        QuantityDialog d=new QuantityDialog(this);
+        d.setMaxValue(count);
+        d.setProduct(p);
+        d.show(root);
+    }
+    
+
+
+    @Override
+    public void onPay(Invoice invoice) {
+        PaymentConfirmDialog d=new PaymentConfirmDialog(this);
+        d.setInvoice(invoice);
+        d.fillField();
+        d.show(root);
+    }
+
+    @Override
+    public void onConfirmPayment(Invoice invoice,boolean print) {
+        if (print) {
+            tasks.invoices.CreateInvoiceTask task = new CreateInvoiceTask();
+            task.setInvoice(invoice);
+            task.setOnSucceeded(e -> {
+                //TODO:: Print report
+                
+                 Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
+                        .text(InvoiceMessage.SUCCESS_MESSAGE).showInformation();
+            });
+            task.setOnFailed(e -> task.getException().printStackTrace(System.err));
+            PonosExecutor.getInstance().getExecutor().submit(task);
+        }else{
+            tasks.invoices.CreateInvoiceTask task=new CreateInvoiceTask();
+            task.setInvoice(invoice);
+            task.setOnSucceeded(e->{
+                fetchAll();
+                Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
+                        .text(InvoiceMessage.SUCCESS_MESSAGE).showInformation();
+            });
+            task.setOnFailed(e->task.getException().printStackTrace(System.err));
+            PonosExecutor.getInstance().getExecutor().submit(task);
+        }
+       checkoutController.reset();
+        fetchAll();
+    }
+    private static final Logger LOG = Logger.getLogger(SellController.class.getName());
+          
+    
+    
 }

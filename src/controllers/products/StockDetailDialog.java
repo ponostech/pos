@@ -33,6 +33,7 @@ import ponospos.entities.Attribute;
 import ponospos.entities.Invoice;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
+import ponospos.entities.Stores;
 import ponospos.entities.User;
 import util.TransactionType;
 
@@ -49,6 +50,8 @@ public class StockDetailDialog extends JFXDialog {
     private TableColumn<Stock, String> dateCol;
     @FXML
     private TableColumn<Stock, User> employeeCol;
+    @FXML
+    private TableColumn<Stock, Stores> storeCol;
     @FXML
     private TableColumn<Stock, Node> inOutCol;
     @FXML
@@ -112,6 +115,7 @@ public class StockDetailDialog extends JFXDialog {
             return new SimpleStringProperty(fm.format(date));
         });
         employeeCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getUser()));
+        storeCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getStore()));
         inOutCol.setCellFactory((TableColumn<Stock, Node> param) -> 
                 new TableCell(){
             @Override

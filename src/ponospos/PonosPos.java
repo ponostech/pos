@@ -108,6 +108,7 @@ public class PonosPos extends Application {
     }
 
     public void displayLoginScreen() {
+        loginController.init();
         decorator.setContent(loginController);
     }
     

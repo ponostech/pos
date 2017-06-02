@@ -7,6 +7,8 @@ package tasks.products;
 
 import java.util.List;
 import javafx.concurrent.Task;
+import javax.persistence.EntityManager;
+import jpa.JpaSingleton;
 import jpa.ProductJpa;
 import ponospos.entities.Product;
 
@@ -14,7 +16,10 @@ public class FetchAllTask extends Task<List<Product>>{
 
     @Override
     protected List<Product> call() throws Exception {
-        return ProductJpa.getAllProduct();
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> all = ProductJpa.getAllProduct();
+        
+        return all;
     }
     
 }

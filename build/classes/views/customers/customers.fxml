@@ -8,12 +8,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
 <fx:root id="AnchorPane" prefHeight="471.0" prefWidth="793.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="customerTable" accessibleHelp="list of users" editable="true" layoutX="10.0" layoutY="148.0" prefHeight="310.0" prefWidth="773.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="148.0">
+      <TableView fx:id="customerTable" accessibleHelp="list of users" editable="true" layoutX="81.0" layoutY="148.0" prefHeight="310.0" prefWidth="632.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="148.0">
         <columns>
             <TableColumn fx:id="iconCol" prefWidth="75.0" text="#" />
           <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
@@ -21,33 +22,33 @@
             <TableColumn fx:id="emailCol" prefWidth="75.0" text="EMAIL" />
             <TableColumn fx:id="addressCol" prefWidth="75.0" text="ADDRESS" />
             <TableColumn fx:id="contactCol" prefWidth="75.0" text="CONTACT" />
-            <TableColumn fx:id="createdCol" prefWidth="75.0" text="CREATED AT" />
-            <TableColumn fx:id="updateCol" prefWidth="75.0" text="UPDATE AT" />
             <TableColumn fx:id="actionCol" prefWidth="75.0" text="ACTIONS" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <StackPane layoutX="15.0" layoutY="14.0" style="-fx-background-color: rgba(125,162,123,0.4);">
+      <StackPane layoutX="15.0" layoutY="14.0" style="-fx-background-color: rgba(125,162,123,0.4);" />
+      <HBox layoutX="79.0" layoutY="79.0" prefHeight="25.0" prefWidth="632.0" styleClass="control-group" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="79.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="77.0" prefWidth="121.0" styleClass="panel">
-               <children>
-                  <Label styleClass="h4" text="No of customer" />
-                  <Label fx:id="noOfCustomerlabel" alignment="CENTER" styleClass="h3" text="Label" />
-               </children>
-            </VBox>
+            <JFXButton fx:id="newButton" buttonType="RAISED" onAction="#onNewButtonClick" prefHeight="25.0" prefWidth="167.0" styleClass="btn-medium" text="New Customer">
+               <graphic>
+                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+               </graphic>
+            </JFXButton>
+            <Pane prefHeight="25.0" prefWidth="137.0" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="searchField" onAction="#doSearch" prefHeight="25.0" prefWidth="246.0" promptText="Type customer name" styleClass="search-field" />
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#doSearch" prefHeight="25.0" prefWidth="35.0" styleClass="search-btn">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH" />
+               </graphic>
+            </Button>
          </children>
-      </StackPane>
-      <TextField fx:id="searchField" layoutX="374.0" layoutY="116.0" onAction="#doSearch" prefHeight="25.0" prefWidth="299.0" promptText="Search" styleClass="search-field" AnchorPane.leftAnchor="374.0" AnchorPane.topAnchor="116.0" />
-      <Button fx:id="searchButton" layoutX="673.0" layoutY="116.0" mnemonicParsing="false" onAction="#doSearch" prefHeight="25.0" prefWidth="94.0" text="Search">
+      </HBox>
+      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="83.0" layoutY="22.0" styleClass="h1" text="Customers">
          <graphic>
-            <FontAwesomeIconView glyphName="SEARCH" />
-         </graphic></Button>
-      <JFXButton fx:id="newButton" buttonType="RAISED" layoutX="15.0" layoutY="116.0" onAction="#onNewButtonClick" styleClass="btn-medium" text="New Customer">
-         <graphic>
-            <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+            <FontAwesomeIconView fill="#a11b1b" glyphName="USERS" size="28" />
          </graphic>
-      </JFXButton>
+      </Label>
    </children>
 </fx:root>

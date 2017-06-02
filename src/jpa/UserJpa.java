@@ -22,6 +22,7 @@ public class UserJpa {
         
         em.getTransaction().begin();
         em.persist(user);
+        em.flush();
         em.getTransaction().commit();
         em.close();
         System.out.println(user);
@@ -60,9 +61,12 @@ public class UserJpa {
     }
      public static List searchByUsername(String username)throws Exception{
         EntityManager em=JpaSingleton.getInstance().getEntityManager();
+        em.getTransaction().begin();
         List<User> users = em.createNamedQuery("User.findByUsername",User.class)
                 .setParameter("uname",username+"%")
                 .getResultList();
+        em.flush();
+        em.getTransaction().commit();
         return users;
     }
     

@@ -6,8 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="585.0" prefWidth="910.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane id="AnchorPane" prefHeight="585.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="416.0" layoutY="38.0" styleClass="h1" text="Inventory Details" />
       <Label layoutX="20.0" layoutY="77.0" text="Product Id:" />
@@ -22,7 +21,8 @@
       <TableView fx:id="stockTable" layoutX="14.0" layoutY="242.0" prefHeight="329.0" prefWidth="892.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="dateCol" prefWidth="179.0" text="DATE" />
-          <TableColumn fx:id="employeeCol" prefWidth="169.0" text="EMPLOYEE" />
+          <TableColumn fx:id="employeeCol" prefWidth="109.0" text="EMPLOYEE" />
+            <TableColumn fx:id="storeCol" prefWidth="135.0" text="STORE" />
             <TableColumn fx:id="inOutCol" minWidth="0.0" prefWidth="61.0" text="IN/OUT" />
             <TableColumn fx:id="qtyCol" prefWidth="113.0" text="QUANTITY" />
             <TableColumn fx:id="transactionCol" prefWidth="143.0" text="TRANSACTION TYPE" />

@@ -73,10 +73,7 @@ public class CustomersController extends AnchorPane implements
     private TableColumn<Customer, String> addressCol;
     @FXML
     private TableColumn<Customer,String> contactCol;
-    @FXML
-    private TableColumn<Customer, String> createdCol;
-    @FXML
-    private TableColumn<Customer, String> updateCol;
+    
     @FXML
     private TableColumn<Void, Customer> actionCol;
     @FXML
@@ -88,7 +85,6 @@ public class CustomersController extends AnchorPane implements
     @FXML
     private Button searchButton;
     @FXML
-    private Label noOfCustomerlabel;
     private MaskerPane mask;
     private StackPane root;
     
@@ -122,16 +118,7 @@ public class CustomersController extends AnchorPane implements
         emailCol.setCellValueFactory(c->new SimpleStringProperty (c.getValue().getEmail()));
         addressCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getAddress()));
         contactCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getContact()));
-        createdCol.setCellValueFactory(c->{
-            Date date = c.getValue().getCreatedAt();
-            SimpleDateFormat fm=new SimpleDateFormat("dd/MM/yy:hh:mm:ss");          
-            return new SimpleStringProperty(fm.format(date));
-        });
-        updateCol.setCellValueFactory(c->{
-            Date date = c.getValue().getUpdatedAt();
-            SimpleDateFormat fm=new SimpleDateFormat("dd/MM/yy:hh:mm:ss");          
-            return new SimpleStringProperty(fm.format(date));
-        });
+        
         iconCol.setCellFactory(callback->new TableCell<Customer,Customer>(){
             
             @Override
@@ -285,7 +272,7 @@ public class CustomersController extends AnchorPane implements
          customers.addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-                noOfCustomerlabel.setText(Integer.toString(customers.size()));
+//                noOfCustomerlabel.setText(Integer.toString(customers.size()));
             }
         });
          searchField.textProperty().addListener(e->{

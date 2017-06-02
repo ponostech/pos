@@ -18,7 +18,7 @@ public class PonosExecutor {
     
     private PonosExecutor() {
         if (executor==null) {
-            executor=Executors.newCachedThreadPool();
+            executor=Executors.newFixedThreadPool(6);
         }
     }
     

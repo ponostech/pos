@@ -32,6 +32,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Stock.findAll", query = "SELECT s FROM Stock s")
     , @NamedQuery(name = "Stock.findById", query = "SELECT s FROM Stock s WHERE s.id = :id")
+    , @NamedQuery(name = "Stock.findProduct", query = "SELECT s.product FROM Stock s WHERE s.product.active = true AND s.store = :store")
+    , @NamedQuery(name = "Stock.findProductByName", query = "SELECT s.product FROM Stock s WHERE (s.product.name LIKE :param OR s.product.barcode LIKE :param)AND s.product.active = true AND s.store = :store")
     , @NamedQuery(name = "Stock.findByItem", query = "SELECT s FROM Stock s WHERE s.product.name LIKE :param")
     , @NamedQuery(name = "Stock.findByQuantity", query = "SELECT s FROM Stock s WHERE s.quantity = :quantity")
     , @NamedQuery(name = "Stock.findByInvoice", query = "SELECT s FROM Stock s WHERE s.invoice = :invoice")
@@ -57,7 +59,7 @@ public class Stock implements Serializable {
     private int quantity;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="invoice_id",insertable = false,updatable = false,nullable = true)
+    @JoinColumn(name="invoice_id",insertable = true,updatable = false,nullable = true)
     private Invoice invoice;
     
     @Basic(optional = false)

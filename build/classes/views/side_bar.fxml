@@ -69,7 +69,7 @@
       <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="90.0" styleClass="side-menu" text="Store">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onStoreMenuClick" text="Stores" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
+          <MenuItem fx:id="stockTransferMenu" mnemonicParsing="false" onAction="#onStockTransferMenuClick" text="Stock transfer" />
         </items>
          <graphic>
             <FontAwesomeIconView fill="#9fbf0f" glyphName="SHOPPING_BAG" size="28" />

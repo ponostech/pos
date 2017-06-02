@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root id="AnchorPane" prefHeight="581.0" prefWidth="505.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="checkoutTable" layoutX="23.0" layoutY="45.0" prefHeight="218.0" prefWidth="452.0">
+        <columns>
+          <TableColumn fx:id="itemCol" prefWidth="305.0" text="Item" />
+          <TableColumn fx:id="qtyCol" prefWidth="108.0" text="qty" />
+            <TableColumn fx:id="actionCol" prefWidth="35.0" />
+        </columns>
+      </TableView>
+      <JFXTextField fx:id="customerField" labelFloat="true" layoutX="196.0" layoutY="291.0" prefHeight="25.0" prefWidth="241.0" promptText="Customer" />
+      <Button fx:id="customerSelectBtn" layoutX="437.0" layoutY="279.0" mnemonicParsing="false">
+         <graphic>
+            <FontAwesomeIconView fill="#114180" glyphName="PLUS_CIRCLE" size="28" />
+         </graphic>
+      </Button>
+      <JFXTextField fx:id="subTotalField" labelFloat="true" layoutX="196.0" layoutY="343.0" prefHeight="25.0" prefWidth="282.0" promptText="Sub total" />
+      <JFXTextField fx:id="discountField" labelFloat="true" layoutX="196.0" layoutY="398.0" prefHeight="25.0" prefWidth="282.0" promptText="Discount" />
+      <JFXTextField fx:id="totalField" layoutX="196.0" layoutY="452.0" prefHeight="25.0" prefWidth="282.0" promptText="Total" />
+      <Label layoutX="234.0" layoutY="14.0" styleClass="h3" text="CHECK OUT" />
+      <JFXRadioButton fx:id="amountRadio" layoutX="23.0" layoutY="402.0" selected="true" text="Amount">
+         <toggleGroup>
+            <ToggleGroup fx:id="taxGroup" />
+         </toggleGroup></JFXRadioButton>
+      <Label layoutX="37.0" layoutY="347.0" text="Select an option to discount" />
+      <JFXButton fx:id="payBtnField" buttonType="RAISED" layoutX="328.0" layoutY="497.0" onAction="#onPayBtnClick" prefHeight="25.0" prefWidth="149.0" text="Pay">
+         <graphic>
+            <FontAwesomeIconView glyphName="HAND" />
+         </graphic>
+      </JFXButton>
+      <JFXRadioButton fx:id="percentRadio" layoutX="105.0" layoutY="402.0" text="Percent" toggleGroup="$taxGroup" />
+   </children>
+</fx:root>
