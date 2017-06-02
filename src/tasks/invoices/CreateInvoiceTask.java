@@ -6,8 +6,12 @@
 package tasks.invoices;
 
 import javafx.concurrent.Task;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import jpa.InvoiceJpa;
+import jpa.JpaSingleton;
 import jpa.StockJpa;
+import jpa.jpa2.InvoiceJpaController;
 import ponospos.entities.Invoice;
 import ponospos.entities.Stock;
 
@@ -27,6 +31,9 @@ public class CreateInvoiceTask extends Task<Invoice>{
     
     @Override
     protected Invoice call() throws Exception {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PonosPosPU");
+//        InvoiceJpaController jpa=new InvoiceJpaController(emf);
+//        return jpa.create(invoice);
         return InvoiceJpa.createInvoice(invoice);
     }
     

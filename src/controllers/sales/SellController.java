@@ -210,12 +210,12 @@ public class SellController extends AnchorPane implements
                 fetchAll();
                 Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
                         .text(InvoiceMessage.SUCCESS_MESSAGE).showInformation();
+                checkoutController.reset();
             });
             task.setOnFailed(e->task.getException().printStackTrace(System.err));
             PonosExecutor.getInstance().getExecutor().submit(task);
+
         }
-       checkoutController.reset();
-        fetchAll();
     }
     private static final Logger LOG = Logger.getLogger(SellController.class.getName());
           

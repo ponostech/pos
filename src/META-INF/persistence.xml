@@ -13,7 +13,7 @@
     <class>ponospos.entities.Stock</class>
     <class>ponospos.entities.InvoiceItem</class>
     <class>ponospos.entities.Payment</class>
-    <shared-cache-mode>ALL</shared-cache-mode>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

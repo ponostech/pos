@@ -15,9 +15,9 @@
    <children>
       <TableView fx:id="checkoutTable" layoutX="23.0" layoutY="45.0" prefHeight="218.0" prefWidth="452.0">
         <columns>
-          <TableColumn fx:id="itemCol" prefWidth="305.0" text="Item" />
-          <TableColumn fx:id="qtyCol" prefWidth="108.0" text="qty" />
-            <TableColumn fx:id="actionCol" prefWidth="35.0" />
+          <TableColumn fx:id="itemCol" prefWidth="275.0" text="Item" />
+          <TableColumn fx:id="qtyCol" prefWidth="93.0" text="qty" />
+            <TableColumn fx:id="actionCol" />
         </columns>
       </TableView>
       <JFXTextField fx:id="customerField" labelFloat="true" layoutX="196.0" layoutY="291.0" prefHeight="25.0" prefWidth="241.0" promptText="Customer" />

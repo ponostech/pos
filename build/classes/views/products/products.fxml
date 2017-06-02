@@ -78,12 +78,12 @@
             </Tab>
          </tabs>
       </JFXTabPane>
-      <JFXButton buttonType="RAISED" layoutX="600.0" layoutY="16.0" text="New Supplier" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="16.0">
+      <JFXButton buttonType="RAISED" layoutX="600.0" layoutY="16.0" onAction="#onNewSuppliersClick" text="New Supplier" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="16.0">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="629.0" layoutY="16.0" text="New Category" AnchorPane.rightAnchor="243.0" AnchorPane.topAnchor="16.0">
+      <JFXButton buttonType="RAISED" layoutX="629.0" layoutY="16.0" onAction="#onNewCategoryClick" text="New Category" AnchorPane.rightAnchor="243.0" AnchorPane.topAnchor="16.0">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic>

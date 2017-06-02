@@ -37,6 +37,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import ponospos.entities.Attribute;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
@@ -125,7 +126,10 @@ public class ProductContainer extends AnchorPane{
                         setText(null);
                         setGraphic(null);
                     }else{
-                        Button btn=new Button("",new FontAwesomeIconView(FontAwesomeIcon.TRASH));
+                        FontAwesomeIconView icon=new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE);
+                        icon.setFill(Color.CORAL);
+                        icon.setSize("14px");
+                        Button btn=new Button("",icon);
                         setGraphic(btn);
                         btn.setOnAction(e->{
                             Product p = products.get(getIndex());
@@ -148,6 +152,12 @@ public class ProductContainer extends AnchorPane{
     
     
     public void populateByTable(Set<Product>data){
+        //check data 
+        for (Product p : data) {
+            System.out.println("products "+p);
+            System.out.println("Stock size "+p.getStocks().size());
+            System.out.println("");
+        }
         products.clear();
         products.addAll(data);
         itemsTable.refresh();
@@ -162,12 +172,12 @@ public class ProductContainer extends AnchorPane{
                 nodes.add(wrapIntoNode(p));
             }
         }
-        listView.refresh();
+        
         
     }
     public void populateData(List<Product> data){
         this.products.clear();
-        this.gridPane.getChildren().clear();
+//        this.gridPane.getChildren().clear();
         for (Product p : data) {
             if (checkStockInStore(p,Auth.getInstance().getStore())) {
                 products.add(p);
@@ -279,7 +289,7 @@ public class ProductContainer extends AnchorPane{
         task.setStore(Auth.getInstance().getStore());
         task.setOnSucceeded(e->{
             Set<Product> set=new HashSet<>(task.getValue());
-            populateData1(set);
+            populateByTable(set);
         });
         task.setOnFailed(e->task.getException().printStackTrace(System.err));
         PonosExecutor.getInstance().getExecutor().submit(task);

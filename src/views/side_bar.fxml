@@ -44,6 +44,11 @@
                <graphic>
                   <FontAwesomeIconView glyphName="USER_CIRCLE" />
                </graphic></MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#onPaymentHistoryClick" text="Payment History">
+               <graphic>
+                  <FontAwesomeIconView glyphName="RUPEE" />
+               </graphic>
+            </MenuItem>
         </items>
          <graphic>
             <FontAwesomeIconView fill="#9d2a24" glyphName="USERS" size="28" />

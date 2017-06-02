@@ -9,7 +9,7 @@
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
     <jar href="lib\PonosPos-Preloader.jar" size="3023" download="progress" />
-    <jar href="PonosPos.jar" size="2773714" download="eager" />
+    <jar href="PonosPos.jar" size="2787103" download="eager" />
     <jar href="lib\controlsfx-8.40.12.jar" size="996389" download="eager" />
     <jar href="lib\eclipselink.jar" size="8478776" download="eager" />
     <jar href="lib\fontawesomefx-8.9-javadoc.jar" size="279185" download="eager" />

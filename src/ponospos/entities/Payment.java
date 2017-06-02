@@ -34,6 +34,7 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id")
     , @NamedQuery(name = "Payment.findByInvoiceId", query = "SELECT p FROM Payment p WHERE p.invoice = :invoice")
     , @NamedQuery(name = "Payment.findByAmount", query = "SELECT p FROM Payment p WHERE p.amount = :amount")
+    , @NamedQuery(name = "Payment.findCustomerPayment", query = "SELECT p FROM Payment p WHERE p.invoice.customer = :customer AND p.payDate BETWEEN :from AND :to")
     , @NamedQuery(name = "Payment.findByPayDate", query = "SELECT p FROM Payment p WHERE p.payDate = :payDate")})
 public class Payment implements Serializable {
 

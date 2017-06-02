@@ -66,6 +66,9 @@ public class Customer implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    
+    @OneToMany(orphanRemoval = true,mappedBy = "customer",targetEntity = Invoice.class)
+    private List<Invoice>invoices;
 
     public Customer() {
        this.firstName="";
@@ -90,6 +93,15 @@ public class Customer implements Serializable {
         return id;
     }
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    
     public void setId(Integer id) {
         this.id = id;
     }

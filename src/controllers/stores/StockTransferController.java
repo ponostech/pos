@@ -12,6 +12,8 @@ import controllers.modals.ExceptionDialog;
 import controllers.sales.ProductContainer;
 import controllers.users.UsersController;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -109,7 +111,8 @@ public class StockTransferController extends AnchorPane implements
     public void fetchAll(){
         FetchAllTask task=new FetchAllTask();
         task.setOnSucceeded(e->{
-            productList.populateData(task.getValue());
+            Set<Product>data=new HashSet<>(task.getValue());
+            productList.populateByTable(data);
         });
         task.setOnFailed(e->new ExceptionDialog(task.getException()));
         

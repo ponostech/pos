@@ -5,7 +5,10 @@
  */
 package controllers.sales;
 
+import Messages.ConfirmationMessage;
+import Messages.InvoiceMessage;
 import controllers.PonosControllerInterface;
+import controllers.modals.ConfirmDialog;
 import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -33,11 +36,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import org.controlsfx.control.MaskerPane;
+import org.controlsfx.control.Notifications;
 import ponospos.entities.Customer;
 import ponospos.entities.Invoice;
 import ponospos.entities.InvoiceItem;
 import ponospos.entities.User;
 import singletons.PonosExecutor;
+import tasks.invoices.DeleteInvoiceTask;
 import tasks.invoices.FetchAllInvoiceTask;
 import tasks.invoices.FindInvoiceBetweenDateTask;
 import util.DateConverter;
@@ -48,7 +53,8 @@ import util.DateConverter;
  * @author Sawmtea
  */
 public class SaleHistoryController extends AnchorPane 
-implements PonosControllerInterface{
+implements PonosControllerInterface
+,ConfirmDialog.ConfirmDialogListener{
 
     @FXML
     private AnchorPane AnchorPane;
@@ -153,7 +159,11 @@ implements PonosControllerInterface{
                        d.show(root);
                     });
                     editBtn.setOnAction(e -> {
-                       
+                        ConfirmDialog dialog = new ConfirmDialog(ConfirmationMessage.TITLE, ConfirmationMessage.MESSAGE);
+                        dialog.setListener(SaleHistoryController.this);
+                        dialog.setModel(invoices.get(getIndex()));
+                        dialog.show(root);
+                        e.consume();
                     });
                 }
             }
@@ -201,6 +211,21 @@ implements PonosControllerInterface{
         PonosExecutor.getInstance().getExecutor().submit(task);
         
         
+    }
+
+    @Override
+    public void onClickYes(Object obj) {
+        tasks.invoices.DeleteInvoiceTask t=new DeleteInvoiceTask();
+        t.setOnSucceeded(e->{
+            invoices.remove(t.getValue());
+            Notifications.create().title(InvoiceMessage.DELETE_SUCCESS_TITLE).text(InvoiceMessage.DELETE_SUCCESS_MESSAGE).showInformation();
+        });
+        t.setInvoice((Invoice) obj);
+        mask.visibleProperty().bind(t.runningProperty());
+        t.setOnFailed(e->t.getException().printStackTrace(System.err));
+        
+        PonosExecutor.getInstance().getExecutor().submit(t);
+
     }
        
     

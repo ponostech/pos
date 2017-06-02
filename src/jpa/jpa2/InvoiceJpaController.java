@@ -36,7 +36,7 @@ public class InvoiceJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Invoice invoice) {
+    public Invoice create(Invoice invoice) {
         if (invoice.getStocks() == null) {
             invoice.setStocks(new ArrayList<Stock>());
         }
@@ -98,6 +98,7 @@ public class InvoiceJpaController implements Serializable {
                 em.close();
             }
         }
+        return invoice;
     }
 
     public void edit(Invoice invoice) throws IllegalOrphanException, NonexistentEntityException, Exception {

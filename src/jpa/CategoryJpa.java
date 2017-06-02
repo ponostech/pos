@@ -55,12 +55,9 @@ public class CategoryJpa {
     }
     public static List findCategoryName(String name){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
-        em.getTransaction().begin();
         List<Category> founds = em.createNamedQuery("Category.findByName", Category.class)
                 .setParameter("name", name+"%")
                 .getResultList();
-        em.flush();
-        em.getTransaction().commit();
         em.close();
         return founds;
     }

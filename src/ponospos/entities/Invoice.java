@@ -93,13 +93,13 @@ public class Invoice implements Serializable {
     @Column(name = "remark",nullable=true)
     private String remark;
     
-    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade ={ CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade =CascadeType.ALL ,targetEntity = Stock.class)
     private List<Stock>stocks;
     
-    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL,targetEntity = InvoiceItem.class)
     private List<InvoiceItem>invoiceItem;
 
-    @OneToOne(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL,targetEntity = Payment.class)
     private Payment payment;
     
     public Invoice() {

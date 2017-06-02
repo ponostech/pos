@@ -58,8 +58,8 @@ public class Stock implements Serializable {
     @Column(name = "quantity")
     private int quantity;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="invoice_id",insertable = true,updatable = false,nullable = true)
+    @ManyToOne
+    @JoinColumn(name="invoice_id",nullable = true)
     private Invoice invoice;
     
     @Basic(optional = false)

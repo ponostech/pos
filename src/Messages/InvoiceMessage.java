@@ -14,4 +14,7 @@ public class InvoiceMessage {
     public static final String SUCCESS_MESSAGE="Sales is made successfully";
     public static final String FAILURE_TITLE="Task progress";
     public static final String FAILURE_MESSAGE="Sales made is failed";
+    public static final String DELETE_SUCCESS_TITLE="Task progress";
+    public static final String DELETE_SUCCESS_MESSAGE="Sales is deleted";
+    
 }

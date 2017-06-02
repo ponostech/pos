@@ -54,6 +54,16 @@ public class CustomerJpa {
         em.close();
         return all;
     }
+    public static List getAllCustomerPayment(){
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        em.getTransaction().begin();
+        List<Customer> all = em.createNamedQuery("Customer.findAll",Customer.class)
+                .getResultList();
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
+        return all;
+    }
     public static List findCustomerByName(String fname,String lname){
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();

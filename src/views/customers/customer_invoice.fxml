@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+
+<fx:root id="AnchorPane" prefHeight="473.0" prefWidth="825.0" type="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+   <children>
+      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="102.0" layoutY="21.0" styleClass="h2" text="Customer Payment" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="21.0">
+         <graphic>
+            <FontAwesomeIconView fill="#114e80" glyphName="RUPEE" size="28" />
+         </graphic>
+      </Label>
+      <HBox alignment="CENTER_RIGHT" layoutX="100.0" layoutY="91.0" prefHeight="28.0" prefWidth="615.0" spacing="10.0" styleClass="control-group" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="91.0">
+         <children>
+            <Button fx:id="allBtn" mnemonicParsing="false" onAction="#onRefreshBtnClick">
+               <graphic>
+                  <FontAwesomeIconView fill="#009688" glyphName="REFRESH" size="12.018" />
+               </graphic>
+            </Button>
+            <Pane maxWidth="1.7976931348623157E308" prefHeight="2.0" prefWidth="144.0" HBox.hgrow="ALWAYS" />
+            <JFXTextField fx:id="customerField" editable="false" labelFloat="true" promptText="Select Customer" />
+            <Button fx:id="customerBtn" mnemonicParsing="false" onAction="#onCustomerbtnClick">
+               <graphic>
+                  <FontAwesomeIconView fill="#298562" glyphName="LIST" size="18" />
+               </graphic>
+            </Button>
+            <JFXDatePicker fx:id="fromDatePicker" promptText="From" />
+            <JFXDatePicker fx:id="toDatePicker" promptText="To" />
+            <JFXButton fx:id="filterBtn" onAction="#onFilterBtnClick" text="Filter">
+               <graphic>
+                  <FontAwesomeIconView fill="#096bbc" glyphName="FILTER" size="14" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <TableView fx:id="paymentTable" layoutX="100.0" layoutY="177.0" prefHeight="285.0" prefWidth="615.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="177.0">
+        <columns>
+          <TableColumn fx:id="idCol" prefWidth="75.0" text="Payment ID" />
+            <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
+          <TableColumn fx:id="customerCol" prefWidth="75.0" text="Customer Name" />
+            <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address" />
+            <TableColumn fx:id="invoiceCol" prefWidth="75.0" text="Invoice id" />
+            <TableColumn fx:id="amountCol" prefWidth="75.0" text="Payment amount" />
+            <TableColumn fx:id="statusCol" prefWidth="75.0" text="Status" />
+            <TableColumn fx:id="actionCol" prefWidth="75.0" text="Actions" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</fx:root>

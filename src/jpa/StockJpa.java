@@ -76,7 +76,7 @@ try {
         em.getTransaction().begin();
         List<Stock> all = em.createNamedQuery("Stock.findAll",Stock.class)
                 .getResultList();
-        em.flush();
+        em.clear();
         em.getTransaction().commit();
         em.close();
         

@@ -3,22 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/jpa2/InvoiceJpaController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/Invoice.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/jpa2/StockJpaController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/tasks/products/FetchAllTask.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/StockJpa.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/InvoiceJpa.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/jpa/ProductJpa.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/SaleHistoryController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/CheckoutController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/META-INF/persistence.xml</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/StockControlController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/MainController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/PaymentConfirmDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/AddStockDialog.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/SalesDetailDialog.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/resource/css/ponos_style.css</file>
+            <file>file:/D:/PROJEX/PonosPos/src/resource/css/ponos_table.css</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/ProductContainer.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/suppliers/SuppliersController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/categories/CategoryController.java</file>
         </group>
     </open-files>
 </project-private>

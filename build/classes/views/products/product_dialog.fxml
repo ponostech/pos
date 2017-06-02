@@ -21,7 +21,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="700.0" prefHeight="682.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="2.0" prefHeight="122.0" prefWidth="614.0" styleClass="top-pane">
+      <Pane prefHeight="122.0" prefWidth="616.0" styleClass="top-pane">
          <children>
             <ImageView fitHeight="81.0" fitWidth="50.0" layoutX="282.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                <image>

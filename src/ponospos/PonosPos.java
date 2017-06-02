@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
 import singletons.PonosExecutor;
@@ -36,6 +37,10 @@ public class PonosPos extends Application {
     public void init() {
         try { 
             super.init();
+            Font.loadFont(
+                    getClass().getResource("/resource/font/roboto/Roboto-Black.ttf").toExternalForm(),
+                    10
+            );
             executors= PonosExecutor.getInstance().getExecutor();
             PonosExecutor.getInstance();
         } catch (Exception ex) {
@@ -60,9 +65,7 @@ public class PonosPos extends Application {
         
         decorator = new JFXDecorator(stage, mainController);
         decorator.setCustomMaximize(true);        
-        decorator.setStyle(""
-                + "-fx-background-color:blue;"
-                + "");
+        
         
         this.primaryScene=new Scene(decorator,1000,800);
         this.primaryScene.getStylesheets().addAll(

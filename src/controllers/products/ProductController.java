@@ -5,11 +5,15 @@
  */
 package controllers.products;
 
+import Messages.CategoryMessage;
 import Messages.ConfirmationMessage;
 import Messages.ProductMessage;
+import Messages.SupplierMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
+import controllers.categories.CategoryDialog;
 import controllers.modals.ConfirmDialog;
+import controllers.suppliers.SupplierDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -52,7 +56,9 @@ import tasks.products.FetchAllTask;
 public class ProductController extends AnchorPane 
 implements PonosControllerInterface,
         ProductDialog.ProductDialogListener,
-        ConfirmDialog.ConfirmDialogListener{
+        ConfirmDialog.ConfirmDialogListener,
+        SupplierDialog.SupplierDialogListener,
+        CategoryDialog.CategoryDialogListener{
 
     private StackPane root;
     private MaskerPane mask;
@@ -227,6 +233,7 @@ implements PonosControllerInterface,
 
     @Override
     public void hookupEvent() {
+        
     }
 
     @Override
@@ -289,6 +296,16 @@ implements PonosControllerInterface,
        d.show(root);
         
     }
+    @FXML
+    private void onNewCategoryClick(ActionEvent event) {
+       new CategoryDialog(this).isCreate(true).show(root);        
+    }
+    @FXML
+    private void onNewSuppliersClick(ActionEvent event) {
+        SupplierDialog d = new SupplierDialog(this);
+        d.isCreate().show(root);
+        
+    }
 
     @Override
     public void onCreate(Product product) {
@@ -340,6 +357,42 @@ implements PonosControllerInterface,
         mask.visibleProperty().bind(task.runningProperty());
         PonosExecutor.getInstance().getExecutor().submit(task);
 
+    }
+
+    @Override
+    public void onCreateSupplier(Supplier supplier) {
+        tasks.suppliers.CreateTask task = new tasks.suppliers.CreateTask();
+        task.setSupplier(supplier);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnSucceeded(e -> {
+            suppliers.add(task.getValue());
+            Notifications.create().title(SupplierMessage.CREATE_SUCCESS_TITLE).text(SupplierMessage.CREATE_SUCCESS_TEXT).showInformation();
+        });
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace(System.err);
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+
+    @Override
+    public void onEditSupplier(Supplier supplier) {
+    }
+
+    @Override
+    public void onCreate(Category category) {
+        tasks.categories.CreateTask task = new tasks.categories.CreateTask();
+        task.setCategory(category);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnSucceeded(e -> {
+            categories.add(task.getValue());
+            Notifications.create().title(CategoryMessage.CREATE_SUCCESS_TITLE).text(CategoryMessage.CREATE_SUCCESS_MESSAGE).showInformation();
+        });
+        task.setOnFailed(e -> task.getException().printStackTrace(System.err));
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
+
+    @Override
+    public void onUpdate(Category category) {
     }
 
    

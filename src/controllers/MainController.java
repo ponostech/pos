@@ -8,6 +8,7 @@ package controllers;
 import Messages.ProfileMessage;
 import Messages.RoleMessage;
 import controllers.categories.CategoryController;
+import controllers.customers.CustomerInvoiceController;
 import controllers.customers.CustomersController;
 import controllers.invoices.InvoiceController;
 import controllers.products.ProductController;
@@ -88,6 +89,7 @@ public class MainController extends StackPane
     private ProfileDialog profileDialog;
     private StoresController storeController;
     private StockTransferController transferController;
+    private CustomerInvoiceController paymentHistoryController;
     private PonosPos app;
     public MainController(PonosPos app) {
         super();
@@ -133,8 +135,10 @@ public class MainController extends StackPane
         this.sellController=new SellController(mask,this);
         this.sellHistoryController=new SaleHistoryController(mask,this);
         this.transferController=new StockTransferController(mask,this);
+        this.paymentHistoryController=new CustomerInvoiceController(this, mask);
         this.layoutContainer.setLeft(sideBar);
         
+        this.paymentHistoryController.initDependencies();
         this.transferController.initDependencies();
         this.invoiceController.initDependencies();
         this.sellHistoryController.initDependencies();
@@ -149,6 +153,7 @@ public class MainController extends StackPane
     }
     @Override
     public void initControls(){
+        this.paymentHistoryController.initControls();
         this.transferController.initControls();
         this.invoiceController.initControls();
         this.sellHistoryController.initControls();
@@ -165,6 +170,7 @@ public class MainController extends StackPane
     @Override
     public void hookupEvent() {
         
+        paymentHistoryController.hookupEvent();
         transferController.hookupEvent();
         invoiceController.hookupEvent();
         sellHistoryController.hookupEvent();
@@ -179,6 +185,7 @@ public class MainController extends StackPane
     }
     @Override
     public void bindControls(){
+        this.paymentHistoryController.bindControls();
         this.transferController.bindControls();
         this.invoiceController.bindControls();
         this.sellHistoryController.bindControls();
@@ -345,6 +352,12 @@ public class MainController extends StackPane
     public void onStockTransferClick() {
         switchScreen(transferController);
         transferController.fetchAll();
+    }
+
+    @Override
+    public void onPaymentHistoryClick() {
+        switchScreen(paymentHistoryController);
+        paymentHistoryController.fetchAll();
     }
     
 

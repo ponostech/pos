@@ -130,6 +130,14 @@ and open the template in the editor.
         -fx-background-insets: 0,1,2,3;
 
 }
+.side-bar .context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: black;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    /*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
 
 /*end menu styling*/
 
@@ -246,10 +254,11 @@ and open the template in the editor.
     -fx-background-color: #fff;
     -fx-border-color:darkgray;
     -fx-border-style:solid inside;
-    -fx-background-radius: 30 30 30 30; 
-    -fx-border-radius: 30 30 30 30;
-    -fx-padding:10px;
-    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.5) , 1, 0.0 , 0 , 1);
+/*    -fx-background-radius: 30 30 30 30; 
+    -fx-border-radius: 30 30 30 30;*/
+    -fx-padding:15px;
+    
+    -fx-effect: dropshadow(three-pass-box,#333333, 10, 0, 0, 0);
 
 }
 .search-field{
@@ -267,4 +276,7 @@ and open the template in the editor.
     -fx-font-size:14;
     /*-fx-font-weight:700;*/
     -fx-text-fill:#2a2b2a;
+}
+.label{
+    -fx-font-family:"Roboto";
 }

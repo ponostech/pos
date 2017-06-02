@@ -5,11 +5,14 @@
  */
 package jpa;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TemporalType;
 import ponospos.entities.Invoice;
+import ponospos.entities.InvoiceItem;
+import ponospos.entities.Payment;
 import ponospos.entities.Stock;
 
 /**
@@ -18,12 +21,26 @@ import ponospos.entities.Stock;
  */
 public class InvoiceJpa {
      public static Invoice createInvoice(Invoice invoice)throws Exception{
-        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         em.getTransaction().begin();
+         List<Stock> stocks = invoice.getStocks();
+         List<InvoiceItem> items = invoice.getInvoiceItem();
+         Payment payment = invoice.getPayment();
+         for (InvoiceItem item : items) {
+             em.persist(item);
+         }
+         for (Stock stock : stocks) {
+             em.persist(stock);
+         }
+         
         em.persist(invoice);
+         for (InvoiceItem item : items) {
+             em.persist(item);
+         }
         em.flush();
         em.getTransaction().commit();
         em.close();
+        
         return invoice;
     }
     public static Invoice updateInvoice(Invoice invoice)throws Exception{

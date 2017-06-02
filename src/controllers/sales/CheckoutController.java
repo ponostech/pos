@@ -290,21 +290,20 @@ public class CheckoutController extends AnchorPane
         invoice.setCustomer(selectedCustomer);
         invoice.setTotal(new BigDecimal(total));
         invoice.setDiscount(new BigDecimal(discount));
-        invoice.setInvoiceItem(checkoutTable.getItems());
+        invoice.setInvoiceItem(invoiceItems);
         invoice.setInvoiceDate(new Date(System.currentTimeMillis()));
         invoice.setSoldBy(Auth.getInstance().getUser());
         invoice.setTax(new BigDecimal(subTotal));
-        invoice.setStocks(
-                deductStock(invoice)
-        );
+        deductStock(invoice);
         for (InvoiceItem item : invoiceItems) {
             item.setInvoice(invoice);
         }
         listener.onPay(invoice);
                
     }
-    private List<Stock> deductStock(Invoice invoice){
-        List<Stock>stocks=new ArrayList<>();
+    private void deductStock(Invoice invoice){
+        invoice.setStocks(new ArrayList<>());
+        
         for (InvoiceItem item : checkoutTable.getItems()) {
             Stock stock = new Stock();
             stock.setCreatedAt(new Date(System.currentTimeMillis()));
@@ -315,9 +314,8 @@ public class CheckoutController extends AnchorPane
             stock.setProduct(item.getItem());
             stock.setQuantity(-item.getQuantity());
             stock.setUser(Auth.getInstance().getUser());
-            stocks.add(stock);
+            invoice.getStocks().add(stock);
         }
-        return stocks;
     }
     @Override
     public void onSelect(Customer customer) {
