@@ -4,15 +4,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="595.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="600.0" prefWidth="538.0" type="AnchorPane" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="searchField" layoutX="29.0" layoutY="39.0" prefHeight="40.0" prefWidth="535.0" promptText="Type product name or scan barcode" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="39.0" />
-      <TableView fx:id="itemsTable" layoutX="29.0" layoutY="100.0" prefHeight="286.0" prefWidth="535.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="100.0">
+      <TextField fx:id="searchField" layoutX="29.0" layoutY="39.0" prefHeight="40.0" prefWidth="535.0" promptText="Type product name or scan barcode" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <TableView fx:id="itemsTable" layoutX="29.0" layoutY="100.0" prefHeight="286.0" prefWidth="535.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
         <columns>
-          <TableColumn fx:id="nameCol" prefWidth="375.0" text="ITEMS" />
-          <TableColumn fx:id="qtyCol" minWidth="0.0" prefWidth="64.0" text="QTY" />
-            <TableColumn fx:id="actionCol" prefWidth="83.0" />
+          <TableColumn fx:id="nameCol" prefWidth="154.0" text="ITEMS" />
+            <TableColumn fx:id="barcodeCol" prefWidth="197.0" text="BARCODE" />
+          <TableColumn fx:id="qtyCol" minWidth="0.0" prefWidth="91.0" text="STOCK" />
+            <TableColumn fx:id="actionCol" minWidth="4.0" prefWidth="65.0" />
         </columns>
       </TableView>
    </children>

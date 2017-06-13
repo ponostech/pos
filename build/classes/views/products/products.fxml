@@ -15,27 +15,26 @@
 
 <fx:root id="AnchorPane" prefHeight="532.0" prefWidth="977.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label graphicTextGap="10.0" layoutX="113.0" layoutY="14.0" styleClass="h2" text="Product">
+      <Label graphicTextGap="10.0" layoutX="113.0" layoutY="14.0" styleClass="h1" text="Product" AnchorPane.leftAnchor="10.0">
          <graphic>
-            <FontAwesomeIconView fill="#0e6119" glyphName="SHOPPING_CART" size="28" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="TAGS" size="22" />
          </graphic></Label>
-      <HBox layoutX="119.0" layoutY="72.0" prefHeight="25.0" prefWidth="732.0" styleClass="control-group" AnchorPane.leftAnchor="119.0" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="72.0">
+      <HBox layoutX="118.0" layoutY="55.0" prefHeight="25.0" prefWidth="732.0" styleClass="control-group" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
          <children>
-            <JFXButton fx:id="newProductbtn" buttonType="RAISED" onAction="#onNewProductBtnClick" text="New Product">
+            <TextField fx:id="searchField" prefHeight="25.0" prefWidth="229.0" promptText="Type product name" styleClass="search-field" />
+            <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="search-btn">
                <graphic>
-                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="14" />
+               </graphic></Button>
+            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newProductbtn" buttonType="RAISED" onAction="#onNewProductBtnClick" styleClass="primary-btn" text="New Product">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
                </graphic>
             </JFXButton>
-            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <TextField prefHeight="25.0" prefWidth="229.0" promptText="Type product name" />
-            <Button mnemonicParsing="false">
-               <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" />
-               </graphic>
-            </Button>
          </children>
       </HBox>
-      <JFXTabPane layoutX="118.0" layoutY="130.0" prefHeight="402.0" prefWidth="732.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="130.0">
+      <JFXTabPane layoutX="118.0" layoutY="111.0" prefHeight="421.0" prefWidth="732.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="140.0">
          <tabs>
             <Tab text="ACTIVE">
               <content>
@@ -57,6 +56,9 @@
                      </children>
                   </AnchorPane>
               </content>
+               <graphic>
+                  <FontAwesomeIconView fill="green" glyphName="CIRCLE" />
+               </graphic>
             </Tab>
             <Tab text="INACTIVE">
               <content>
@@ -75,17 +77,20 @@
                      </children>
                   </AnchorPane>
               </content>
+              <graphic>
+                  <FontAwesomeIconView fill="darkgray" glyphName="CIRCLE" />
+              </graphic>
             </Tab>
          </tabs>
       </JFXTabPane>
-      <JFXButton buttonType="RAISED" layoutX="600.0" layoutY="16.0" onAction="#onNewSuppliersClick" text="New Supplier" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="16.0">
+      <JFXButton buttonType="RAISED" layoutX="862.0" layoutY="16.0" onAction="#onNewSuppliersClick" styleClass="default-btn" text="New Supplier" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="16.0">
          <graphic>
-            <FontAwesomeIconView glyphName="PLUS" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="PLUS" size="14" />
          </graphic>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="629.0" layoutY="16.0" onAction="#onNewCategoryClick" text="New Category" AnchorPane.rightAnchor="243.0" AnchorPane.topAnchor="16.0">
+      <JFXButton buttonType="RAISED" layoutX="706.0" layoutY="16.0" onAction="#onNewCategoryClick" styleClass="default-btn" text="New Category" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="16.0">
          <graphic>
-            <FontAwesomeIconView glyphName="PLUS" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="PLUS" size="14" />
          </graphic>
       </JFXButton>
    </children>

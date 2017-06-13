@@ -38,6 +38,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.controlsfx.control.Notifications;
 import ponospos.entities.Attribute;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
@@ -50,7 +51,7 @@ import tasks.products.FindAvailableStock;
  *
  * @author Sawmtea
  */
-public class ProductContainer extends AnchorPane{
+public class ProductContainer extends AnchorPane {
 
     
     public interface ProductContainerListener{
@@ -68,6 +69,8 @@ public class ProductContainer extends AnchorPane{
     private TableView<Product> itemsTable;
     @FXML
     private TableColumn<Product,String> nameCol;
+    @FXML
+    private TableColumn<Product,String> barcodeCol;
     @FXML
     private TableColumn<Product,Integer> qtyCol;
     @FXML
@@ -109,7 +112,18 @@ public class ProductContainer extends AnchorPane{
 //        this.getChildren().addAll(searchField,new Separator(),listView);
 //
         this.itemsTable.setItems(products);
-        this.nameCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getName()));
+        this.nameCol.setCellValueFactory(e->{
+            String attrs="";
+            if (!e.getValue().getAttributes().isEmpty()) {
+                for (Attribute attr : e.getValue().getAttributes()) {
+                    attrs+= " > " +attr.getValue();
+                }
+            }
+                Product value = e.getValue();
+                String name=value.getName() + "\n"+attrs;
+            return new SimpleStringProperty(name);
+        });
+        this.barcodeCol.setCellValueFactory(e->new SimpleStringProperty(e.getValue().getBarcode()));
         this.qtyCol.setCellValueFactory(e->{
             Product p=e.getValue();
             int sum=0;
@@ -133,7 +147,11 @@ public class ProductContainer extends AnchorPane{
                         setGraphic(btn);
                         btn.setOnAction(e->{
                             Product p = products.get(getIndex());
-                            listener.onSelect(p, getMaxStock(p));
+                            if (getMaxStock(p)<=0) {
+                                Notifications.create().text("Out of stock").title("Stock info").showError();
+                            }else{
+                                listener.onSelect(p, getMaxStock(p));
+                            }
                         });
                     }
                 }

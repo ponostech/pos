@@ -8,8 +8,8 @@ and open the template in the editor.
     Author     : Thangtea
 */
 .login-panel{
-    -fx-background-color:rgba(0,0,0,0.5);
-    -fx-border-color:#120780 transparent #120780 transparent;
+    -fx-background-color:rgba(0,0,125,0.3);
+    -fx-border-color:#003333 transparent #003333 transparent;
     -fx-border-width:5px;
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.4) , 1, 0.0 , 0 , 1);
 }
@@ -30,7 +30,7 @@ and open the template in the editor.
     -fx-margin:5 0 5 0;
 }
 .login-root-container{
-    -fx-background-image:url("../icons/bg.png");
+    -fx-background-image:url("../icons/bg.jpg");
     -fx-background-repeat:no-repeat;
 }
 #login-btn {

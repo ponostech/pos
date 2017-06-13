@@ -86,7 +86,8 @@ public class AddStockDialog extends JFXDialog {
             Region region = loader.load();
             this.setContent(region);
             this.setOnDialogOpened(e->qtyField.requestFocus());
-            positiveBtn.disableProperty().bind(qtyField.textProperty().isEmpty());
+            positiveBtn.disableProperty().bind(qtyField.textProperty().isEmpty()
+            .or(storeCombo.getSelectionModel().selectedItemProperty().isNull()));
             
             storeCombo.setItems(stores);
             

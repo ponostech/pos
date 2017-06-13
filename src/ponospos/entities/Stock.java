@@ -31,6 +31,7 @@ import javax.persistence.TemporalType;
 @Table(name = "stock")
 @NamedQueries({
     @NamedQuery(name = "Stock.findAll", query = "SELECT s FROM Stock s")
+    , @NamedQuery(name = "Stock.findMaximumStock", query = "SELECT SUM(s.quantity) FROM Stock s WHERE s.store = :store AND s.product = :product")
     , @NamedQuery(name = "Stock.findById", query = "SELECT s FROM Stock s WHERE s.id = :id")
     , @NamedQuery(name = "Stock.findProduct", query = "SELECT s.product FROM Stock s WHERE s.product.active = true AND s.store = :store")
     , @NamedQuery(name = "Stock.findProductByName", query = "SELECT s.product FROM Stock s WHERE (s.product.name LIKE :param OR s.product.barcode LIKE :param)AND s.product.active = true AND s.store = :store")
@@ -80,12 +81,17 @@ public class Stock implements Serializable {
     @JoinColumn(name="user_id",nullable=false)
     private User user;
     
+    @ManyToOne
+    @JoinColumn(name="stock_transfer_id",nullable = true)
+    private StockTransfer stockTransfer;
+    
     @Column(name = "transaction_type")
     private String transactionType;
     
     @Column(name = "remark")
     private String remark;
 
+    
     public Stock() {
     }
 
@@ -156,6 +162,15 @@ public class Stock implements Serializable {
         return store;
     }
 
+    public StockTransfer getStockTransfer() {
+        return stockTransfer;
+    }
+
+    public void setStockTransfer(StockTransfer stockTransfer) {
+        this.stockTransfer = stockTransfer;
+    }
+
+    
     public void setStore(Stores store) {
         this.store = store;
     }

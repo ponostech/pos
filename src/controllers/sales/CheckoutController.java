@@ -6,7 +6,6 @@
 package controllers.sales;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -30,7 +27,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -38,12 +34,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import org.controlsfx.control.Notifications;
+import ponospos.entities.Attribute;
 import ponospos.entities.Customer;
 import ponospos.entities.Invoice;
 import ponospos.entities.InvoiceItem;
 import ponospos.entities.Product;
 import ponospos.entities.Stock;
 import singletons.Auth;
+import util.PonosPreference;
 import util.TransactionType;
 
 /**
@@ -53,9 +52,6 @@ import util.TransactionType;
  */
 public class CheckoutController extends AnchorPane
  implements CustomerSelectDialog.CustomerSelectionInterface{
-
-   
-
     public interface CheckoutListener{
         public void onPay(Invoice invoice);
     }
@@ -64,6 +60,10 @@ public class CheckoutController extends AnchorPane
     private TableView<InvoiceItem> checkoutTable;
     @FXML
     private TableColumn<InvoiceItem, String> itemCol;
+    @FXML
+    private TableColumn<InvoiceItem, String> taxCol;
+    @FXML
+    private TableColumn<InvoiceItem, String> rateCol;
     @FXML
     private TableColumn<InvoiceItem, Integer> qtyCol;
     @FXML
@@ -88,6 +88,7 @@ public class CheckoutController extends AnchorPane
     private double subTotal;
     private double discount;
     private double total;
+    private double tax;
     
     private Customer selectedCustomer;
 
@@ -95,8 +96,11 @@ public class CheckoutController extends AnchorPane
     private StackPane root;
     private ObservableList<InvoiceItem>invoiceItems=FXCollections.observableArrayList();
     private ObservableList<Customer>customers=FXCollections.observableArrayList();
+    
+    private PonosPreference pref;
     public CheckoutController(CheckoutListener listener,StackPane root) {
         super();
+        this.pref=new PonosPreference();
         this.listener=listener;
         this.root=root;
         try {
@@ -108,8 +112,24 @@ public class CheckoutController extends AnchorPane
             checkoutTable.setItems(invoiceItems);
             
             itemCol.setCellValueFactory(e -> {
+                String attrs = "";
+                if (!e.getValue().getItem().getAttributes().isEmpty()) {
+                    for (Attribute attr : e.getValue().getItem().getAttributes()) {
+                        attrs += " > " + attr.getValue();
+                    }
+                }
+                Product value = e.getValue().getItem();
+                String name = value.getName() + " \n" + attrs;
+                return new SimpleStringProperty(name);
+            });
+            taxCol.setCellValueFactory((TableColumn.CellDataFeatures<InvoiceItem, String> e) -> {
                 Product p=e.getValue().getItem();
-                String str=p.getName()+"\n"+p.getTax().doubleValue();
+                String str = NumberFormat.getInstance(new Locale("in")).format(p.getTax().doubleValue());
+                return new SimpleStringProperty(str+" %");
+            });
+            rateCol.setCellValueFactory(e -> {
+                Product p=e.getValue().getItem();
+                String str=NumberFormat.getCurrencyInstance(new Locale("en","in")).format(p.getSellingPrice().doubleValue());
                 return new SimpleStringProperty(str);
             });
             qtyCol.setCellValueFactory(e -> new SimpleObjectProperty<>((e.getValue().getQuantity())));
@@ -153,35 +173,15 @@ public class CheckoutController extends AnchorPane
 //                }
 //            });
             this.discountField.setOnKeyReleased(e->{
-                
-                try{ 
-                    double val=Double.parseDouble(discountField.getText());
-                    boolean isExceed=false;
-                    if (percentRadio.isSelected()) {
-                        if (val>100){
-                            isExceed=true;
-                            discountField.clear();
-                        } 
-                        else
-                            discount=subTotal*(val/100);
-                        
-                    }else{
-                        if (val>subTotal) {
-                            isExceed = true;
-                            discountField.clear();
-                        }
-                        discount=val;
-                    }
-                    if (isExceed) {
-                        discount=0;
-                    }
-                    calculateSubtotal();
-                    subTotalField.setText(String.valueOf(subTotal));
-                    totalField.setText(String.valueOf(total));
-                }catch(NumberFormatException ex){
-                    discountField.clear();
-                }
+                doCalculate();
             });
+            percentRadio.setOnAction(e->{
+                doCalculate();
+            });
+            amountRadio.setOnAction(e->{
+                doCalculate();
+            });
+            
         } catch (IOException ex) {
             Logger.getLogger(CheckoutController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -211,8 +211,8 @@ public class CheckoutController extends AnchorPane
             subTotalField.setText(String.valueOf(subTotal));
         }
         calculateSubtotal();
-        subTotalField.setText(String.valueOf(subTotal));
-        totalField.setText(String.valueOf(total));
+        subTotalField.setText(NumberFormat.getCurrencyInstance(new Locale("en", "in")).format(subTotal));
+        totalField.setText(NumberFormat.getCurrencyInstance(new Locale("en", "in")).format(total));
 
 //        for (InvoiceItem item : invoiceItems) {
 //            calculateSubtotal(item.getItem(), item.getQuantity());
@@ -226,8 +226,23 @@ public class CheckoutController extends AnchorPane
     private void addIntoCheckout(Product p, int qty) {
         InvoiceItem invItem = getInvoiceByProduct(p);
         int sum = invItem.getQuantity() + qty;
-        invItem.setQuantity(sum);
-        checkoutTable.refresh();
+        //if not sum exceed stock 
+        if (sum>getMaxStock(p)) {
+            Notifications.create().title("Warning").text("Out of stock").showWarning();
+            return;
+        }else{
+            invItem.setQuantity(sum);
+            checkoutTable.refresh();
+        }
+    }
+    public int getMaxStock(Product product) {
+        int sum = 0;
+        for (Stock stock : product.getStocks()) {
+            if (stock.getStore().equals(Auth.getInstance().getStore())) {
+                sum += stock.getQuantity();
+            }
+        }
+        return sum;
     }
     private InvoiceItem getInvoiceByProduct(Product p) {
         for (InvoiceItem item : invoiceItems) {
@@ -249,36 +264,23 @@ public class CheckoutController extends AnchorPane
 //        }
 //        subTotal=totalAmount.floatValue();
         double totalAmount=0;
+        double totalTax=0;
         for (InvoiceItem item : invoiceItems) {
-            double amount = item.getItem().getSellingPrice().doubleValue();
-            amount*=item.getQuantity();
+            double price = item.getItem().getSellingPrice().doubleValue();
+            double amount=price*item.getQuantity();
+            
             double percent=item.getItem().getTax().doubleValue();
-            percent*=item.getQuantity();
+            double tax=(price*percent/100)*item.getQuantity();
             
-            double tax=amount*(percent/100);
-            
-            totalAmount+=(amount-tax);
+            totalTax+=tax;
+            totalAmount+=amount-tax;
         }
+        tax=totalTax;
         subTotal=totalAmount;
         total=subTotal-discount;
         
     }
     
-    public void calculateSubtotal(Product item, int qty) {
-        
-        BigDecimal totalAmount = new BigDecimal(subTotal);
-        BigDecimal price = item.getSellingPrice();
-        BigDecimal taxPercent = item.getTax().multiply(new BigDecimal(qty));
-
-        BigDecimal amount = price.multiply(new BigDecimal(qty));
-        BigDecimal amountToDeduct=amount.multiply(taxPercent.divide(new BigDecimal(100)));
-        totalAmount.add(
-                amount.subtract(amountToDeduct)
-        );
-        subTotal = totalAmount.floatValue();
-        String str = NumberFormat.getCurrencyInstance(new Locale("en","in")).format(subTotal);
-        subTotalField.setText(str);
-    }
     
     public Customer geSelectedCustomer(){
         return this.selectedCustomer;
@@ -287,13 +289,14 @@ public class CheckoutController extends AnchorPane
     @FXML
     public void onPayBtnClick(ActionEvent e){
         Invoice invoice=new Invoice();
+        invoice.setStore(Auth.getInstance().getStore());
         invoice.setCustomer(selectedCustomer);
         invoice.setTotal(new BigDecimal(total));
         invoice.setDiscount(new BigDecimal(discount));
         invoice.setInvoiceItem(invoiceItems);
         invoice.setInvoiceDate(new Date(System.currentTimeMillis()));
         invoice.setSoldBy(Auth.getInstance().getUser());
-        invoice.setTax(new BigDecimal(subTotal));
+        invoice.setTax(new BigDecimal(tax));
         deductStock(invoice);
         for (InvoiceItem item : invoiceItems) {
             item.setInvoice(invoice);
@@ -328,6 +331,7 @@ public class CheckoutController extends AnchorPane
         this.customers.addAll(customers);
     }
     public void reset(){
+        this.tax=0;
         this.subTotal=0;
         this.subTotalField.clear();
         this.discount=0;
@@ -351,5 +355,42 @@ public class CheckoutController extends AnchorPane
     }
 
 
+    private void doCalculate(){
+        try {
+            double val = Double.parseDouble(discountField.getText());
+            boolean isExceed = false;
+            if (percentRadio.isSelected()) {
+                if (val > 100) {
+                    isExceed = true;
+                    discountField.clear();
+                } else {
+                    discount = subTotal * (val / 100);
+                }
+
+            } else {
+                if (val > subTotal) {
+                    isExceed = true;
+                    discountField.clear();
+                }
+                discount = val;
+            }
+            if (isExceed) {
+                discount = 0;
+            }
+            calculateSubtotal();
+            subTotalField.setText(String.valueOf(subTotal));
+            totalField.setText(String.valueOf(total));
+        } catch (NumberFormatException ex) {
+            discountField.clear();
+        }
+    }
+    public void selectDiscountRadio(){
+        boolean percent = pref.getDiscountOption();
+        if (percent) {  
+        this.percentRadio.setSelected(true);
+        }else{
+            amountRadio.setSelected(true);
+        }
+    }
     
 }

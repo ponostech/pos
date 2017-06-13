@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<fx:root id="AnchorPane" prefHeight="455.0" prefWidth="935.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label graphicTextGap="10.0" layoutX="22.0" layoutY="31.0" styleClass="h1" text="Expenditure" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
+         <graphic>
+            <FontAwesomeIconView fill="#095d7c" glyphName="MONEY" size="22" />
+         </graphic>
+      </Label>
+      <HBox layoutX="35.0" layoutY="81.0" styleClass="control-group" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <JFXDatePicker fx:id="filterDate" />
+            <JFXButton fx:id="filterBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="100.0" styleClass="primary-btn" text="Filter">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="FILTER" size="14" />
+               </graphic>
+            </JFXButton>
+            <Pane maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="150.0" styleClass="primary-btn" text="New Expenditure">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <TableView fx:id="expTable" layoutX="20.0" layoutY="140.0" prefHeight="303.0" prefWidth="747.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="140.0">
+        <columns>
+          <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="dateCol" prefWidth="176.0" text="DATE" />
+            <TableColumn fx:id="headCol" prefWidth="172.0" text="HEADING" />
+            <TableColumn fx:id="descCol" prefWidth="171.0" text="DESCRIPTION" />
+            <TableColumn fx:id="amountCol" prefWidth="125.0" text="AMOUNT" />
+            <TableColumn fx:id="actionCol" prefWidth="248.0" text="ACTIONS" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>

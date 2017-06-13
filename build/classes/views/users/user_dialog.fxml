@@ -5,45 +5,42 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="595.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="565.0" prefWidth="332.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutY="-1.0" prefHeight="142.0" prefWidth="332.0" styleClass="top-pane">
+      <Pane layoutY="-1.0" prefHeight="56.0" prefWidth="332.0" style="-fx-background-color: #095d7c;" styleClass="top-pane">
          <children>
-            <ImageView fitHeight="80.0" fitWidth="99.0" layoutX="130.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/user.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="topLabel" alignment="CENTER" layoutX="1.0" layoutY="97.0" prefHeight="35.0" prefWidth="325.0" styleClass="h1" text="New User">
+            <Label fx:id="topLabel" alignment="CENTER" focusTraversable="false" graphicTextGap="10.0" layoutX="14.0" layoutY="11.0" styleClass="h2" text="New User">
                <font>
                   <Font size="24.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="USER" size="22" />
+               </graphic>
             </Label>
-            <FontAwesomeIconView fx:id="close" fill="#d70505" glyphName="CLOSE" layoutX="303.0" layoutY="30.0" size="28" />
+            <MaterialDesignIconView fx:id="close" fill="#8d0c0c" glyphName="CLOSE" layoutX="297.0" layoutY="36.0" size="26" />
          </children>
       </Pane>
-      <JFXTextField fx:id="usernameField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="161.0" prefHeight="25.0" prefWidth="290.0" promptText="Username" />
-      <JFXPasswordField fx:id="passwordField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="211.0" prefWidth="290.0" promptText="Password" />
-      <JFXPasswordField fx:id="confirmPasswordField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="260.0" prefWidth="290.0" promptText="Confirm Password" />
-      <JFXTextField fx:id="firstnameField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="311.0" prefWidth="290.0" promptText="First Name" />
-      <JFXTextField fx:id="lastnameField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="358.0" prefWidth="290.0" promptText="Last Name" />
-      <JFXTextField fx:id="emailField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="403.0" prefWidth="290.0" promptText="Email" />
-      <JFXTextField fx:id="contactField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="450.0" prefWidth="288.0" promptText="Contact" />
-      <JFXComboBox fx:id="roleBox" labelFloat="true" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="290.0" promptText="Select Role" visibleRowCount="3" />
-      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="20.0" layoutY="549.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="136.0" ripplerFill="#341ada" text="Create">
+      <JFXTextField fx:id="usernameField" alignment="TOP_LEFT" labelFloat="true" layoutX="19.0" layoutY="70.0" prefHeight="25.0" prefWidth="290.0" promptText="Username" />
+      <JFXPasswordField fx:id="passwordField" alignment="TOP_LEFT" labelFloat="true" layoutX="19.0" layoutY="119.0" prefWidth="290.0" promptText="Password" />
+      <JFXPasswordField fx:id="confirmPasswordField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="172.0" prefWidth="290.0" promptText="Confirm Password" />
+      <JFXTextField fx:id="firstnameField" alignment="TOP_LEFT" labelFloat="true" layoutX="19.0" layoutY="229.0" prefWidth="290.0" promptText="First Name" />
+      <JFXTextField fx:id="lastnameField" alignment="TOP_LEFT" labelFloat="true" layoutX="19.0" layoutY="278.0" prefWidth="290.0" promptText="Last Name" />
+      <JFXTextField fx:id="emailField" alignment="TOP_LEFT" labelFloat="true" layoutX="19.0" layoutY="342.0" prefWidth="290.0" promptText="Email" />
+      <JFXTextField fx:id="contactField" alignment="TOP_LEFT" labelFloat="true" layoutX="20.0" layoutY="403.0" prefWidth="288.0" promptText="Contact" />
+      <JFXComboBox fx:id="roleBox" labelFloat="true" layoutX="21.0" layoutY="457.0" prefHeight="25.0" prefWidth="290.0" promptText="Select Role" visibleRowCount="3" />
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="21.0" layoutY="514.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="120.0" ripplerFill="#341ada" styleClass="primary-btn" text="Create">
          <graphic>
-            <FontAwesomeIconView fill="#1543da" glyphName="SAVE" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="14" />
          </graphic></JFXButton>
-      <JFXButton fx:id="negativeBtn" buttonType="RAISED" cancelButton="true" layoutX="186.0" layoutY="551.0" prefHeight="25.0" prefWidth="126.0" ripplerFill="#341ab5" text="Close">
+      <JFXButton fx:id="negativeBtn" buttonType="RAISED" cancelButton="true" layoutX="191.0" layoutY="514.0" prefHeight="25.0" prefWidth="120.0" ripplerFill="#341ab5" styleClass="secondary-btn" text="Close">
          <graphic>
-            <FontAwesomeIconView fill="#0d0dd3" glyphName="CLOSE" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="14" />
          </graphic></JFXButton>
    </children>
 </AnchorPane>

@@ -4,53 +4,50 @@
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="520.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="461.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTextField fx:id="firstNameField" labelFloat="true" layoutX="21.0" layoutY="130.0" prefHeight="25.0" prefWidth="299.0" promptText="Firstname" />
-      <JFXTextField fx:id="lastNameField" labelFloat="true" layoutX="20.0" layoutY="180.0" prefHeight="25.0" prefWidth="299.0" promptText="Lastname">
+      <JFXTextField fx:id="firstNameField" labelFloat="true" layoutX="21.0" layoutY="74.0" prefHeight="25.0" prefWidth="299.0" promptText="Firstname" />
+      <JFXTextField fx:id="lastNameField" labelFloat="true" layoutX="20.0" layoutY="124.0" prefHeight="25.0" prefWidth="299.0" promptText="Lastname">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXTextField fx:id="emailField" labelFloat="true" layoutX="18.0" layoutY="233.0" prefHeight="25.0" prefWidth="299.0" promptText="Email">
+      <JFXTextField fx:id="emailField" labelFloat="true" layoutX="18.0" layoutY="177.0" prefHeight="25.0" prefWidth="299.0" promptText="Email">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="16.0" layoutY="286.0" prefHeight="96.0" prefWidth="306.0" promptText="Address">
+      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="16.0" layoutY="230.0" prefHeight="96.0" prefWidth="306.0" promptText="Address">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextArea>
-      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="20.0" layoutY="402.0" prefHeight="25.0" prefWidth="299.0" promptText="Contact">
+      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="20.0" layoutY="346.0" prefHeight="25.0" prefWidth="299.0" promptText="Contact">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </JFXTextField>
-      <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="36.0" layoutY="457.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: yellow;" text="Save">
+      <JFXButton fx:id="saveButton" buttonType="RAISED" defaultButton="true" layoutX="21.0" layoutY="401.0" onAction="#onSaveClick" prefHeight="25.0" prefWidth="119.0" ripplerFill="#0931d0" styleClass="primary-btn" text="Save">
          <graphic>
-            <FontAwesomeIconView fill="#2409ae" glyphName="SAVE" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="14" />
          </graphic></JFXButton>
-      <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="225.0" layoutY="457.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="90.0" ripplerFill="#0931d0" style="-fx-background-color: cyan;" text="Cancel">
+      <JFXButton fx:id="cancelButton" buttonType="RAISED" cancelButton="true" layoutX="215.0" layoutY="401.0" onAction="#onCancelClick" prefHeight="25.0" prefWidth="106.0" ripplerFill="#0931d0" styleClass="secondary-btn" text="Cancel">
          <graphic>
-            <FontAwesomeIconView fill="#3608ab" glyphName="CLOSE" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="14" />
          </graphic></JFXButton>
-      <Pane layoutY="-9.0" prefHeight="117.0" prefWidth="337.0" styleClass="top-pane">
+      <Pane layoutY="-6.0" prefHeight="60.0" prefWidth="337.0" styleClass="top-pane">
          <children>
-            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="130.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/customer.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="topLabel" alignment="CENTER" layoutY="86.0" prefHeight="17.0" prefWidth="337.0" styleClass="h2" text="Customer" />
-            <FontAwesomeIconView fx:id="close" fill="#eb0000" glyphName="CLOSE" layoutX="295.0" layoutY="38.0" size="28" />
+            <Label fx:id="topLabel" graphicTextGap="10.0" layoutX="7.0" layoutY="15.0" prefHeight="27.0" prefWidth="278.0" styleClass="h2" text="Customer">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="24" />
+               </graphic></Label>
+            <MaterialDesignIconView fx:id="close" fill="#bf0f0f" glyphName="CLOSE" layoutX="302.0" layoutY="35.0" size="26" />
          </children>
       </Pane>
    </children>

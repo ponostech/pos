@@ -2,43 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87e4e520-898c-43ad-b6e2-09bc70cb24a4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/PonosPos.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/PonosPos.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/PonosPos.jnlp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/PonosPos-Preloader.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/controlsfx-8.40.12.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/eclipselink.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/javax.persistence_2.1.0.v201304241213.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/jfoenix.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/mysql-connector-java-5.1.23-bin.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/lib/org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/dtjava.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/error.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/get_java.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/get_javafx.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/javafx-chrome.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/javafx-loading-100x100.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/javafx-loading-25x25.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/upgrade_java.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/run210466303/web-files/upgrade_javafx.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resource/icons/ktp.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$1.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$CreateUserTask.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$CreateUserTask.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$DeleteUserTask.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$DeleteUserTask.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$FetchAllUserTask.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$FetchAllUserTask.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$UpdateUserTask.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController$UpdateUserTask.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/users/UsersController.class" afterPath="$PROJECT_DIR$/build/classes/controllers/users/UsersController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/controllers/sales/SalesDetailDialog.class" afterPath="$PROJECT_DIR$/build/classes/controllers/sales/SalesDetailDialog.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/PonosPos.jar" afterPath="$PROJECT_DIR$/dist/PonosPos.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/lib/PonosPos-Preloader.jar" afterPath="$PROJECT_DIR$/dist/lib/PonosPos-Preloader.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/built-jar.properties" afterPath="$PROJECT_DIR$/build/built-jar.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/views/users/users.fxml" afterPath="$PROJECT_DIR$/build/classes/views/users/users.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/resource/css/ponos_style.css" afterPath="$PROJECT_DIR$/build/classes/resource/css/ponos_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/resource/css/ponos_table.css" afterPath="$PROJECT_DIR$/build/classes/resource/css/ponos_table.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/views/sales/checkout.fxml" afterPath="$PROJECT_DIR$/build/classes/views/sales/checkout.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/views/sales/product_container.fxml" afterPath="$PROJECT_DIR$/build/classes/views/sales/product_container.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/views/sales/sales_detail.fxml" afterPath="$PROJECT_DIR$/build/classes/views/sales/sales_detail.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/PonosPos.html" afterPath="$PROJECT_DIR$/dist/PonosPos.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/PonosPos.jnlp" afterPath="$PROJECT_DIR$/dist/PonosPos.jnlp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/users/CreateUserController.java" afterPath="$PROJECT_DIR$/src/controllers/users/CreateUserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/users/UsersController.java" afterPath="$PROJECT_DIR$/src/controllers/users/UsersController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/users/users.fxml" afterPath="$PROJECT_DIR$/src/views/users/users.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/sales/SalesDetailDialog.java" afterPath="$PROJECT_DIR$/src/controllers/sales/SalesDetailDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/resource/css/ponos_style.css" afterPath="$PROJECT_DIR$/src/resource/css/ponos_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/resource/css/ponos_table.css" afterPath="$PROJECT_DIR$/src/resource/css/ponos_table.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/sales/checkout.fxml" afterPath="$PROJECT_DIR$/src/views/sales/checkout.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/sales/product_container.fxml" afterPath="$PROJECT_DIR$/src/views/sales/product_container.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/sales/sales_detail.fxml" afterPath="$PROJECT_DIR$/src/views/sales/sales_detail.fxml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -60,25 +41,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UsersController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UsersController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controllers/users/UsersController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+            <state relative-caret-position="1190">
+              <caret line="118" column="18" lean-forward="true" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
               <folding>
-                <element signature="e#0#7652#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateUserController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/controllers/users/CreateUserController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#4561#0" expanded="true" />
+                <element signature="e#0#13738#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -97,8 +66,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/controllers/users/UsersController.java" />
         <option value="$PROJECT_DIR$/src/controllers/users/CreateUserController.java" />
+        <option value="$PROJECT_DIR$/src/controllers/users/UsersController.java" />
       </list>
     </option>
   </component>
@@ -123,6 +92,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -192,8 +163,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -401,6 +370,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -447,10 +417,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/users/UsersController.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2329">
+          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13738#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/users/CreateUserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1717">
+          <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Messages/SideBarMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/users/UsersController.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1921">
           <caret line="147" column="12" lean-forward="false" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
           <folding>
-            <element signature="e#0#7652#0" expanded="true" />
+            <element signature="e#0#13738#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -477,22 +473,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/users/CreateUserController.java" />
     <entry file="file://$PROJECT_DIR$/src/controllers/users/UsersController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+        <state relative-caret-position="1190">
+          <caret line="118" column="18" lean-forward="true" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
           <folding>
-            <element signature="e#0#7652#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/users/CreateUserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#4561#0" expanded="true" />
+            <element signature="e#0#13738#0" expanded="true" />
           </folding>
         </state>
       </provider>

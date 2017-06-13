@@ -113,13 +113,14 @@ public class StoreDialog extends JFXDialog{
             store.setName(nameField.getText().trim());
             store.setAddress(addressField.getText().trim());
             store.setContact(contactField.getText().trim());
-            
+            store.setActive(true);
             listener.onUpdate(store);
         }else if(isCreatePurpose){
             Stores s=new Stores();
             s.setName(nameField.getText().trim());
             s.setAddress(addressField.getText().trim());
             s.setContact(contactField.getText().trim());
+            s.setActive(true);
             s.setCreatedAt(new Date(System.currentTimeMillis()));
             listener.onCreate(s);
         }else{

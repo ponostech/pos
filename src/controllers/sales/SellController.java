@@ -10,10 +10,16 @@ import Messages.InvoiceMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.customers.CustomerDialog;
+import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +30,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Customer;
@@ -35,6 +51,7 @@ import singletons.PonosExecutor;
 import tasks.customers.FetchAllCustomerTask;
 import tasks.invoices.CreateInvoiceTask;
 import tasks.products.FindProductStockInStore;
+import util.controls.PrintReport;
 
 /**
  * FXML Controller class
@@ -90,6 +107,7 @@ public class SellController extends AnchorPane implements
         checkoutController=new CheckoutController(this, root);
        
         checkoutContainer.getChildren().add(checkoutController);
+        
     }
 
     @Override
@@ -136,7 +154,7 @@ public class SellController extends AnchorPane implements
         PonosExecutor.getInstance().getExecutor().submit(task);
         PonosExecutor.getInstance().getExecutor().submit(t2);
         
-        
+        checkoutController.selectDiscountRadio();
     }
 
     @Override
@@ -196,10 +214,12 @@ public class SellController extends AnchorPane implements
             tasks.invoices.CreateInvoiceTask task = new CreateInvoiceTask();
             task.setInvoice(invoice);
             task.setOnSucceeded(e -> {
-                //TODO:: Print report
-                
-                 Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
+                   PrintReport p=new PrintReport();
+                   p.printInvoices(invoice);
+                   
+                   Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
                         .text(InvoiceMessage.SUCCESS_MESSAGE).showInformation();
+                    checkoutController.reset();
             });
             task.setOnFailed(e -> task.getException().printStackTrace(System.err));
             PonosExecutor.getInstance().getExecutor().submit(task);
@@ -207,7 +227,7 @@ public class SellController extends AnchorPane implements
             tasks.invoices.CreateInvoiceTask task=new CreateInvoiceTask();
             task.setInvoice(invoice);
             task.setOnSucceeded(e->{
-                fetchAll();
+               
                 Notifications.create().title(InvoiceMessage.SUCCESS_TITLE)
                         .text(InvoiceMessage.SUCCESS_MESSAGE).showInformation();
                 checkoutController.reset();
@@ -216,8 +236,36 @@ public class SellController extends AnchorPane implements
             PonosExecutor.getInstance().getExecutor().submit(task);
 
         }
+         fetchAll();
     }
     private static final Logger LOG = Logger.getLogger(SellController.class.getName());
+
+    private void doPrint(Invoice invoice) throws JRException {
+        File loc = new File(this.getClass().getResource("/resource/reports/receipt.jrxml").toExternalForm());
+        JasperDesign design = JRXmlLoader.load(loc);
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+                design);
+
+        String discount = NumberFormat.getCurrencyInstance(new Locale("en", "in")).format(invoice.getDiscount().doubleValue());
+        String tax = NumberFormat.getCurrencyInstance(new Locale("en", "in")).format(invoice.getTax().doubleValue());
+        String amount = NumberFormat.getCurrencyInstance(new Locale("en", "in")).format(invoice.getTotal().doubleValue());
+
+        Map parameters = new HashMap();
+        parameters.put("CustomerName", invoice.getCustomer().getFirstName());
+
+        parameters.put("Discount", discount);
+        parameters.put("Tax", tax);
+        parameters.put("Amount", amount);
+
+        parameters.put("StoreName", discount);
+        parameters.put("StoreContact", tax);
+        parameters.put("StoreAddress", amount);
+
+        Collection collection = invoice.getInvoiceItem();
+        JRDataSource datasource = new JRBeanCollectionDataSource(collection);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, datasource);
+        JasperViewer.viewReport(jasperPrint);
+    }
           
     
     

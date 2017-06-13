@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<fx:root id="AnchorPane" prefHeight="409.0" prefWidth="892.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="14.0" layoutY="24.0" styleClass="h1" text="Expenditure Heading" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <graphic>
+            <FontAwesomeIconView fill="#095d7c" glyphName="HEADER" size="22" />
+         </graphic>
+      </Label>
+      <HBox layoutX="14.0" layoutY="78.0" styleClass="control-group" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <TextField fx:id="searchField" prefHeight="25.0" prefWidth="255.0" promptText="Search" styleClass="search-field" />
+            <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="search-btn">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="14" />
+               </graphic>
+            </Button>
+            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newBtn" focusTraversable="false" styleClass="primary-btn" text="New Heading">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <TableView fx:id="expenseTable" layoutY="138.0" prefHeight="257.0" prefWidth="200.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="138.0">
+        <columns>
+          <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="textCol" prefWidth="409.0" text="TEXT" />
+            <TableColumn fx:id="userCol" prefWidth="108.0" text="USER" />
+            <TableColumn fx:id="actionCol" prefWidth="185.0" text="ACTIONS" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>

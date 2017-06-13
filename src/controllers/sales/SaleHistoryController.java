@@ -7,6 +7,7 @@ package controllers.sales;
 
 import Messages.ConfirmationMessage;
 import Messages.InvoiceMessage;
+import com.jfoenix.controls.JFXDatePicker;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import controllers.users.UsersController;
@@ -27,7 +28,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,6 +46,7 @@ import tasks.invoices.DeleteInvoiceTask;
 import tasks.invoices.FetchAllInvoiceTask;
 import tasks.invoices.FindInvoiceBetweenDateTask;
 import util.DateConverter;
+import util.controls.PrintReport;
 
 /**
  * FXML Controller class
@@ -75,9 +76,9 @@ implements PonosControllerInterface
     @FXML
     private TableColumn<Invoice, Invoice> actions;
     @FXML
-    private DatePicker fromDatePicker;
+    private JFXDatePicker fromDatePicker;
     @FXML
-    private DatePicker toDatePicker;
+    private JFXDatePicker toDatePicker;
     @FXML
     private Button filterBtn;
 
@@ -110,7 +111,7 @@ implements PonosControllerInterface
         idCol.setCellValueFactory(e->new SimpleObjectProperty<>(e.getValue().getId()));
         dateCol.setCellValueFactory(e->{
             Invoice inv = e.getValue();
-            SimpleDateFormat fmt=new SimpleDateFormat("dd/MM/yy hh:mm:ss:");
+            SimpleDateFormat fmt=new SimpleDateFormat("EEE dd/MMM/yy hh:mm:ss a");
             String str = fmt.format(inv.getInvoiceDate());
             return new SimpleStringProperty(str);
         });
@@ -132,6 +133,7 @@ implements PonosControllerInterface
                 -> new TableCell<Invoice, Invoice>() {
             private Button editBtn;
             private Button viewBtn;
+            private Button printBtn;
 
             @Override
             protected void updateItem(Invoice item, boolean empty) {
@@ -141,16 +143,19 @@ implements PonosControllerInterface
                     setGraphic(null);
                 } else {
                     HBox hb = new HBox(5);
-                    FontAwesomeIconView addicon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                    FontAwesomeIconView addicon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
                     FontAwesomeIconView viewIcon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+                    FontAwesomeIconView printIcon = new FontAwesomeIconView(FontAwesomeIcon.PRINT);
 
                     addicon.setFill(Paint.valueOf("#1268b9"));
                     viewIcon.setFill(Paint.valueOf("#1268b9"));
+                    printIcon.setFill(Paint.valueOf("#1268b9"));
 
                     editBtn = new Button("", addicon);
                     viewBtn = new Button("", viewIcon);
+                    printBtn = new Button("", printIcon);
 
-                    hb.getChildren().addAll(viewBtn, editBtn);
+                    hb.getChildren().addAll(printBtn,viewBtn, editBtn);
 
                     setGraphic(hb);
                     viewBtn.setOnAction(e -> {
@@ -164,6 +169,10 @@ implements PonosControllerInterface
                         dialog.setModel(invoices.get(getIndex()));
                         dialog.show(root);
                         e.consume();
+                    });
+                    printBtn.setOnAction(e -> {
+                        PrintReport report=new PrintReport();
+                        report.printInvoices(invoices.get(getIndex()));
                     });
                 }
             }

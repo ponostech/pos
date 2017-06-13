@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -83,7 +85,7 @@ public class Product implements Serializable {
     @Column(name = "name")
     private String name;
     
-    @Column(name = "barcode")
+    @Column(name = "barcode",unique = true)
     private String barcode;
     
     
@@ -113,6 +115,13 @@ public class Product implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    
+    @ElementCollection
+    @CollectionTable(
+        name="unit_relations",
+        joinColumns=@JoinColumn(name="product_id")
+    )
+    private List<UnitRelation> otherUnits;
 
     
     
@@ -157,6 +166,15 @@ public class Product implements Serializable {
     public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
+
+    public List<UnitRelation> getOtherUnits() {
+        return otherUnits;
+    }
+
+    public void setOtherUnits(List<UnitRelation> otherUnits) {
+        this.otherUnits = otherUnits;
+    }
+    
 
     public String getDescription() {
         return description;
@@ -301,9 +319,7 @@ public class Product implements Serializable {
     public boolean isActive() {
         return active;
     }
-    
-    
-   
+
     @Override
     public String toString() {
         return this.name;

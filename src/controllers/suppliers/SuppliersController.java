@@ -10,8 +10,6 @@ import Messages.SupplierMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
-import controllers.users.UserDialog;
-import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -27,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -42,14 +41,12 @@ import javafx.stage.Window;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Supplier;
-import ponospos.entities.User;
 import singletons.PonosExecutor;
 import tasks.suppliers.CreateTask;
 import tasks.suppliers.DeleteTask;
 import tasks.suppliers.FetchAllTask;
 import tasks.suppliers.SearchSupplierByNameTask;
 import tasks.suppliers.UpdateTask;
-import util.Role;
 
 /**
  *
@@ -116,9 +113,11 @@ public class SuppliersController extends AnchorPane implements
                 FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
                 FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
                 FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                FontAwesomeIconView allIcon=new FontAwesomeIconView(FontAwesomeIcon.LIST);
                 Button viewBtn=new Button("",viewIcon);
                 Button editBtn=new Button("",editIcon);
                 Button delBtn=new Button("",delIcon);
+                Hyperlink productsLink=new Hyperlink("All products",allIcon);
                 @Override
                 protected void updateItem(Supplier item, boolean empty) {
                     super.updateItem(item, empty); 
@@ -140,7 +139,10 @@ public class SuppliersController extends AnchorPane implements
                             d.setListener(SuppliersController.this);
                             d.show(root);
                         });
-                        setGraphic(new HBox(5,viewBtn,editBtn,delBtn));
+                        productsLink.setOnAction(e->{
+                            
+                        });
+                        setGraphic(new HBox(5,productsLink,viewBtn,editBtn,delBtn));
                     }
                 }
                 

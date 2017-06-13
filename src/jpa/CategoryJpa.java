@@ -45,11 +45,8 @@ public class CategoryJpa {
     
     public static List getAllCategory()throws Exception{
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
-        em.getTransaction().begin();
         List<Category> all = em.createNamedQuery("Category.findAll",Category.class)
                 .getResultList();
-        em.flush();
-        em.getTransaction().commit();
         em.close();
         return all;
     }

@@ -22,14 +22,14 @@
             <Image url="@../../resource/icons/question.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="yesBtn" buttonType="RAISED" defaultButton="true" layoutX="297.0" layoutY="152.0" prefHeight="29.0" prefWidth="69.0" text="Yes">
+      <JFXButton fx:id="yesBtn" buttonType="RAISED" defaultButton="true" layoutX="297.0" layoutY="152.0" prefHeight="29.0" prefWidth="69.0" styleClass=".custom-jfx-button-raised" text="Yes">
          <graphic>
-            <FontAwesomeIconView fill="#2807d0" glyphName="CHECK" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CHECK" size="14" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="noBtn" buttonType="RAISED" cancelButton="true" layoutX="411.0" layoutY="154.0" text="No">
+      <JFXButton fx:id="noBtn" buttonType="RAISED" cancelButton="true" layoutX="411.0" layoutY="154.0" styleClass=".custom-jfx-button-raised" text="No">
          <graphic>
-            <FontAwesomeIconView fill="#1d05b5" glyphName="CLOSE" size="14" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="14" />
          </graphic>
       </JFXButton>
    </children>

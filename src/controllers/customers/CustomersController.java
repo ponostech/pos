@@ -11,9 +11,9 @@ import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +30,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -38,14 +38,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Paint;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
 import ponospos.entities.Customer;
@@ -129,8 +127,9 @@ public class CustomersController extends AnchorPane implements
                     this.setGraphic(null);
                 }else{
                     this.setAlignment(Pos.CENTER);
-                    Circle c=new Circle(15);
-                    c.setFill(new ImagePattern(new Image(CustomersController.class.getResourceAsStream("/resource/icons/avatar.png"))));
+                    MaterialDesignIconView icon=new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_CIRCLE);
+                    icon.setFill(Paint.valueOf("#095d7c"));
+                    icon.setSize("24px");
 //                    FontAwesomeIconView icon=new FontAwesomeIconView(FontAwesomeIcon.USER);
 //                    Label label=new Label("",icon);
 //                    label.setMinSize(100, 0);
@@ -138,7 +137,7 @@ public class CustomersController extends AnchorPane implements
 //                    label.setGraphicTextGap(0);
 //                    icon.setFill(Color.CORAL);
 //                    icon.setSize("28");
-                    setGraphic(c);
+                    setGraphic(icon);
                 }
             }
             
@@ -146,8 +145,10 @@ public class CustomersController extends AnchorPane implements
          actionCol.setCellFactory((TableColumn<Void, Customer> param) -> new TableCell<Void,Customer>(){
              FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
             FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-            Button editBtn=new Button("Edit",editIcon);
-            Button delBtn=new Button("Delete",delIcon);
+            FontAwesomeIconView info=new FontAwesomeIconView(FontAwesomeIcon.INFO);
+            Button editBtn=new Button("",editIcon);
+            Button delBtn=new Button("",delIcon);
+            Hyperlink ledgerLink=new Hyperlink("View Ledger Account",info);
             
             @Override
             protected void updateItem(Customer item, boolean empty) {
@@ -155,9 +156,9 @@ public class CustomersController extends AnchorPane implements
                     setText(null);
                     setGraphic(null);
                 }else{
-                    editIcon.setFill(Color.BLUE);
-                    delIcon.setFill(Color.BLUE);
-                    editBtn.getStyleClass().add("btn-small");
+                    editIcon.setFill(Paint.valueOf("#095d7c"));
+                    info.setFill(Paint.valueOf("#095d7c"));
+                    delIcon.setFill(Paint.valueOf("#e22e12"));
                     editBtn.setOnAction(e->{
                         CustomerDialog d=new CustomerDialog(CustomersController.this);
                         d.setCustomer(customers.get(getIndex()));
@@ -168,7 +169,6 @@ public class CustomersController extends AnchorPane implements
                         d.delegateFocus();
                         
                     });
-                    delBtn.getStyleClass().add("btn-small");
                     delBtn.setOnAction(e->{
                         ConfirmDialog dialog=new ConfirmDialog(ConfirmationMessage.TITLE,ConfirmationMessage.MESSAGE);
                         dialog.setListener(CustomersController.this);
@@ -177,7 +177,14 @@ public class CustomersController extends AnchorPane implements
                         e.consume();
                         dialog.requestFocus();
                     });
-                    setGraphic(new HBox(5,editBtn,delBtn));
+                    ledgerLink.setOnAction(e->{
+                        LedgerDialog d=new LedgerDialog();
+                        d.setCustomer(customers.get(getIndex()));
+                        d.setLabelTexts();
+                        d.hookupEvent();
+                        d.show(root);
+                    });
+                    setGraphic(new HBox(5,editBtn,delBtn,ledgerLink));
                 }
             } 
         });

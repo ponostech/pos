@@ -10,12 +10,12 @@ import Messages.StoreMessage;
 import com.jfoenix.controls.JFXButton;
 import controllers.PonosControllerInterface;
 import controllers.modals.ConfirmDialog;
-import controllers.users.UserDialog;
-import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -27,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -41,15 +42,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Window;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
+import ponospos.entities.Product;
 import ponospos.entities.Stores;
-import ponospos.entities.User;
 import singletons.PonosExecutor;
 import tasks.stores.CreateTask;
 import tasks.stores.DeleteTask;
 import tasks.stores.FetchAllTask;
 import tasks.stores.FindStoreByNameTask;
+import tasks.stores.FindStoreStock;
 import tasks.stores.UpdateTask;
-import util.Role;
 
 /**
  * FXML Controller class
@@ -162,9 +163,12 @@ public class StoresController extends AnchorPane implements
                 FontAwesomeIconView viewIcon=new FontAwesomeIconView(FontAwesomeIcon.EYE);
                 FontAwesomeIconView editIcon=new FontAwesomeIconView(FontAwesomeIcon.EDIT);
                 FontAwesomeIconView delIcon=new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                FontAwesomeIconView stockIcon=new FontAwesomeIconView(FontAwesomeIcon.LIST);
                 Button viewBtn=new Button("",viewIcon);
                 Button editBtn=new Button("",editIcon);
                 Button delBtn=new Button("",delIcon);
+                Hyperlink stockLink=new Hyperlink("All stocks", stockIcon);
+                
                 @Override
                 protected void updateItem(Stores item, boolean empty) {
                     super.updateItem(item, empty); 
@@ -185,7 +189,25 @@ public class StoresController extends AnchorPane implements
                             d.setListener(StoresController.this);
                             d.show(root);
                         });
-                        setGraphic(new HBox(5,viewBtn,editBtn,delBtn));
+                        stockLink.setOnAction(e->{
+                            Stores store = stores.get(getIndex());
+                            FindStoreStock task=new FindStoreStock();
+                            task.store=store;
+                            mask.visibleProperty().bind(task.runningProperty());
+                            task.setOnSucceeded(ev->{
+                                Set<Product> set = new HashSet<>();
+                                set.addAll(task.getValue());
+                                StoreStockController d=new StoreStockController();
+                                d.setStore(store);
+                                d.setProducts(set);
+                                d.show(root);
+                            });
+                            task.setOnFailed(ev->{
+                                task.getException().printStackTrace(System.err);
+                            });
+                            PonosExecutor.getInstance().getExecutor().submit(task);
+                        });
+                        setGraphic(new HBox(10,stockLink,viewBtn,editBtn,delBtn));
                     }
                 }
                 

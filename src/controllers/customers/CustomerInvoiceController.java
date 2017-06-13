@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import controllers.PonosControllerInterface;
 import controllers.sales.CustomerSelectDialog;
+import controllers.sales.SalesDetailDialog;
 import controllers.users.UsersController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -38,10 +39,10 @@ import org.controlsfx.control.MaskerPane;
 import ponospos.entities.Customer;
 import ponospos.entities.Payment;
 import singletons.PonosExecutor;
-import tasks.customers.FetchAllCustomerTask;
 import tasks.payments.FetchAllPaymentTask;
 import tasks.payments.FindCustomerPaymentTask;
 import util.DateConverter;
+import util.controls.PrintReport;
 
 /**
  * FXML Controller class
@@ -179,7 +180,9 @@ public class CustomerInvoiceController extends AnchorPane
                     setGraphic(null);
                 } else {
                     viewBtn.setOnAction(e -> {
-
+                        SalesDetailDialog d=new SalesDetailDialog();
+                        d.setInvoice(payments.get(getIndex()).getInvoice());
+                        d.show(root);
                     });
                     editBtn.setOnAction(e -> {
                         
@@ -222,7 +225,11 @@ public class CustomerInvoiceController extends AnchorPane
         FetchAllPaymentTask task1=new FetchAllPaymentTask();
         task1.setOnSucceeded(e->{
             payments.clear();
-            payments.addAll(task1.getValue());
+            for (Payment p : task1.getValue()) {
+                if (p.getInvoice().getCustomer()!=null) {
+                    payments.add(p);
+                }
+            }
         });
         mask.visibleProperty().bind(task1.runningProperty());
         task1.setOnFailed(e->task1.getException().printStackTrace(System.err));
@@ -235,5 +242,11 @@ public class CustomerInvoiceController extends AnchorPane
     public void onSelect(Customer customer) {
         this.selectedCustomer=customer;
         customerField.setText(customer.getFirstName());
+    }
+    
+    @FXML
+    public void onPrintbtnClick(ActionEvent evt){
+        PrintReport report=new PrintReport();
+        report.printCustomerInvoice(selectedCustomer, payments);
     }
 }

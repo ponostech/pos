@@ -8,7 +8,6 @@ package controllers.products;
 import com.jfoenix.controls.JFXDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -71,7 +71,7 @@ public class StockDetailDialog extends JFXDialog {
     @FXML
     private Label stockLabel;
     @FXML
-    private MaterialDesignIconView close;
+    private Button close;
     
     private Product product;
 
@@ -85,8 +85,9 @@ public class StockDetailDialog extends JFXDialog {
             loader.setController(this);
             Region region = loader.load();
             this.setContent(region);
-            close.setOnMouseClicked(e->StockDetailDialog.this.close());
+            close.setOnAction(e->StockDetailDialog.this.close());
             this.setOnDialogOpened(e->close.requestFocus());
+            
         } catch (IOException ex) {
             Logger.getLogger(StockDetailDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,14 +100,14 @@ public class StockDetailDialog extends JFXDialog {
     }
     
     public void populateData(){
-        this.idLabel.setText(Integer.toString(product.getId()));
-        this.nameLabel.setText(product.getName());
+        this.idLabel.setText("Product Id : "+Integer.toString(product.getId()));
+        this.nameLabel.setText("Name : "+product.getName());
         String str="";
         for (Attribute attr : product.getAttributes()) {
             str+=" || " +attr.getName()+" : "+attr.getValue();
         }
         this.variant.setText(str);
-        this.stockLabel.setText(getStockCount(product));
+        this.stockLabel.setText("Stock : "+getStockCount(product));
         this.stockTable.setItems(stocks);
         dateCol.setCellValueFactory(e->{
             Stock stock=e.getValue();

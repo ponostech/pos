@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/products/ProductController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/resource/css/ponos_style.css</file>
-            <file>file:/D:/PROJEX/PonosPos/src/resource/css/ponos_table.css</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/sales/ProductContainer.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/suppliers/SuppliersController.java</file>
-            <file>file:/D:/PROJEX/PonosPos/src/controllers/categories/CategoryController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/SideBarController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/Messages/HeadingMessage.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/tasks/headings/UpdateHeading.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/ponospos/entities/ExpenseHeading.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/MainController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/headings/HeadingDialogController.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/tasks/headings/FetchAllHeadingByName.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/jpa/HeadingJpa.java</file>
+            <file>file:/D:/PROJEX/PonosPos/src/controllers/headings/ExpenseHeadingController.java</file>
         </group>
     </open-files>
 </project-private>

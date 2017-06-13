@@ -37,6 +37,8 @@ public class PonosPos extends Application {
     public void init() {
         try { 
             super.init();
+            Font.loadFont(getClass().getResource("/resource/font/fontawesome-webfont.ttf").
+                    toExternalForm(), 12);
             Font.loadFont(
                     getClass().getResource("/resource/font/roboto/Roboto-Black.ttf").toExternalForm(),
                     10

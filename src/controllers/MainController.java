@@ -7,14 +7,20 @@ package controllers;
 
 import Messages.ProfileMessage;
 import Messages.RoleMessage;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import controllers.categories.CategoryController;
 import controllers.customers.CustomerInvoiceController;
 import controllers.customers.CustomersController;
+import controllers.expenditures.ExpenditureController;
+import controllers.headings.ExpenseHeadingController;
 import controllers.invoices.InvoiceController;
 import controllers.products.ProductController;
 import controllers.products.StockControlController;
 import controllers.sales.SaleHistoryController;
 import controllers.sales.SellController;
+import controllers.settings.UnitSettingController;
 import controllers.stores.StockTransferController;
 import controllers.stores.StoresController;
 import controllers.suppliers.SuppliersController;
@@ -69,7 +75,9 @@ public class MainController extends StackPane
     MenuItem logoutMenu;
     
     @FXML
-    Circle avatarCircle;
+    JFXHamburger humburger;
+    @FXML
+    JFXDrawer drawer;
     
     BorderPane layoutContainer;
     MaskerPane mask;
@@ -90,7 +98,12 @@ public class MainController extends StackPane
     private StoresController storeController;
     private StockTransferController transferController;
     private CustomerInvoiceController paymentHistoryController;
+    private ExpenditureController expenditureController;
+    private UnitSettingController unitSetting;
+    private ExpenseHeadingController headingController;
     private PonosPos app;
+    
+    private HamburgerBackArrowBasicTransition transition;
     public MainController(PonosPos app) {
         super();
         this.app=app;
@@ -104,12 +117,8 @@ public class MainController extends StackPane
             mask.setVisible(false);
             this.getChildren().addAll(layoutContainer,mask);
             
-            this.avatarCircle.setFill(
-                    new ImagePattern(
-                            new Image(this.getClass().getResourceAsStream("/resource/icons/avatar.png"))
-                    )
-            );
-            
+            transition = new HamburgerBackArrowBasicTransition(humburger);
+            transition.setRate(-1);
             this.getStyleClass().add("root-container");
 //            topLabel.setText(Auth.getInstance().getUser().getUsername());
 //            imageView.setImage(new Image(this.getClass().getResourceAsStream("icons/ktp.png")));
@@ -122,6 +131,7 @@ public class MainController extends StackPane
     public void initDependencies(){
         this.sideBar=new SideBarController();
         this.sideBar.setListener(this);        
+        this.headingController=new ExpenseHeadingController(mask,this);
         this.invoiceController=new InvoiceController(mask,this);
         this.settingController=new SettingController(mask,this);
         this.dashboard=new DashboardController(mask,this);
@@ -136,8 +146,13 @@ public class MainController extends StackPane
         this.sellHistoryController=new SaleHistoryController(mask,this);
         this.transferController=new StockTransferController(mask,this);
         this.paymentHistoryController=new CustomerInvoiceController(this, mask);
-        this.layoutContainer.setLeft(sideBar);
+        this.expenditureController=new ExpenditureController(mask, this);
+        this.unitSetting=new UnitSettingController(mask, this);
+//        this.layoutContainer.setLeft(sideBar);
+        this.drawer.setSidePane(sideBar);
         
+        this.headingController.initDependencies();
+        this.unitSetting.initDependencies();
         this.paymentHistoryController.initDependencies();
         this.transferController.initDependencies();
         this.invoiceController.initDependencies();
@@ -150,9 +165,12 @@ public class MainController extends StackPane
         this.supplierController.initDependencies();
         this.categoryController.initDependencies();
         this.productController.initDependencies();
+        this.expenditureController.initDependencies();
     }
     @Override
     public void initControls(){
+        this.headingController.initControls();
+        this.unitSetting.initControls();
         this.paymentHistoryController.initControls();
         this.transferController.initControls();
         this.invoiceController.initControls();
@@ -165,11 +183,14 @@ public class MainController extends StackPane
         this.supplierController.initControls();
         this.categoryController.initControls();
         this.storeController.initControls();
+        this.expenditureController.initControls();
     }
 
     @Override
     public void hookupEvent() {
         
+        headingController.hookupEvent();
+        unitSetting.hookupEvent();
         paymentHistoryController.hookupEvent();
         transferController.hookupEvent();
         invoiceController.hookupEvent();
@@ -182,9 +203,21 @@ public class MainController extends StackPane
         this.storeController.hookupEvent();
         this.productController.hookupEvent();
         this.stockController.hookupEvent();
+        this.expenditureController.hookupEvent();
+        
+        this.humburger.setOnMouseClicked(e->{
+            transition.setRate(transition.getRate()*-1);
+            transition.play();
+            if (this.drawer.isHidden()) {
+                this.drawer.open();
+            }else
+                this.drawer.close();
+        });
     }
     @Override
     public void bindControls(){
+        this.headingController.bindControls();
+        this.unitSetting.bindControls();
         this.paymentHistoryController.bindControls();
         this.transferController.bindControls();
         this.invoiceController.bindControls();
@@ -197,6 +230,7 @@ public class MainController extends StackPane
         this.categoryController.bindControls();
         this.storeController.bindControls();
         this.productController.bindControls();
+        this.expenditureController.bindControls();
     }
 
     @Override
@@ -285,6 +319,7 @@ public class MainController extends StackPane
         supplierController.controlFocus();
         categoryController.controlFocus();
         productController.controlFocus();
+        productController.controlFocus();
     }
 
     
@@ -339,6 +374,7 @@ public class MainController extends StackPane
 
     @Override
     public void onSettingMenuClick() {
+        settingController.hookupEvent();
         switchScreen(settingController);
     }
 
@@ -358,6 +394,24 @@ public class MainController extends StackPane
     public void onPaymentHistoryClick() {
         switchScreen(paymentHistoryController);
         paymentHistoryController.fetchAll();
+    }
+
+    @Override
+    public void onExpenditureClick() {
+        switchScreen(expenditureController);
+        expenditureController.fetchAll();
+    }
+
+    @Override
+    public void onUnitSettingClick() {
+        switchScreen(unitSetting);
+        unitSetting.fetchAll();
+    }
+
+    @Override
+    public void onHeadingClick() {
+        switchScreen(headingController);
+        headingController.fetchAll();
     }
     
 

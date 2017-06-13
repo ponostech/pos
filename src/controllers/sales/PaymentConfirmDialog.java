@@ -12,8 +12,10 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,6 +34,7 @@ import ponospos.entities.Customer;
 import ponospos.entities.Invoice;
 import ponospos.entities.InvoiceItem;
 import ponospos.entities.Payment;
+import singletons.Auth;
 import util.InvoiceStatus;
 import util.PaymentMethod;
 
@@ -127,18 +130,19 @@ public class PaymentConfirmDialog extends JFXDialog {
         this.invoice=invoice;
     }
     public void fillField(){
-        storeLabel.setText("");
-        vatLabel.setText(Double.toString(invoice.getTax().doubleValue()));
+        storeLabel.setText("Store : "+Auth.getInstance().getStore().getName());
+        vatLabel.setText("Tax : "+NumberFormat.getCurrencyInstance(new Locale("en","in")).format(invoice.getTax().doubleValue()));
         Customer c=invoice.getCustomer();
-        if (c!=null) {
-            customerLabel.setText(invoice.getCustomer().toString());
-        }
-        discountLabel.setText(invoice.getDiscount().toPlainString());
-        amountField.setText(invoice.getTotal().toPlainString());
+        
+        if (c!=null) 
+            customerLabel.setText("Customer : "+invoice.getCustomer().toString());
+        else
+            customerLabel.setText("Customer : NA");
+        discountLabel.setText("Discount : "+NumberFormat.getCurrencyInstance(new Locale("en","in")).format(invoice.getDiscount()));
         items.addAll(invoice.getInvoiceItem());
         
-        SimpleDateFormat format=new SimpleDateFormat("dd/MM/yy");
-        dateLabel.setText(format.format(invoice.getInvoiceDate()));
+        SimpleDateFormat format=new SimpleDateFormat("EEE dd/MMM/yy");
+        dateLabel.setText("Date : "+format.format(invoice.getInvoiceDate()));
         
         amountField.setText(Double.toString(invoice.getTotal().doubleValue()));
         this.amount=invoice.getTotal().doubleValue();
@@ -152,6 +156,7 @@ public class PaymentConfirmDialog extends JFXDialog {
         p.setAmount(new BigDecimal(Double.parseDouble(amountField.getText())));
         p.setInvoice(invoice);
         p.setPayDate(invoice.getInvoiceDate());
+        p.setPaymentMethod(paymentMethodField.getSelectionModel().getSelectedItem());
         p.setAmount(new BigDecimal(amountField.getText().trim()));
         invoice.setPayment(p);
         invoice.setRemark(remark.getText().trim());

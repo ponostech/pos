@@ -5,6 +5,7 @@
  */
 package controllers.products;
 
+import Messages.ProductMessage;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -13,10 +14,12 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.validation.RequiredFieldValidator;
+import controllers.modals.ExceptionDialog;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +37,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import org.controlsfx.control.Notifications;
 import ponospos.entities.Attribute;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
@@ -41,6 +45,9 @@ import ponospos.entities.Stock;
 import ponospos.entities.Stores;
 import ponospos.entities.Supplier;
 import singletons.Auth;
+import singletons.PonosExecutor;
+import tasks.products.FindByBarcode;
+import util.PonosPreference;
 import util.TransactionType;
 import util.controls.VariantControl;
 
@@ -76,8 +83,7 @@ public class ProductDialog extends JFXDialog {
     private JFXCheckBox taxIncludeCheck;
     @FXML
     private JFXTextArea descriptionField;
-    @FXML
-    private JFXToggleButton activateToggle;
+ 
     @FXML
     private JFXTextField taxField;
     @FXML
@@ -137,10 +143,17 @@ public class ProductDialog extends JFXDialog {
                 clearIfTextInparseable(costPriceField);
             });
            
-            positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty()
-            .or(sellingPriceField.textProperty().isEmpty()
-            )
-            );
+            taxField.setOnKeyReleased(e->{
+                String str= taxField.getText();
+                try{
+                    double tax = Double.parseDouble(str);
+                    if (tax>100) {
+                        taxField.clear();
+                    }
+                }catch(NumberFormatException ex){
+                    taxField.clear();
+                }
+            });
             
             taxIncludeCheck.selectedProperty().addListener(e->{
                 if (taxIncludeCheck.isSelected()) {
@@ -161,6 +174,8 @@ public class ProductDialog extends JFXDialog {
                 variantNameField.clear();
                 variantValueField.clear();
             });
+            PonosPreference pref=new PonosPreference();
+            taxField.setText(Float.toString(pref.getTax()));
             validate();
         } catch (IOException ex) {
             Logger.getLogger(ProductDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,11 +193,18 @@ public class ProductDialog extends JFXDialog {
     }
     public ProductDialog isCreate(){
         this.isCreate=true;
-        
+        positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty()
+                .or(sellingPriceField.textProperty().isEmpty().or(storeCombo.getSelectionModel().selectedItemProperty().isNull())
+                )
+        );
         return this;
     }
     public ProductDialog isEdit(){
         this.isEdit=true;
+        positiveBtn.disableProperty().bind(nameField.textProperty().isEmpty()
+                .or(sellingPriceField.textProperty().isEmpty()
+                )
+        );
         if (product.getCategory()!=null) {
             categoryCombo.getSelectionModel().select(product.getCategory());
         }
@@ -192,7 +214,6 @@ public class ProductDialog extends JFXDialog {
         nameField.setText(product.getName());
         barcodeField.setText(product.getBarcode());
         descriptionField.setText(product.getDescription());
-        activateToggle.setSelected(product.isActive());
         costPriceField.setText(Double.toString(product.getCostPrice().doubleValue()));
         sellingPriceField.setText(Double.toString(product.getSellingPrice().doubleValue()));
         taxIncludeCheck.setSelected(product.isIncludeTax());
@@ -220,86 +241,20 @@ public class ProductDialog extends JFXDialog {
     
    @FXML
     private void onPositiveBtnClick(ActionEvent event) {
-        if (isCreate) {
-            Stock stock=new Stock();
-            
-            Product p=new Product();
-           p.setName(nameField.getText().trim());
-           p.setBarcode(barcodeField.getText().trim());
-           p.setDescription(descriptionField.getText().trim());
-            if (categoryCombo.getSelectionModel().getSelectedItem()!=null) {
-                p.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
-            }
-            if (supplierCombo.getSelectionModel().getSelectedItem()!=null) {
-                p.setSupplier(supplierCombo.getSelectionModel().getSelectedItem());
-            }
-            if (costPriceField.getText().isEmpty()) {
-                p.setCostPrice(BigDecimal.ZERO);
-            }else{
-                p.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
-            }
-            p.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
-            p.setCreatedAt(new Date(System.currentTimeMillis()));
-            p.setIncludeTax(taxIncludeCheck.isSelected());
-            p.setActive(activateToggle.isSelected());
-            p.setAddedBy(Auth.getInstance().getUser());
-            p.setTax(new BigDecimal(taxField.getText().trim()));
-            for (Attribute att : variantControl.getAttributes()) {
-                att.setProduct(p);
-            }
-            p.setAttributes(variantControl.getAttributes());
-
-            
-            /*
-                Stock implementataion
-            */
-            stock.setProduct(p);
-            stock.setQuantity(Integer.parseInt(qtyField.getText()));
-            stock.setUpdateAt(new Date(System.currentTimeMillis()));
-            //TODO:: store selection might be changes
-            stock.setStore(storeCombo.getSelectionModel().getSelectedItem());
-            stock.setRemark(remarkField.getText().trim());
-            stock.setTransactionType(TransactionType.STOCK_UPDATE.toString());
-            stock.setUser(Auth.getInstance().getUser());
-            stock.setInvoice(null);
-            stock.setCreatedAt(new Date(System.currentTimeMillis()));
-            List<Stock> stocks=new ArrayList();
-            stocks.add(stock);
-            p.setStocks(stocks);
-            /* ------------------------------------ */
-            /*  Stock implementation end */
-            /*------------------------------------*/
-            this.close();
-            listener.onCreate(p);
-       }else if (isEdit) {
-            
-           product.setName(nameField.getText().trim());
-           product.setBarcode(barcodeField.getText().trim());
-           product.setDescription(descriptionField.getText().trim());
-            if (categoryCombo.getSelectionModel().getSelectedItem()!=null) {
-                product.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
-            }
-            if (costPriceField.getText().isEmpty()) {
-                product.setCostPrice(BigDecimal.ZERO);
-            }else{
-                product.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
-            }
-            product.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
-            product.setIncludeTax(taxIncludeCheck.isSelected());
-            product.setActive(activateToggle.isSelected());
-            product.setEdittedBy(Auth.getInstance().getUser());
-            product.setTax(new BigDecimal(taxField.getText().trim()));
-            
-            for (Attribute att : variantControl.getAttributes()) {
-                att.setProduct(product);
-            }
-            product.setAttributes(variantControl.getAttributes());
-            this.close();
-            listener.onUpdate(product);
-            
-       }else{
-           
-       }
+        FindByBarcode task = new FindByBarcode();
+       task.barcode = barcodeField.getText().trim();
+       task.setOnSucceeded(e -> {
+           if (task.getValue() && isCreate) 
+               Notifications.create().title(ProductMessage.DUPLICATE_BARCODE_TITLE).text(ProductMessage.DUPLICATE_BARCODE_MESSAGE).showError();
+           else if(task.getValue() && isEdit)
+               doUpdate();
+           else if(!task.getValue() && isCreate)
+               doCreate();
+          
+       });
+       task.setOnFailed(e->new ExceptionDialog(task.getException()));
+       PonosExecutor.getInstance().getExecutor().submit(task);
+        
         
     }
 
@@ -354,8 +309,87 @@ public class ProductDialog extends JFXDialog {
          });
          
      }
+     private void doUpdate(){
+         product.setName(nameField.getText().trim());
+         product.setBarcode(barcodeField.getText().trim());
+         product.setDescription(descriptionField.getText().trim());
+         if (categoryCombo.getSelectionModel().getSelectedItem() != null) {
+             product.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
+         }
+         if (costPriceField.getText().isEmpty()) {
+             product.setCostPrice(BigDecimal.ZERO);
+         } else {
+             product.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
+         }
+         product.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
+         product.setIncludeTax(taxIncludeCheck.isSelected());
+         product.setActive(true);
+         product.setEdittedBy(Auth.getInstance().getUser());
+         product.setTax(new BigDecimal(taxField.getText().trim()));
+
+         for (Attribute att : variantControl.getAttributes()) {
+             att.setProduct(product);
+         }
+         product.setAttributes(variantControl.getAttributes());
+         this.close();
+         listener.onUpdate(product);
+
+     }
+     private void doCreate(){
+         Stock stock = new Stock();
+
+         Product p = new Product();
+         p.setName(nameField.getText().trim());
+         p.setBarcode(barcodeField.getText().trim());
+         p.setDescription(descriptionField.getText().trim());
+         if (categoryCombo.getSelectionModel().getSelectedItem() != null) {
+             p.setCategory(categoryCombo.getSelectionModel().getSelectedItem());
+         }
+         if (supplierCombo.getSelectionModel().getSelectedItem() != null) {
+             p.setSupplier(supplierCombo.getSelectionModel().getSelectedItem());
+         }
+         if (costPriceField.getText().isEmpty()) {
+             p.setCostPrice(BigDecimal.ZERO);
+         } else {
+             p.setCostPrice(new BigDecimal(costPriceField.getText().trim()));
+         }
+         p.setSellingPrice(new BigDecimal(sellingPriceField.getText().trim()));
+         p.setCreatedAt(new Date(System.currentTimeMillis()));
+         p.setIncludeTax(taxIncludeCheck.isSelected());
+         p.setActive(true);
+         p.setAddedBy(Auth.getInstance().getUser());
+         p.setTax(new BigDecimal(taxField.getText().trim()));
+         for (Attribute att : variantControl.getAttributes()) {
+             att.setProduct(p);
+         }
+         p.setAttributes(variantControl.getAttributes());
+
+         /*
+                Stock implementataion
+          */
+         stock.setProduct(p);
+         stock.setQuantity(Integer.parseInt(qtyField.getText()));
+         stock.setUpdateAt(new Date(System.currentTimeMillis()));
+         //TODO:: store selection might be changes
+         stock.setStore(storeCombo.getSelectionModel().getSelectedItem());
+         stock.setRemark(remarkField.getText().trim());
+         stock.setTransactionType(TransactionType.STOCK_UPDATE.toString());
+         stock.setUser(Auth.getInstance().getUser());
+         stock.setInvoice(null);
+         stock.setCreatedAt(new Date(System.currentTimeMillis()));
+         List<Stock> stocks = new ArrayList();
+         stocks.add(stock);
+         p.setStocks(stocks);
+         /* ------------------------------------ */
+ /*  Stock implementation end */
+ /*------------------------------------*/
+         this.close();
+         listener.onCreate(p);
+     }
           
           
       
-    
+    private void existBarcode(String barcode){
+        
+    }
 }

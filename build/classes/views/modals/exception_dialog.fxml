@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="492.0" prefWidth="484.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane id="AnchorPane" prefHeight="492.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="90.0" prefWidth="484.0">
          <children>
             <FontAwesomeIconView glyphName="WARNING" layoutX="27.0" layoutY="63.0" size="48" />
-            <MaterialDesignIconView fx:id="close" fill="#f80a0a" glyphName="CLOSE" layoutX="442.0" layoutY="32.0" size="28" />
          </children>
       </Pane>
       <Label layoutX="25.0" layoutY="116.0" text="ERROR MESSAGE :" />

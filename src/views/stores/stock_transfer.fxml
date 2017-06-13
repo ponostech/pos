@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<fx:root id="AnchorPane" prefHeight="462.0" prefWidth="791.0" type="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<fx:root id="AnchorPane" prefHeight="462.0" prefWidth="791.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label focusTraversable="false" layoutX="21.0" layoutY="14.0" styleClass="h1" text="Stock Transfer">
          <graphic>
-            <FontAwesomeIconView fill="#b2640b" glyphName="EXCHANGE" size="28" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="EXCHANGE" size="28" />
          </graphic>
       </Label>
       <VBox fx:id="productContainer" layoutX="21.0" layoutY="66.0" prefHeight="382.0" prefWidth="384.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="66.0" />
@@ -26,9 +25,9 @@
         </columns>
       </TableView>
       <JFXComboBox fx:id="storeCombo" layoutX="425.0" layoutY="304.0" prefHeight="25.0" prefWidth="345.0" AnchorPane.bottomAnchor="133.0" AnchorPane.rightAnchor="21.0" />
-      <JFXButton fx:id="transferBtn" layoutX="598.0" layoutY="368.0" prefHeight="25.0" prefWidth="176.0" text="Transfer" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="17.0">
+      <JFXButton fx:id="transferBtn" buttonType="RAISED" layoutX="598.0" layoutY="368.0" prefHeight="25.0" prefWidth="176.0" styleClass="primary-btn" text="Transfer" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="17.0">
          <graphic>
-            <FontAwesomeIconView fill="#0784b5" glyphName="EXCHANGE" />
+            <FontAwesomeIconView fill="WHITE" glyphName="EXCHANGE" />
          </graphic>
       </JFXButton>
       <Label focusTraversable="false" layoutX="571.0" layoutY="35.0" styleClass="h3" text="Check out" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="35.0" />

@@ -10,9 +10,9 @@
    <children>
       <Label layoutX="23.0" layoutY="35.0" styleClass="h3" text="Set quantity" />
       <Spinner fx:id="quantitySpinner" layoutX="55.0" layoutY="94.0" prefHeight="25.0" prefWidth="230.0" />
-      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="55.0" layoutY="164.0" prefHeight="25.0" prefWidth="107.0" text="Set">
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="55.0" layoutY="164.0" prefHeight="25.0" prefWidth="107.0" styleClass="primary-btn" text="Set">
          <graphic>
-            <FontAwesomeIconView fill="#0d3483" glyphName="CHECK" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CHECK" size="14" />
          </graphic>
       </JFXButton>
    </children>

@@ -7,9 +7,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="90.0" styleClass="side-bar" type="VBox" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="130.0" styleClass="side-bar" type="VBox" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onDashboardMenuClick" prefHeight="58.0" prefWidth="90.0" styleClass="side-menu" text="Dashboard  ">
+      <Button mnemonicParsing="false" onAction="#onDashboardMenuClick" prefWidth="150.0" styleClass="side-menu" text="Dashboard  ">
          <graphic>
             <FontAwesomeIconView fill="#d00f53" glyphName="DASHBOARD" size="28" />
          </graphic>
@@ -17,7 +17,7 @@
             <Insets right="15.0" />
          </padding>
       </Button>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="58.0" prefWidth="90.0" styleClass="side-menu" text="Sales">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Sales">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onSellMenuClick" text="Sell" />
           <MenuItem mnemonicParsing="false" onAction="#onSellHistoryMenuClick" text="Sell History" />
@@ -26,7 +26,7 @@
             <FontAwesomeIconView fill="#0b9dd7" glyphName="MONEY" size="28" styleClass="user-menu" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="25.0" prefWidth="90.0" styleClass="side-menu" text="User">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="User">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onUserMenuClick" text="Users">
                <graphic>
@@ -38,7 +38,7 @@
             <FontAwesomeIconView fill="#fcf7f7" glyphName="USER" size="28" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="90.0" styleClass="side-menu" text="Customer">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Customer">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onCustomerMenuClick" text="Customers">
                <graphic>
@@ -54,7 +54,7 @@
             <FontAwesomeIconView fill="#9d2a24" glyphName="USERS" size="28" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="90.0" styleClass="side-menu" text="Product">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Product">
         <items>
             <MenuItem mnemonicParsing="false" onAction="#onProductMenuClick" text="Product" />
             <MenuItem mnemonicParsing="false" onAction="#onStockControlMenuClick" text="Stock Control" />
@@ -71,7 +71,7 @@
             <FontAwesomeIconView fill="#249c30" glyphName="TAGS" size="28" text="" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefHeight="42.0" prefWidth="90.0" styleClass="side-menu" text="Store">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Store">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onStoreMenuClick" text="Stores" />
           <MenuItem fx:id="stockTransferMenu" mnemonicParsing="false" onAction="#onStockTransferMenuClick" text="Stock transfer" />
@@ -80,7 +80,7 @@
             <FontAwesomeIconView fill="#9fbf0f" glyphName="SHOPPING_BAG" size="28" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefWidth="90.0" styleClass="side-menu" text="Invoice">
+      <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Invoice">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#onInvoiceMenuClick" text="Invoices" />
           <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -89,7 +89,7 @@
             <FontAwesomeIconView fill="#6c8320" glyphName="AREA_CHART" size="28" />
          </graphic>
       </MenuButton>
-      <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSettingMenuClick" popupSide="RIGHT" prefWidth="90.0" styleClass="side-menu" text="Setting">
+      <MenuButton mnemonicParsing="false" onAction="#onSettingMenuClick" popupSide="RIGHT" prefWidth="150.0" styleClass="side-menu" text="Setting">
          <graphic>
             <FontAwesomeIconView fill="#bfb9b9" glyphName="GEAR" size="28" />
          </graphic>

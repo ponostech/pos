@@ -41,8 +41,8 @@ import ponospos.entities.Stores;
 import ponospos.entities.Supplier;
 import singletons.PonosExecutor;
 import tasks.products.CreateTask;
+import tasks.products.FindProductTask;
 import tasks.stocks.CreateStockTask;
-import tasks.stocks.FetchAllStockTask;
 import tasks.stocks.FindStockByProductNameTask;
 
 /**
@@ -250,7 +250,8 @@ public class StockControlController extends AnchorPane implements
 
     @Override
     public void hookupEvent() {
-        searchBtn.setOnAction(e->fetchStock());
+        searchBtn.setOnAction(e->doSearch());
+        searchField.textProperty().addListener(e->doSearch());
         searchField.textProperty().addListener(inv->doSearch());
         
         addBtn.setOnAction(e->{
@@ -283,7 +284,7 @@ public class StockControlController extends AnchorPane implements
         });
         t2.setOnFailed(e->{
             ExceptionDialog d=new ExceptionDialog(t2.getException());
-            d.show(root);
+            
         });
         mask.visibleProperty().bind(t2.runningProperty());
         
@@ -328,14 +329,32 @@ public class StockControlController extends AnchorPane implements
 
     private void doSearch() {
         String text=searchField.getText().trim();
-        FindStockByProductNameTask ftask=new FindStockByProductNameTask();
-        ftask.setOnSucceeded(e->{
-            stocks.clear();
-            stocks.addAll(ftask.getValue());
+//        FindStockByProductNameTask ftask=new FindStockByProductNameTask();
+//        ftask.setOnSucceeded(e->{
+//            stocks.clear();
+//            stocks.addAll(ftask.getValue());
+//        });
+//        ftask.setParam(text);
+//        ftask.setOnFailed(e->ftask.getException().printStackTrace(System.err));
+//        PonosExecutor.getInstance().getExecutor().submit(ftask);
+        tasks.products.FindProductTask task = new FindProductTask();
+        task.setParam(text);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnSucceeded(e -> {
+            List<Product> ps = task.getValue();
+            activeProducts.clear();
+            inactiveProducts.clear();
+            for (Product p : ps) {
+                if (p.isActive()) {
+                    activeProducts.add(p);
+                } else {
+                    inactiveProducts.add(p);
+                }
+            }
+            stockTable.refresh();
+            stockTable1.refresh();
         });
-        ftask.setParam(text);
-        ftask.setOnFailed(e->ftask.getException().printStackTrace(System.err));
-        PonosExecutor.getInstance().getExecutor().submit(ftask);
+        PonosExecutor.getInstance().getExecutor().submit(task);
     }
 
     @Override

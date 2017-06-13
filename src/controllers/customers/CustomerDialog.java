@@ -13,6 +13,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import de.jensd.fx.glyphs.GlyphsBuilder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -22,13 +23,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
 import ponospos.entities.Customer;
 
 /**
@@ -62,7 +59,7 @@ public class CustomerDialog extends JFXDialog{
     @FXML
     private JFXButton cancelButton;
     @FXML
-    private FontAwesomeIconView close;
+    private MaterialDesignIconView close;
     
     private boolean isEditPurpose;
     private boolean isViewPurpose;

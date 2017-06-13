@@ -13,23 +13,23 @@
 
 <fx:root id="AnchorPane" prefHeight="402.0" prefWidth="831.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox layoutX="118.0" layoutY="65.0" prefHeight="25.0" prefWidth="638.0" styleClass="control-group" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="65.0">
+      <HBox layoutX="116.0" layoutY="61.0" prefHeight="25.0" prefWidth="638.0" styleClass="control-group" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
          <children>
-            <JFXButton fx:id="newStoreBtn" onAction="#onNewStoreBtnClick" prefHeight="25.0" prefWidth="104.0" text="New Store">
-               <graphic>
-                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
-               </graphic>
-            </JFXButton>
-            <Pane prefHeight="25.0" prefWidth="170.0" HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" prefHeight="25.0" prefWidth="267.0" promptText="Type store name" styleClass="search-field" />
             <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="search-btn">
                <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" />
+                  <FontAwesomeIconView fill="#095d7c" glyphName="SEARCH" size="14" />
                </graphic>
             </Button>
+            <Pane prefHeight="25.0" prefWidth="170.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newStoreBtn" buttonType="RAISED" onAction="#onNewStoreBtnClick" prefHeight="25.0" prefWidth="104.0" styleClass="primary-btn" text="New Store">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
-      <TableView fx:id="storeTables" layoutX="116.0" layoutY="118.0" prefHeight="259.0" prefWidth="638.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="118.0">
+      <TableView fx:id="storeTables" layoutX="116.0" layoutY="134.0" prefHeight="243.0" prefWidth="638.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="140.0">
         <columns>
           <TableColumn fx:id="idCol" prefWidth="86.0" text="ID" />
           <TableColumn fx:id="nameCol" prefWidth="182.0" text="STORE NAME" />
@@ -37,9 +37,9 @@
             <TableColumn fx:id="actionCols" prefWidth="219.0" text="ACTIONS" />
         </columns>
       </TableView>
-      <Label graphicTextGap="10.0" layoutX="116.0" layoutY="17.0" text="Stores" AnchorPane.leftAnchor="116.0" AnchorPane.topAnchor="17.0">
+      <Label graphicTextGap="10.0" layoutX="116.0" layoutY="17.0" styleClass="h1" text="Stores" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="17.0">
          <graphic>
-            <FontAwesomeIconView fill="#2d0f97" size="28" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="HOME" size="22" />
          </graphic>
       </Label>
    </children>

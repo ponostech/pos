@@ -100,4 +100,16 @@ public class ProductJpa {
     }
     
 
+    public static boolean existBarcode(String barcode){
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> founds = em.createNamedQuery("Product.findByBarcode", Product.class)
+                .setParameter("barcode", barcode)
+                .getResultList();
+        em.close();
+        if (founds.isEmpty()) {
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

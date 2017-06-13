@@ -7,7 +7,7 @@ package jpa;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import ponospos.entities.Category;
+import ponospos.entities.Product;
 import ponospos.entities.Stores;
 
 /**
@@ -46,11 +46,10 @@ public class StoreJpa {
     
     public static List getAllStore()throws Exception{
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
-        em.getTransaction().begin();
         List<Stores> all = em.createNamedQuery("Stores.findAll",Stores.class)
+               
                 .getResultList();
-        em.flush();
-        em.getTransaction().commit();
+        
         em.close();
         return all;
     }
@@ -58,6 +57,14 @@ public class StoreJpa {
         EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
         List<Stores> founds = em.createNamedQuery("Stores.findByName", Stores.class)
                 .setParameter("name", name+"%")
+                .getResultList();
+
+        return founds;
+    }
+    public static List findStoreStock(Stores store){
+        EntityManager em = JpaSingleton.getInstance().createNewEntityManager();
+        List<Product> founds = em.createNamedQuery("Stores.findStock", Product.class)
+                .setParameter("store", store)
                 .getResultList();
 
         return founds;

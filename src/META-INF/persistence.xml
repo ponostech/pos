@@ -13,6 +13,11 @@
     <class>ponospos.entities.Stock</class>
     <class>ponospos.entities.InvoiceItem</class>
     <class>ponospos.entities.Payment</class>
+    <class>ponospos.entities.StockTransfer</class>
+    <class>ponospos.entities.StockTransferItem</class>
+    <class>ponospos.entities.Expenditure</class>
+    <class>ponospos.entities.ExpenseHeading</class>
+    <class>ponospos.entities.Unit</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull"/>

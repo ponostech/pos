@@ -13,33 +13,33 @@
 
 <fx:root id="AnchorPane" prefHeight="528.0" prefWidth="850.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="114.0" layoutY="16.0" styleClass="h1" text="Category" AnchorPane.leftAnchor="114.0" AnchorPane.topAnchor="16.0">
+      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="114.0" layoutY="16.0" styleClass="h1" text="Category" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <graphic>
-            <FontAwesomeIconView fill="#ee0fa8" glyphName="GROUP" size="28" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="GROUP" size="22" />
          </graphic>
       </Label>
-      <HBox layoutX="114.0" layoutY="67.0" prefHeight="25.0" prefWidth="624.0" styleClass="control-group" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="67.0">
+      <HBox layoutX="10.0" layoutY="62.0" prefHeight="25.0" prefWidth="624.0" styleClass="control-group" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
          <children>
-            <JFXButton fx:id="newBtn" buttonType="RAISED" onAction="#onNewBtnClick" prefHeight="25.0" prefWidth="133.0" ripplerFill="#440bd3" text="New Category">
-               <graphic>
-                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
-               </graphic>
-            </JFXButton>
-            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" prefHeight="25.0" prefWidth="265.0" promptText="Type caategory name" styleClass="search-field" />
             <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="search-btn">
                <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="14" />
                </graphic>
             </Button>
+            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newBtn" buttonType="RAISED" onAction="#onNewBtnClick" prefHeight="25.0" prefWidth="133.0" ripplerFill="#440bd3" styleClass="primary-btn" text="New Category">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
-      <TableView fx:id="categoryTable" layoutX="114.0" layoutY="124.0" prefHeight="387.0" prefWidth="624.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="124.0">
+      <TableView fx:id="categoryTable" layoutX="114.0" layoutY="127.0" prefHeight="384.0" prefWidth="830.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="140.0">
         <columns>
           <TableColumn fx:id="idCol" prefWidth="85.0" text="ID" />
           <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="148.0" text="Name" />
-            <TableColumn fx:id="descCol" prefWidth="280.0" text="Description" />
-            <TableColumn fx:id="actionCol" prefWidth="222.0" text="Actions" />
+            <TableColumn fx:id="descCol" prefWidth="219.0" text="Description" />
+            <TableColumn fx:id="actionCol" prefWidth="283.0" text="Actions" />
         </columns>
       </TableView>
    </children>

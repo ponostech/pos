@@ -6,35 +6,31 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="372.0" prefWidth="354.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="130.0" prefWidth="355.0" styleClass="top-pane">
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="60.0" prefWidth="355.0" styleClass="top-pane">
          <children>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="163.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resource/icons/store.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="title" alignment="CENTER" layoutY="92.0" prefHeight="17.0" prefWidth="355.0" styleClass="h2" text="Store" />
-            <MaterialDesignIconView fx:id="close" fill="#f20a0a" glyphName="CLOSE" layoutX="323.0" layoutY="29.0" size="28" />
+            <Label fx:id="title" graphicTextGap="10.0" layoutX="22.0" layoutY="14.0" prefHeight="24.0" prefWidth="302.0" styleClass="h2" text="Store">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="24" />
+               </graphic></Label>
+            <MaterialDesignIconView fx:id="close" fill="#f20a0a" glyphName="CLOSE" layoutX="320.0" layoutY="36.0" size="28" />
          </children>
       </Pane>
-      <JFXTextField fx:id="nameField" labelFloat="true" layoutX="24.0" layoutY="167.0" prefHeight="25.0" prefWidth="312.0" promptText="Store name" />
-      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="21.0" layoutY="208.0" prefHeight="100.0" prefWidth="312.0" promptText="Address" />
-      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="21.0" layoutY="346.0" prefHeight="25.0" prefWidth="312.0" promptText="Contact" />
-      <JFXButton fx:id="positiveBtn" defaultButton="true" layoutX="18.0" layoutY="414.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="113.0" text="Save">
+      <JFXTextField fx:id="nameField" labelFloat="true" layoutX="21.0" layoutY="89.0" prefHeight="25.0" prefWidth="312.0" promptText="Store name" />
+      <JFXTextArea fx:id="addressField" labelFloat="true" layoutX="21.0" layoutY="139.0" prefHeight="71.0" prefWidth="312.0" promptText="Address" />
+      <JFXTextField fx:id="contactField" labelFloat="true" layoutX="21.0" layoutY="245.0" prefHeight="25.0" prefWidth="312.0" promptText="Contact" />
+      <JFXButton fx:id="positiveBtn" buttonType="RAISED" defaultButton="true" layoutX="14.0" layoutY="310.0" onAction="#onPositiveBtnClick" prefHeight="25.0" prefWidth="113.0" styleClass="primary-btn" text="Save">
          <graphic>
-            <FontAwesomeIconView glyphName="SAVE" />
+            <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="14" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="negativeBtn" layoutX="219.0" layoutY="414.0" onAction="#onNegativeBtnClick" prefHeight="25.0" prefWidth="113.0" text="Cancel">
+      <JFXButton fx:id="negativeBtn" buttonType="RAISED" layoutX="213.0" layoutY="310.0" onAction="#onNegativeBtnClick" prefHeight="25.0" prefWidth="113.0" styleClass="secondary-btn" text="Cancel">
          <graphic>
-            <FontAwesomeIconView glyphName="CLOSE" />
+            <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="14" />
          </graphic>
       </JFXButton>
    </children>

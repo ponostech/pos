@@ -14,11 +14,12 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import de.jensd.fx.glyphs.GlyphsBuilder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import static javafx.scene.control.Alert.AlertType.ERROR;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import ponospos.entities.User;
@@ -69,7 +69,7 @@ public class UserDialog extends JFXDialog {
     @FXML
     private JFXButton negativeBtn;
     @FXML
-    private FontAwesomeIconView close;
+    private MaterialDesignIconView close;
     
     private UserDialogListener listener;
     private boolean isEditPurpose;

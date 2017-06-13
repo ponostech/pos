@@ -30,8 +30,9 @@ and open the template in the editor.
     font-family: "Roboto Bold";
     src: url("../font/roboto/Roboto-Bold.ttf");
 }
+
 .jfx-decorator {
-    -fx-decorator-color:#003333;
+    -fx-decorator-color:#2B3643;
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -47,31 +48,16 @@ and open the template in the editor.
 /*----------------------------------------- */
 .error-label {
     -fx-text-fill: #D34336;
-    -fx-font-size: 0.75em;
-    -fx-font-weight: bold;
+    -fx-font-size: 10px;
+    -fx-font-family:"Roboto Light";
 }
 
 .error-icon {
     -fx-fill: #D34336;
-    -fx-font-size: 1.0em;
-}
-
-
-
-.vbox{
-    -fx-background-color:#660000;
-}
-.side-bar {
-    -fx-background-color: #003333;
-/*        #000000,
-        linear-gradient(#7ebcea, #2f4b8f),
-        linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);*/
-    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/  
+    -fx-font-size: 10px;
 }
 .top-bar{
-    -fx-background-color: #003333;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-color: #2B3643;
 }
 
 
@@ -81,15 +67,8 @@ and open the template in the editor.
 }
 /*root container stylying ends here*/
 
-.fav-icon{
-    -fx-background-color: blue;
-}
-.h1{
-    -fx-text-fill: darkgray;
-    -fx-font-weight:700;
-    -fx-font-size:28px;
-    -fx-font-family: "Arial";
-}
+
+
 
 .container{
     -fx-background-color:lightgray;
@@ -100,13 +79,16 @@ and open the template in the editor.
  
  /* menu styling*/
 .side-menu{  
-    -fx-background-color: #003333;
+    -fx-background-color: #364150;
     /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
     -fx-text-fill:#fff;
-    -fx-padding: 5px;
+    -fx-font-size:18px;
+    -fx-font-family:"Roboto";
 }
 .side-menu .label{
     -fx-text-fill: #fff;
+    -fx-font-family:"Roboto Bold";
+    -fx-font-size:18px;
 }
 .side-menu .arrow{
     -fx-background-color: #fff;
@@ -114,25 +96,20 @@ and open the template in the editor.
 }
 
 .side-menu .pane{
-    -fx-background-color: red;
-    -fx-padding: 4px;
+    -fx-background-color:#42b6f4;
     -fx-text-fill: #fff;
 }
-.side-menu:hover{
-    -fx-border-style: solid inside;
-    -fx-border-color:transparent transparent transparent white;
-    -fx-border-width:4px;
-    -fx-background-insets: 4;
-}
-.side-menu:focused{
-    -fx-border-color:transparent transparent transparent white;
-    -fx-border-width:4px;
-        -fx-background-insets: 0,1,2,3;
 
+.side-menu:hover{
+    -fx-background-color:#2B3643;
+    -fx-background-inset:2px;
+    -fx-border-color: transparent;
+/*    -fx-border-inset:0 0 -1 0, 0, 1, 2;*/
 }
+
 .side-bar .context-menu {
     -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
-    -fx-background-color: black;
+    -fx-background-color: #003333;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
     /*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
@@ -141,30 +118,9 @@ and open the template in the editor.
 
 /*end menu styling*/
 
- /* dashboad menu user menu  customer menu styling*/
- .dashboard-menu{
-     /*-fx-background-image:url("../icons/dashboard.png");*/
-     -fx-background-repeat:no-repeat;
-     -fx-padding:5 5 5 10;
- }
- .user-menu{
-     /*-fx-background-image:url("../icons/user.png");*/
-     -fx-background-repeat:no-repeat;
-     -fx-padding:5 5 5 10;
-
- }
- .customer-menu{
-     /*-fx-background-image:url("../icons/customer.png");*/
-     -fx-background-repeat:no-repeat;
-     -fx-padding:5 5 5 10;
-
- }
- /*menu styling end*/
- 
-
  .h3{
      -fx-text-fill:black;
-     -fx-font-family:"Helvetica";
+     -fx-font-family:"Roboto Bold";
      -fx-font-size:18;
  }
  .h4{
@@ -175,7 +131,7 @@ and open the template in the editor.
  }
  /* dialog interface styling*/
  .top-pane{
-     -fx-background-color: #009999;
+     -fx-background-color: #095d7c;
 /*     -fx-background-color: 
         #000000,
         linear-gradient(#7ebcea, #2f4b8f),
@@ -184,7 +140,7 @@ and open the template in the editor.
  }
  .top-pane .h2{
      -fx-font-size:18px;
-     -fx-font-family:"Arial" "Serif";
+     -fx-font-family:"Roboto Bold";
      -fx-font-weight:700;
  }
  .panel-box{
@@ -206,22 +162,6 @@ and open the template in the editor.
  /*dialog interface styling end*/
  /*Icon styling goes here*/
 
-.glyph-icon:hover{ -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0); }
-
-/*Button styling*/
-.btn-small{
-    -fx-background-color: 
-        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
-        linear-gradient(#020b02, #3a3a3a),
-        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
-        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
-        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
-    -fx-padding: 2px;
-    -fx-text-fill:white;
-    -fx-font-size: 10px;
-    
-    
-}
 /*.btn-large{
     -fx-width:100px;
      -fx-height:100px;
@@ -254,10 +194,7 @@ and open the template in the editor.
     -fx-background-color: #fff;
     -fx-border-color:darkgray;
     -fx-border-style:solid inside;
-/*    -fx-background-radius: 30 30 30 30; 
-    -fx-border-radius: 30 30 30 30;*/
-    -fx-padding:15px;
-    
+    -fx-padding:20px;
     -fx-effect: dropshadow(three-pass-box,#333333, 10, 0, 0, 0);
 
 }
@@ -268,15 +205,317 @@ and open the template in the editor.
 }
 .search-btn{
     -fx-background-radius: 0 30 30 0;
-    -fx-background-color: #009999;
-    
+    -fx-background-color: #095d7c;
 }
 .info-label{
+    -fx-font-family:"Roboto Bold";
+    -fx-font-size:16;
+    -fx-font-weight:700;
+    -fx-text-fill:#000000;
+}
+
+#profile-control{
+    -fx-background-color: transparent;
+}
+#profile-control:hover{
+    -fx-background-color:#364150;
+    
+}
+#profile-control .context-menu{
+    -fx-background-color:#fff;
+    -fx-border-color: #242424 transparent #242424 transparent;
+    -fx-border-width: 3px;
+}
+#profile-control .context-menu  .label{
+    -fx-text-fill: #000000;
+}
+
+.close-btn{
+    -fx-background-color:transparent
+}
+.add-btn{
+    
+    -fx-background-radius:30px;
+}
+
+.accordion .titled-pane .title:hover{
+    -fx-background-color:#2B3643;
+}
+.accordion .titled-pane .arrow{
+    -fx-background-color:transparent;
+}
+.accordion .titled-pane .title{
     -fx-font-family:"Roboto";
-    -fx-font-size:14;
-    /*-fx-font-weight:700;*/
-    -fx-text-fill:#2a2b2a;
+    -fx-font-size:18.0px;
+    -fx-background-color:#364150;
+    /*-fx-effect: innershadow(three-pass-box,#333333, 10, 0, 0, 0);*/
+    -fx-border-color:#364150;
+}
+.accordion .titled-pane > *.content{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.side-menu-item{
+    -fx-background-color: transparent;
+    -fx-text-fill: darkgray;
+    -fx-padding:0 0 0 50;
+    -fx-font-size:14.0px;
+}
+.side-menu-item:hover{
+    -fx-text-fill: #fff;
+}
+
+.jfx-hamburger{
+    -fx-text-fill: #fff;
 }
 .label{
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Light";
+    -fx-font-size:14px;
+}
+.side-bar-container{
+    -fx-background-color:#364150;
+}
+/*******************************************************************************
+*                                                                              *
+* JFX Textfield                                                                *
+*                                                                              *
+*******************************************************************************/
+
+.jfx-text-field, .jfx-password-field, .jfx-text-area {
+    -fx-background-color: transparent;
+    -fx-font-weight: BOLD;
+    -fx-prompt-text-fill: #808080;
+    -fx-alignment: top-left;
+    -jfx-focus-color: #4059A9;
+    -jfx-unfocus-color: #4d4d4d;
+}
+
+.jfx-text-area .viewport {
+    -fx-background-color: #F4F4F4;
+}
+/*******************************************************************************
+*                                                                              *
+* JFX Check Box                                                                *
+*                                                                              *
+*******************************************************************************/
+/*
+.jfx-check-box {
+    -fx-font-weight: BOLD;
+}
+
+.jfx-check-box {
+    -jfx-checked-color: RED;
+    -jfx-unchecked-color: BLACK;
+}
+
+.jfx-check-box-all-colored {
+    -jfx-checked-color: #5264AE;
+    -jfx-unchecked-color: #5264AE;
+    -fx-text-fill: #5264AE;
+}
+
+.jfx-check-box-text-colored {
+    -fx-text-fill: rgb(153.0, 0.0, 0.0);
+}*/
+/*******************************************************************************
+*                                                                              *
+* JFX Button                                                                   *
+*                                                                              *
+*******************************************************************************/
+
+.jfx-button-raised .jfx-rippler {
+    -jfx-rippler-fill: YELLOW;
+}
+
+.primary-btn{
+    -fx-font-size: 14.0px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #095d7c;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-text-fill: WHITE;
+}
+.secondary-btn{
+    -fx-font-size: 14.0px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #e22e12;
+    -fx-background-radius: 30px;
+
+    -fx-text-fill: WHITE;
+}
+.default-btn{
+    -fx-font-family:"Roboto Bold";
+    -fx-font-size: 14.0px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: transparent;
+    -fx-text-fill: #1a7da8;
+    
+}
+.root {
+-icons-color: rgb(202,202,203);
+}
+
+
+/*******************************************************************************
+*                                                                              *
+* JFX Hamburger Icon                                                           *
+*                                                                              *
+*******************************************************************************/
+
+.jfx-hamburger {
+    -fx-padding: 10.0;
+    -fx-spacing: 4px;
+    -fx-cursor: hand;
+}
+
+.jfx-hamburger StackPane {
+    -fx-pref-width: 30px;
+    -fx-pref-height: 4px;
+    -fx-background-color: #FFF;
+    -fx-background-radius: 5px;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX Pop Up                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-popup-overlay-pane {
+    -fx-background-color: transparent;
+}
+
+.jfx-popup-container {
+    -fx-background-color: WHITE;
+    -fx-pref-width: 151.0px;
+}
+
+.popup-list-view {
+    -fx-pref-width: 150.0px;
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #323232;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+}
+
+.jfx-snackbar-action {
+    -fx-text-fill: #ff4081;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX Dialog Layout                                                           *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-dialog-overlay-pane {
+    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.1);
+}
+
+.dialog-trigger {
+    -fx-background-color: WHITE;
+    -jfx-button-type: RAISED;
+    -fx-font-size: 14.0px;
+}
+
+.jfx-dialog-layout {
+    -fx-padding: 24.0px 24.0px 16.0px 24.0px;
+    -fx-text-fill: rgba(0.0, 0.0, 0.0, 0.87);
+}
+
+.jfx-layout-heading {
+    -fx-font-size: 20.0px;
+    -fx-font-weight: BOLD;
+    -fx-alignment: center-left;
+    -fx-padding: 5.0 0.0 5.0 0.0;
+}
+
+.jfx-layout-body .label {
+    -fx-font-size: 14.0px;
+    -fx-pref-width: 400.0px;
+    -fx-wrap-text: true;
+}
+
+.jfx-layout-actions {
+    -fx-padding: 10.0px 0.0 0.0 0.0;
+    -fx-alignment: center-right;
+}
+
+.dialog-accept {
+    -fx-text-fill: #03A9F4;
+    -fx-font-weight: BOLD;
+    -fx-padding: 0.7em 0.8em;
+}
+
+/*******************************************************************************
+*                                                                              *
+* JFX Combo Box                                                                *
+*                                                                              *
+*******************************************************************************/
+
+.combo-box-popup .list-view .jfx-list-cell .label,
+.combo-box-popup .list-view .jfx-list-cell:filled:hover .label {
+    -fx-text-fill: BLACK;
+}
+
+.combo-box-popup .list-view .jfx-list-cell .custom-jfx-list-view-icon,
+.combo-box-popup .list-view .jfx-list-cell:filled:hover .custom-jfx-list-view-icon,
+.combo-box-popup .list-view .jfx-list-cell:selected .custom-jfx-list-view-icon {
+    -fx-fill: #5264AE;
+}
+
+.combo-box-popup .list-view .jfx-list-cell:odd:selected > .jfx-rippler > StackPane,
+.combo-box-popup .list-view .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
+    -fx-background-color: rgba(0.0, 0.0, 255.0, 0.2);
+}
+
+.combo-box-popup .list-view .jfx-list-cell {
+    -fx-background-insets: 0.0;
+}
+
+.combo-box-popup .list-view .jfx-list-cell:odd,
+.combo-box-popup .list-view .jfx-list-cell:even {
+    -fx-background-color: WHITE;
+}
+
+.combo-box-popup .list-view .jfx-list-cell .jfx-rippler {
+    -jfx-rippler-fill: #5264AE;
+}
+ /*
+ Icon color styling
+ Icon color styling
+ Icon color styling
+ Icon color styling
+ */
+.root{
+  -icons-color: rgb(61,114,144);
+}
+ 
+.icons{
+    -fx-font-family: FontAwesome;
+    -fx-font-size: 16px;
+    -fx-effect: innershadow( three-pass-box , derive(-icons-color,-70%) , 0.1em, 0.0 , 0.07em, 0.07em );
+    -fx-text-fill: linear-gradient(to bottom, derive(-icons-color,20%) 10%, derive(-icons-color,-40%) 80%);
+}
+ 
+.icons:hover{
+    -fx-effect: dropshadow( three-pass-box , derive(-icons-color,0%) , 0.01em, 0.0 , 0, 0);
+}
+
+.h1{
+    -fx-text-fill: darkgray;
+    -fx-font-size:24px;
+    -fx-font-family: "Roboto Bold";
+}
+.jfx-tab-pane .title{
+    -fx-background-color:red;
+}
+.checkout{
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #333333, 10, 0, 0, 0);
+
 }

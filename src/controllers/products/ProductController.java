@@ -10,15 +10,19 @@ import Messages.ConfirmationMessage;
 import Messages.ProductMessage;
 import Messages.SupplierMessage;
 import com.jfoenix.controls.JFXButton;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import controllers.PonosControllerInterface;
 import controllers.categories.CategoryDialog;
 import controllers.modals.ConfirmDialog;
+import controllers.modals.ExceptionDialog;
 import controllers.suppliers.SupplierDialog;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,11 +37,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.Notifications;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import ponospos.entities.Category;
 import ponospos.entities.Product;
 import ponospos.entities.Stores;
@@ -47,6 +53,7 @@ import tasks.products.CreateTask;
 import tasks.products.DeleteTask;
 import tasks.products.EditTask;
 import tasks.products.FetchAllTask;
+import tasks.products.FindProductTask;
 
 /**
  * FXML Controller class
@@ -66,7 +73,10 @@ implements PonosControllerInterface,
     private AnchorPane AnchorPane;
     @FXML
     private JFXButton newProductbtn;
-    
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button searchBtn;
     
    
     @FXML
@@ -154,6 +164,7 @@ implements PonosControllerInterface,
                         setGraphic(null);
                     }else{
                         viewBtn.setOnAction(e->{
+                           new ProductDetailController().populate(products.get(getIndex())).show(root);
                             
                         });
                         editBtn.setOnAction(e->{
@@ -203,13 +214,13 @@ implements PonosControllerInterface,
                         setGraphic(null);
                     }else{
                         viewBtn.setOnAction(e->{
-                            
+                            new ProductDetailController().populate(inactiveProducts.get(getIndex())).show(root);
                         });
                         editBtn.setOnAction(e->{
                             ProductDialog d=new ProductDialog(ProductController.this);
                             d.setCategories(categories);
                             d.setSuppliers(suppliers);
-                            d.setProduct(products.get(getIndex()));
+                            d.setProduct(inactiveProducts.get(getIndex()));
                             d.isEdit().show(root);
                         });
                         delBtn.setOnAction(e->{
@@ -229,11 +240,15 @@ implements PonosControllerInterface,
 
     @Override
     public void bindControls() {
+        searchField.textProperty().addListener(e->doSearch());
+        searchBtn.setOnAction(e->doSearch());
+        
     }
 
     @Override
     public void hookupEvent() {
         
+       
     }
 
     @Override
@@ -320,7 +335,20 @@ implements PonosControllerInterface,
                 .title(ProductMessage.CREATE_SUCCESS_TITLE)
                 .text(ProductMessage.CREATE_SUCCESS_MESSAGE)
                 .showInformation();});
-        task.setOnFailed(e->task.getException().printStackTrace(System.err));
+        task.setOnFailed(e->{
+            ExceptionDialog d=new ExceptionDialog(task.getException());
+            for (Throwable t = task.getException().getCause(); t != null; t = t.getCause()) {
+                System.err.println(((MySQLIntegrityConstraintViolationException) t).getErrorCode());
+                if (t instanceof MySQLIntegrityConstraintViolationException ) {
+                    Notifications.create().title(null).text(ProductMessage.DUPLICATE_BARCODE_MESSAGE).showError();
+                    return;
+                }
+            }
+//            task.getException().printStackTrace(System.err);
+            if (task.getException() instanceof MySQLIntegrityConstraintViolationException) {
+                System.out.println("tuype od exception "+task.getException().getMessage());
+            }
+            });
         mask.visibleProperty().bind(task.runningProperty());
         task.setProduct(product);
         PonosExecutor.getInstance().getExecutor().submit(task);
@@ -351,6 +379,23 @@ implements PonosControllerInterface,
             Notifications.create().title(ProductMessage.UPDATE_SUCCESS_TITLE)
                     .text(ProductMessage.UPDATE_SUCCESS_MESSAGE)
                     .showInformation();
+            if (!task.getValue().isActive()) {
+                if (products.contains(task.getValue())) {
+                    products.remove(task.getValue());
+                    inactiveProducts.add(task.getValue());
+                }else {
+                    inactiveProducts.remove(task.getValue());
+                    products.add(task.getValue());
+                }
+            }else {
+                if (products.contains(task.getValue())) {
+                    products.remove(task.getValue());
+                    inactiveProducts.add(task.getValue());
+                } else if (inactiveProducts.contains(task.getValue())) {
+                    inactiveProducts.remove(task.getValue());
+                    products.add(task.getValue());
+                }
+            }
             productTable.refresh();
             productTable1.refresh();
         });
@@ -396,5 +441,25 @@ implements PonosControllerInterface,
     }
 
    
-    
+    private void doSearch(){
+        String text=searchField.getText().trim();
+        tasks.products.FindProductTask task=new FindProductTask();
+        task.setParam(text);
+        mask.visibleProperty().bind(task.runningProperty());
+        task.setOnSucceeded(e->{
+            List<Product> ps = task.getValue();
+            products.clear();
+            inactiveProducts.clear();
+            for (Product p : ps) {
+                if (p.isActive()) {
+                    products.add(p);
+                }else{
+                    inactiveProducts.add(p);
+                }
+            }
+            productTable.refresh();
+            productTable1.refresh();
+        });
+        PonosExecutor.getInstance().getExecutor().submit(task);
+    }
 }

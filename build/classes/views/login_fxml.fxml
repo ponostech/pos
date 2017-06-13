@@ -5,11 +5,10 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -22,12 +21,8 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
+            <MaterialDesignIconView fill="WHITE" glyphName="ACCOUNT_CIRCLE" size="68" />
             <Label styleClass="h2" text="Ponos Pos" />
-            <ImageView fx:id="logoImageView" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" smooth="false">
-               <image>
-                  <Image url="@../resource/icons/avatar.png" />
-               </image>
-            </ImageView>
             <Label fx:id="errorLabel" alignment="CENTER" prefHeight="17.0" prefWidth="386.0" textFill="#d70606">
                <font>
                   <Font name="System Italic" size="12.0" />

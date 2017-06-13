@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane id="AnchorPane" prefHeight="585.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="585.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="416.0" layoutY="38.0" styleClass="h1" text="Inventory Details" />
-      <Label layoutX="20.0" layoutY="77.0" text="Product Id:" />
-      <Label layoutX="18.0" layoutY="116.0" text="Product Name" />
-      <Label layoutX="22.0" layoutY="156.0" text="Variant" />
-      <Label layoutX="20.0" layoutY="196.0" text="Current Stock" />
-      <Label fx:id="idLabel" layoutX="107.0" layoutY="75.0" styleClass="h3" text="Product Id:" />
-      <Label fx:id="nameLabel" layoutX="107.0" layoutY="115.0" styleClass="h3" text="Product Id:" />
-      <Label fx:id="variant" layoutX="107.0" layoutY="154.0" styleClass="h3" text="Product Id:" />
-      <Label fx:id="stockLabel" layoutX="107.0" layoutY="195.0" styleClass="h3" text="Product Id:" />
-      <MaterialDesignIconView fx:id="close" fill="#e10e0e" glyphName="CLOSE" layoutX="868.0" layoutY="43.0" size="28" />
-      <TableView fx:id="stockTable" layoutX="14.0" layoutY="242.0" prefHeight="329.0" prefWidth="892.0" tableMenuButtonVisible="true">
+      <Label fx:id="idLabel" layoutX="28.0" layoutY="64.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="nameLabel" layoutX="28.0" layoutY="95.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="variant" layoutX="28.0" layoutY="131.0" styleClass="h3" text="Product Id:" />
+      <Label fx:id="stockLabel" layoutX="28.0" layoutY="164.0" styleClass="h3" text="Product Id:" />
+      <TableView fx:id="stockTable" focusTraversable="false" layoutX="14.0" layoutY="198.0" prefHeight="373.0" prefWidth="892.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="dateCol" prefWidth="179.0" text="DATE" />
           <TableColumn fx:id="employeeCol" prefWidth="109.0" text="EMPLOYEE" />
@@ -30,5 +27,19 @@
             <TableColumn fx:id="remarkCol" prefWidth="77.0" text="REMARK" />
         </columns>
       </TableView>
+      <Pane prefHeight="53.0" prefWidth="917.0" styleClass="top-pane">
+         <children>
+            <Button fx:id="close" cancelButton="true" layoutX="864.0" layoutY="9.0" mnemonicParsing="false" styleClass="close-btn">
+               <graphic>
+                  <MaterialDesignIconView fill="#e10e0e" glyphName="CLOSE" size="28" />
+               </graphic>
+            </Button>
+            <Label graphicTextGap="10.0" layoutX="27.0" layoutY="19.0" styleClass="h1" text="Inventory Details">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="INFO" size="22" />
+               </graphic>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

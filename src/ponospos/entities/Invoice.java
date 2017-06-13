@@ -27,7 +27,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.eclipse.persistence.jpa.config.Cascade;
 import singletons.Auth;
 
 /**
@@ -102,18 +101,32 @@ public class Invoice implements Serializable {
     @OneToOne(mappedBy = "invoice",orphanRemoval = true,cascade = CascadeType.ALL,targetEntity = Payment.class)
     private Payment payment;
     
+    @ManyToOne(targetEntity = Stores.class,fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false,name = "store_id")
+    private Stores store;
+    
     public Invoice() {
         this.discount=new BigDecimal("0");
 //        this.paymentAmount=new BigDecimal("0");
         this.soldBy=Auth.getInstance().getUser();
         
     }
+    
 
     public Invoice(Integer id) {
         this.id = id;
     }
 
+    public Stores getStore() {
+        return store;
+    }
+
+    public void setStore(Stores store) {
+        this.store = store;
+    }
+
    
+    
 
     public Integer getId() {
         return id;

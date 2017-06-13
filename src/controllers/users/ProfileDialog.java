@@ -14,6 +14,8 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import de.jensd.fx.glyphs.GlyphsBuilder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +26,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import ponospos.entities.User;
 import singletons.Auth;
 import util.PasswordGenerator;
@@ -42,8 +43,7 @@ public class ProfileDialog extends JFXDialog {
     public interface ProfileDialogListener{
         public void onProfileChange(User user);
     }
-    @FXML
-    private Circle avatarCircle;
+   
     @FXML
     private JFXTextField usernameField;
     @FXML
@@ -68,7 +68,7 @@ public class ProfileDialog extends JFXDialog {
     private Label errorLabel;
     
     @FXML
-    private FontAwesomeIconView close;
+    private MaterialDesignIconView close;
     
     private ProfileDialogListener listener;
 

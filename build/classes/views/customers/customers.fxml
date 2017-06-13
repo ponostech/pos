@@ -14,7 +14,7 @@
 
 <fx:root id="AnchorPane" prefHeight="471.0" prefWidth="793.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="customerTable" accessibleHelp="list of users" editable="true" layoutX="81.0" layoutY="148.0" prefHeight="310.0" prefWidth="632.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="148.0">
+      <TableView fx:id="customerTable" accessibleHelp="list of users" editable="true" layoutX="81.0" layoutY="150.0" prefHeight="308.0" prefWidth="773.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
         <columns>
             <TableColumn fx:id="iconCol" prefWidth="75.0" text="#" />
           <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
@@ -29,25 +29,25 @@
          </columnResizePolicy>
       </TableView>
       <StackPane layoutX="15.0" layoutY="14.0" style="-fx-background-color: rgba(125,162,123,0.4);" />
-      <HBox layoutX="79.0" layoutY="79.0" prefHeight="25.0" prefWidth="632.0" styleClass="control-group" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="79.0">
+      <HBox layoutX="81.0" layoutY="67.0" prefHeight="25.0" prefWidth="632.0" styleClass="control-group" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="67.0">
          <children>
-            <JFXButton fx:id="newButton" buttonType="RAISED" onAction="#onNewButtonClick" prefHeight="25.0" prefWidth="167.0" styleClass="btn-medium" text="New Customer">
-               <graphic>
-                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" />
-               </graphic>
-            </JFXButton>
-            <Pane prefHeight="25.0" prefWidth="137.0" HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" onAction="#doSearch" prefHeight="25.0" prefWidth="246.0" promptText="Type customer name" styleClass="search-field" />
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#doSearch" prefHeight="25.0" prefWidth="35.0" styleClass="search-btn">
                <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="14" />
                </graphic>
             </Button>
+            <Pane prefHeight="25.0" prefWidth="137.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="newButton" buttonType="RAISED" onAction="#onNewButtonClick" prefHeight="25.0" prefWidth="167.0" styleClass="primary-btn" text="New Customer">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="14" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
-      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="83.0" layoutY="22.0" styleClass="h1" text="Customers">
+      <Label focusTraversable="false" graphicTextGap="10.0" layoutX="83.0" layoutY="22.0" styleClass="h1" text="Customers" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="22.0">
          <graphic>
-            <FontAwesomeIconView fill="#a11b1b" glyphName="USERS" size="28" />
+            <FontAwesomeIconView fill="#095d7c" glyphName="USERS" size="22" />
          </graphic>
       </Label>
    </children>

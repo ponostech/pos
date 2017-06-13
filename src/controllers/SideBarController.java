@@ -14,9 +14,6 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -45,6 +42,9 @@ public class SideBarController extends VBox {
         public void onInvoiceClick();
         public void onStockTransferClick();
         public void onPaymentHistoryClick();
+        public void onExpenditureClick();
+        public void onHeadingClick();
+        public void onUnitSettingClick();
     }
    
     private DashboardController dashboard;
@@ -57,7 +57,7 @@ public class SideBarController extends VBox {
     public SideBarController(){
         try {
             FXMLLoader loader=new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/views/side_bar.fxml"));
+            loader.setLocation(this.getClass().getResource("/views/side_bar_2.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -137,6 +137,18 @@ public class SideBarController extends VBox {
     @FXML
     private void onPaymentHistoryClick(ActionEvent event){
         listener.onPaymentHistoryClick();
+    }
+    @FXML
+    private void onExpenditureClick(ActionEvent event){
+        listener.onExpenditureClick();
+    }
+    @FXML
+    private void onUnitSettingClick(ActionEvent event){
+        listener.onUnitSettingClick();
+    }
+    @FXML
+    private void onHeadingBtnClick(ActionEvent event){
+        listener.onHeadingClick();
     }
 
 }
